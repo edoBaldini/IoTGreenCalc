@@ -16,5 +16,4 @@ def about():
 
 if __name__ == "__main__":
     m = Model(solver_name=CBC)
-    print("ciao")
     app.run(debug=True, host='0.0.0.0')
