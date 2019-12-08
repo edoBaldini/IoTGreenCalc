@@ -4,6 +4,16 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 
+def check_maintenance_times(x, y):
+    z = []
+    for i in range(len(x)):
+        for j in range(len(x[i])):
+            z.append(x[i][j]) if not x[i][j] in z else ""
+    z.sort()
+    y.sort()
+    return z == y
+
+
 def min_replacement_sched(mttf, repl_c, disp_c, main_c, life):
     n_elements = len(mttf)
     m = Model(solver_name=CBC)
@@ -34,14 +44,18 @@ def min_replacement_sched(mttf, repl_c, disp_c, main_c, life):
 
     status = m.optimize()
     if (status == OptimizationStatus.NO_SOLUTION_FOUND):
-        print("no solution")
+        raise ValueError('No solution found')
     else:
         r_times = [[j for j in range(life) if x[j][i].x >= 0.99]
                    for i in range(n_elements)]
-        print(r_times)
+
         n_main = [j for j in range(life) if w[j].x >= 0.99]
-        #TODO COMPLETE THE CHECK BETWEEN MAINTENANCES TIME AND REPLEACEMENT TIMES
-        
+
+        if not check_maintenance_times(r_times, n_main):
+            raise ValueError('Mismatch')
+        return (r_times, n_main)
+
+
 @app.route("/")
 def home():
     return render_template("home.html")
@@ -53,4 +67,7 @@ def about():
 
 
 if __name__ == "__main__":
+    min_replacement_sched([15, 40, 3652], [5.24, 13.82, 15.36],
+                          [0.028027397, 0.002022899, 0.006726], 130.4207942,
+                          75)
     app.run(debug=True, host='0.0.0.0')
