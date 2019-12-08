@@ -21,13 +21,16 @@ def min_replacement_sched(mttf, repl_c, disp_c, main_c, life):
     x = [[m.add_var(var_type=BINARY) for i in range(n_elements)]
          for j in range(life)]
     c = [[elem for elem in repl_c] for i in range(life)]
+
+    y = [[m.add_var(var_type=BINARY) for i in range(n_elements)]
+         for j in range(life)]
     p = [[elem for elem in disp_c] for i in range(life)]
 
     w = [m.add_var(var_type=BINARY) for i in range(life)]
     d = [main_c for i in range(life)]
 
 #  Minimize the sum of the disposal costs
-    m.objective = (xsum(xsum(p[i][j] * x[i][j] for j in range(n_elements))
+    m.objective = (xsum(xsum(p[i][j] * y[i][j] for j in range(n_elements))
                         for i in range(life)))
 
 #  Minimize the sum of the energy costs for the elements and the maintenantce
@@ -41,6 +44,7 @@ def min_replacement_sched(mttf, repl_c, disp_c, main_c, life):
 
         for j in range(life):
             m += x[j][i] <= w[j]
+            m += x[j][i] == y[j][i]
 
     status = m.optimize()
     if (status == OptimizationStatus.NO_SOLUTION_FOUND):
