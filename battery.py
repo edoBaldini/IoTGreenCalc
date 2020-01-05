@@ -22,17 +22,13 @@ class Battery:
             "PbA": 3.85,
             "NiMh": 7.95}
 
-    WH2MJ = (1 / 277)                            # CONVERSION FROM WH TO MJ
-
     def __init__(self, technology, weight, efficiency=None, mttf=None):
         self.technology = technology
         self.weight = weight
         self.mttf = (self.MTTF[technology] if mttf is None else mttf)
         self.efficiency = (self.EFFICIENCY[technology] if efficiency is None
                            else efficiency)
+        self.e_manufactoring = self.weight *\
+            self.MANUFACTURING_ENERGY[self.technology]
 
-    def sp_man_energy(self):
-        return self.weight * self.MANUFACTURING_ENERGY[self.technology]
-
-    def sp_disposal(self):
-        return self.weight * self.DISPOSAL_KG[self.technology]
+        self.disposal = self.weight * self.DISPOSAL_KG[self.technology]
