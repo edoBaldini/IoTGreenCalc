@@ -22,7 +22,7 @@ class SolarPanel:
                  efficiency=None, mttf=43.73):
         self.technology = technology
         self.surface = surface                   # In [m2]
-        self.irradiance = irradiance             # Daily irradiation [Kw / m2]
+        self.irradiance = irradiance             # Daily irradiation [Kwh / m2]
         self.s_hours = s_hours                   # Daily solar hours
         self.mttf = mttf
         self.efficiency = (self.EFFICIENCY[technology] if efficiency is None

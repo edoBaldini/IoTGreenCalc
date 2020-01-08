@@ -5,12 +5,12 @@
     <title>Flask Tutorial</title>
   </head>
   <body>
-    {% extends "template.html" %}
+    {% extends "header.html" %}
     {% block content %}
 
     <h1> My First Try Using Flask </h1>
     <p> Flask is Fun </p>
-    
+    <p><a href="{{ url_for('.device') }}">Start designing your device</a></p>
     {% endblock %}
   </body>
 </html>

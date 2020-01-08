@@ -1,7 +1,17 @@
+from flask import Flask
 from mip import Model, xsum, BINARY, CBC, OptimizationStatus
-from flask import Flask, render_template
+from views import blueprints
 
-app = Flask(__name__)
+
+def create_app():
+    app = Flask(__name__)
+    app.config['WTF_CSRF_SECRET_KEY'] = 'A SECRET KEY'
+
+    for bp in blueprints:
+        app.register_blueprint(bp)
+        bp.app = app
+
+    return app
 
 
 def check_maintenance_times(x, y):
@@ -60,18 +70,11 @@ def min_replacement_sched(mttf, repl_c, disp_c, main_c, life):
         return (r_times, n_main)
 
 
-@app.route("/")
-def home():
-    return render_template("home.html")
-
-
-@app.route("/about")
-def about():
-    return render_template("about.html")
-
-
 if __name__ == "__main__":
+    app = create_app()
+    app.config['SECRET_KEY'] = 'Secret Key'
     min_replacement_sched([15, 40, 3652], [5.24, 13.82, 15.36],
                           [0.028027397, 0.002022899, 0.006726], 130.4207942,
                           75)
-    app.run(debug=True, host='0.0.0.0')
+    app.run()
+

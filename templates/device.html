@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Flask Tutorial</title>
+  </head>
+  <body>
+    {% extends "header.html" %}
+    {% block content %}
+
+    <h1> Device </h1>
+    <p> <a href="{{ url_for('.board') }}">     board     </a>, 
+        <a href="{{ url_for('.sensor') }}">    sensor    </a>,
+        <a href="{{ url_for('.processor') }}"> processor </a>,
+        <a href="{{ url_for('.radio') }}">     radio     </a></p>
+    {% endblock %}
+  </body>
+</html>
