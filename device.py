@@ -7,6 +7,7 @@ class Device:
         self.radio = None
         self.active_mode = 0
         self.sleep_mode = 0
+        self.duty_cycle = None
 
     def addSensor(self, s):
         self.sensors[len(self.sensors)] = s

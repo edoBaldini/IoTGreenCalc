@@ -1,4 +1,4 @@
-class SolarPanel:
+class Solar_Panel:
 
     TECHNOLOGY = ["mono-Si", "multi-Si", "CdTe"]
 

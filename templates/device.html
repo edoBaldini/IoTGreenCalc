@@ -7,12 +7,47 @@
   <body>
     {% extends "header.html" %}
     {% block content %}
-
+    <p>
+        <form action="" method="POST">
+          {{ form.hidden_tag() }}
+          <h2 class="formTitle">Duty Cycle</h2>
+          <fieldset>
+            {% for field in form.display %}
+              <label class="labelFor" for="{{ field }}">{{ form[field].label }}</label>
+              {{ form[field] }}
+              {% if form[field].errors %}
+                {% for e in form[field].errors %}
+                  <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}      
+          </fieldset>
+          <button class="button buttonJeans" type="submit">Submit</button>
+        </form>
+      </p>
     <h1> Device </h1>
-    <p> <a href="{{ url_for('.board') }}">     board     </a>, 
-        <a href="{{ url_for('.sensor') }}">    sensor    </a>,
-        <a href="{{ url_for('.processor') }}"> processor </a>,
-        <a href="{{ url_for('.radio') }}">     radio     </a></p>
+
+    <p> 
+        <a href="{{ url_for('device.board') }}">     board     </a>, 
+        <a href="{{ url_for('device.sensor') }}">    sensor    </a>,
+        {% if not session['device']['processor'] %}
+          <a href="{{ url_for('device.processor') }}"> processor </a>,
+        {% endif %}
+        {% if not session['device']['radio'] %}
+        <a href="{{ url_for('device.radio') }}">     radio     </a>
+        {% endif %}
+    </p>
+    {% for key in device %}
+      {% if key == 'sensors' or key == 'boards'%}
+        <p>{{key}}
+        {% for k in device[key] %}
+          {{device[key][k]}}
+        </p>
+        {% endfor %}
+      {% else %}
+          <p>{{key}} {{device[key]}}</p>
+      {% endif %}
+    {% endfor %}
     {% endblock %}
   </body>
 </html>
