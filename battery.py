@@ -14,21 +14,33 @@ class Battery:
                      "PbA": 27,
                      "NiMh": 73}
 
-    EFFICIENCY = {"Li-Ion": 0.9,
-                  "PbA": 0.8,
-                  "NiMh": 0.66}
+    EFFICIENCY = {"Li-Ion": 90,
+                  "PbA": 80,
+                  "NiMh": 66}
 
     MTTF = {"Li-Ion": 15,
             "PbA": 3.85,
             "NiMh": 7.95}
 
-    def __init__(self, technology, weight, efficiency=None, mttf=None):
-        self.technology = technology
-        self.weight = weight
-        self.mttf = (self.MTTF[technology] if mttf is None else mttf)
-        self.efficiency = (self.EFFICIENCY[technology] if efficiency is None
-                           else efficiency)
+    def __init__(self):
+        self.technology = None
+        self.mttf = 0
+        self.efficiency = 0
+        self.capacity = 0
+        self.e_manufactoring = 0
+        self.weight = 0
+        self.disposal = 0
+
+
+    def compute_e_manufactoring(self):
         self.e_manufactoring = self.weight *\
             self.MANUFACTURING_ENERGY[self.technology]
 
+    def compute_disposal(self):
         self.disposal = self.weight * self.DISPOSAL_KG[self.technology]
+
+    def auto_set_eff(self):
+        self.efficiency = self.EFFICIENCY[self.technology]
+
+    def auto_set_mttf(self):
+        self.mttf = self.MTTF[self.technology]

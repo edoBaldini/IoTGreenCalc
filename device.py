@@ -61,7 +61,7 @@ class Element(Component):
     e_manufactoring = None
 
     def compute_e_manufactoring(self):
-        self.MANUFACTURING_ENERGY = 5.74  # needed to put this data in __dict__
+        self.MANUFACTURING_ENERGY  # = 5.74 needed to put this data in __dict__
         self.e_manufactoring = self.area * self.MANUFACTURING_ENERGY
 
     # def __init__(self, lifetime, area, active_mode, sleep_mode):

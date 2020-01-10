@@ -1,6 +1,8 @@
 from flask import (Blueprint, render_template, request, session, redirect,
                    url_for)
 from device import Device
+from battery import Battery
+from solar_panel import Solar_Panel
 
 home = Blueprint('home', __name__)
 
@@ -11,8 +13,11 @@ def index():
         if request.form.get('component', None) == 'device':
             session['device'] = Device().__dict__
             return redirect(url_for("device.create_device"))
+        if request.form.get('component', None) == 'battery':
+            session['battery'] = Battery().__dict__
+            return redirect(url_for("battery.create_battery"))
+        if request.form.get('component', None) == 'solar_panel':
+            session['solar_panel'] = Solar_Panel().__dict__
+            return redirect(url_for("solar_panel.create_solar_panel"))
     return render_template("index.html", session=session)
-
-
-
 
