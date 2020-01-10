@@ -1,7 +1,7 @@
 from flask import (Blueprint, render_template, request, redirect, url_for,
                    session)
 from form import ElementForm, BoardForm, DutyCycleForm
-from device import Element, Board
+from device import Element, Board, Device
 import json
 
 device = Blueprint('device', __name__)
@@ -10,10 +10,20 @@ device = Blueprint('device', __name__)
 @device.route("/device", methods=["GET", "POST"])
 def create_device():
     form = DutyCycleForm()
+    device = session['device']
     if request.method == 'POST':
         if form.validate_on_submit():
             duty_cycle = request.form['duty_cycle']
-            update_device('duty_cycle', duty_cycle)
+            voltage = request.form['voltage']
+            device['duty_cycle'] = duty_cycle
+            device['voltage'] = voltage
+
+    device['daily_e_required'] = Device.compute_e_required(
+        float(device['duty_cycle']),
+        float(device['active_mode']),
+        float(device['sleep_mode']),
+        float(device['voltage']))
+    session['device'] = device
     return render_template("device.html", form=form, device=session['device'])
 
 

@@ -7,17 +7,26 @@ class Device:
         self.radio = None
         self.active_mode = 0
         self.sleep_mode = 0
-        self.duty_cycle = None
+        self.duty_cycle = 0
+        self.voltage = 0
+        self.daily_e_required = 0
 
-    def addSensor(self, s):
+    def add_sensor(self, s):
         self.sensors[len(self.sensors)] = s
 
-    def addBoard(self, b):
+    def add_board(self, b):
         self.boards[len(self.board)] = b
+
+# Energy required daily in Mj
+    def compute_e_required(duty_cycle, active_mode, sleep_mode, voltage):
+        dc = duty_cycle / 100
+        return((dc * active_mode) + ((1 - dc) * sleep_mode)) * 3600 * 24 *\
+            voltage * 10 ** (-9)
 
 
 class Component:
 
+    # Active and sleep mode in [mA]
     def __init__(self, active_mode=0, sleep_mode=0):
         self.active_mode = active_mode
         self.sleep_mode = sleep_mode
