@@ -31,7 +31,6 @@ class Battery:
         self.weight = 0
         self.disposal = 0
 
-
     def compute_e_manufactoring(self):
         self.e_manufactoring = self.weight *\
             self.MANUFACTURING_ENERGY[self.technology]

@@ -48,6 +48,15 @@
           <p>{{key}} {{device[key]}}</p>
       {% endif %}
     {% endfor %}
+
+    {% if ((device['boards']|length) and (device['sensors']|length) and 
+            device['duty_cycle'] and device['daily_e_required']) > 0 and
+            (device['processor'] and device['radio'] is not none)%}
+      <form id="form2" action="/" method="POST" enctype="multipart/form-data">
+        <input type="submit" name="submit_button" value="Completed">
+      </form>
+    {% endif %}
+
     {% endblock %}
   </body>
 </html>
