@@ -38,6 +38,18 @@
         <input type="submit" name="device" value="delete">
       {% endif %} </p>
      </form>
+
+    {% if session['device'] and session['battery'] and session['solar_panel'] %}
+      <form id="form3" action="/" method="POST" enctype="multipart/form-data">
+        <p>
+          <input type="submit" name="maintenance" value="Maintenance">
+        </p>
+      </form>
+    {% endif %}
+
+    {% if session['maintenance'] %}
+      {{session['maintenance']}}
+    {% endif %}
     {% endblock %}
 
   </body>

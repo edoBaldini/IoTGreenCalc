@@ -10,12 +10,28 @@ class Device:
         self.duty_cycle = 0
         self.voltage = 0
         self.daily_e_required = 0
+        self.e_manufactoring = 0
+        self.disposal = 0
 
     def add_sensor(self, s):
         self.sensors[len(self.sensors)] = s
 
     def add_board(self, b):
         self.boards[len(self.board)] = b
+
+    def e_manuf_dict(sensors, processor, radio):
+        e_manufactoring = 0
+        for key in sensors:
+            e_manufactoring += sensors[key]['e_manufactoring']
+        e_manufactoring += processor['e_manufactoring']
+        e_manufactoring += radio['e_manufactoring']
+        return e_manufactoring
+
+    def disposal_dict(boards):
+        disposal = 0
+        for key in boards:
+            boards += boards[key]['disposal']
+        return disposal
 
 # Energy required daily in Mj
     def compute_e_required(duty_cycle, active_mode, sleep_mode, voltage):

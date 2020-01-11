@@ -19,6 +19,8 @@ def index():
         if request.form.get('component', None) == 'solar_panel':
             session['solar_panel'] = Solar_Panel().__dict__
             return redirect(url_for("solar_panel.create_solar_panel"))
+
+        # pressed delete button
         if request.form.get('battery', None) == 'delete':
             session['battery'] = None
         if request.form.get('solar_panel', None) == 'delete':
@@ -26,5 +28,10 @@ def index():
         if request.form.get('device', None) == 'delete':
             session['device'] = None
 
+        # create the maintenance
+        if request.form.get('maintenance', None) == 'Maintenance':
+            return redirect(url_for('maintenance.create_maintenance'))
     return render_template("index.html", session=session)
+
+
 

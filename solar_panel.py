@@ -23,7 +23,7 @@ class Solar_Panel:
         self.surface = 0                   # In [m2]
         self.irradiance = 0            # Daily irradiation [Kwh / m2]
         self.s_hours = 0                   # Daily solar hours
-        self.mttf = 43.73
+        self.lifetime = 43.73
 
     def compute_e_manufactoring(self):
         self.e_manufactoring = self.surface *\

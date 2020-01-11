@@ -50,15 +50,15 @@ class BatteryForm(FlaskForm):
                                validators=[InputRequired()])
     weight = f.FloatField(u'Weight of the battery in kg',
                           validators=[InputRequired(), NumberRange(min=0)])
-    efficiency = f.FloatField(u'Efficiecny, not required',
+    efficiency = f.FloatField(u'Efficiecny, optional',
                               validators=[Optional(),
                                           NumberRange(min=0.0, max=100.0)])
-    mttf = f.FloatField(u'estimated lifetime, not required',
-                        validators=[Optional(), NumberRange(min=0.0)])
+    lifetime = f.FloatField(u'estimated lifetime, optional',
+                            validators=[Optional(), NumberRange(min=0.0)])
     capacity = f.FloatField(u'capacity in [mAh]',
                             validators=[InputRequired(), NumberRange(min=0)])
 
-    display = ['technology', 'weight', 'efficiency', 'mttf', 'capacity']
+    display = ['technology', 'weight', 'efficiency', 'lifetime', 'capacity']
 
 
 class SolarForm(FlaskForm):
@@ -74,13 +74,33 @@ class SolarForm(FlaskForm):
                                           NumberRange(min=0.0)])
     s_hours = f.FloatField(u'Daily sunny hours',
                            validators=[DataRequired(), NumberRange(min=0.0)])
-    efficiency = f.FloatField(u'Efficiecny, not required',
+    efficiency = f.FloatField(u'Efficiecny, optional',
                               validators=[Optional(),
                                           NumberRange(min=0.0, max=100.0)])
-    mttf = f.FloatField(u'estimated lifetime, not required',
-                        validators=[Optional()])
+    lifetime = f.FloatField(u'estimated lifetime, not required',
+                            validators=[Optional()])
 
     display = ['technology', 'surface', 'irradiance', 's_hours', 'efficiency',
-               'mttf']
+               'lifetime']
+
+
+class MaintenanceForm(FlaskForm):
+    avg_distance = f.FloatField(u'Average distance for the intervention in km',
+                                validators=[DataRequired(),
+                                            NumberRange(min=0.0)])
+    avg_fuel_cons = f.FloatField(u'Average fuel needed for 100 km optional',
+                                 validators=[Optional(),
+                                             NumberRange(min=0.0)])
+    conv_factor = f.FloatField(u'Conversion factor from liter of fuel to kWh'
+                               'optional', validators=[Optional(),
+                                                       NumberRange(min=0.0)])
+    n_devices = f.FloatField(u'Number of devices that require maintenance',
+                             validators=[DataRequired(),
+                                         NumberRange(min=1.0)])
+    lifetime = f.FloatField(u'Lifetime of the application',
+                            validators=[DataRequired(),
+                                        NumberRange(min=1.0)])
+    display = ['avg_distance', 'avg_fuel_cons', 'conv_factor', 'n_devices',
+               'lifetime']
 
 

@@ -18,13 +18,13 @@ class Battery:
                   "PbA": 80,
                   "NiMh": 66}
 
-    MTTF = {"Li-Ion": 15,
-            "PbA": 3.85,
-            "NiMh": 7.95}
+    LIFETIME = {"Li-Ion": 15,
+                "PbA": 3.85,
+                "NiMh": 7.95}
 
     def __init__(self):
         self.technology = None
-        self.mttf = 0
+        self.lifetime = 0
         self.efficiency = 0
         self.capacity = 0
         self.e_manufactoring = 0
@@ -41,5 +41,5 @@ class Battery:
     def auto_set_eff(self):
         self.efficiency = self.EFFICIENCY[self.technology]
 
-    def auto_set_mttf(self):
-        self.mttf = self.MTTF[self.technology]
+    def auto_set_lifetime(self):
+        self.lifetime = self.LIFETIME[self.technology]

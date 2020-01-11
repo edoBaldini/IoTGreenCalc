@@ -23,6 +23,10 @@ def create_device():
         float(device['active_mode']),
         float(device['sleep_mode']),
         float(device['voltage']))
+    #device['e_manufactoring'] = Device.e_manuf_dict(device['sensors'],
+    #                                                device['processor'],
+    #                                                device['radio'])
+    #device['disposal'] = Device.disposal_dict(device['boards'])
     session['device'] = device
     return render_template("device.html", form=form, device=session['device'])
 
@@ -37,6 +41,12 @@ def update_device(component_name, component):
         device[component_name] = component_encoded
     device['active_mode'] += component.active_mode
     device['sleep_mode'] += component.sleep_mode
+
+    if component_name == 'boards':
+        device['disposal'] += component.disposal
+    else:
+        device['e_manufactoring'] += component.e_manufactoring
+
     session['device'] = device
 
 
