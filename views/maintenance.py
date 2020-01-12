@@ -18,44 +18,33 @@ def create_maintenance():
             form.populate_obj(maintenance)
             maintenance.update_e_intervention()
             session['maintenance'] = json.dumps(maintenance.__dict__)
-            lifetime_units, e_manuf, disposal = prepare_maintenance()
-            # print('life ', lifetime_units)
-            # print('e manuf: ', e_manuf)
-            # print('disposal ', disposal)
-            maintenance_sched(lifetime_units, e_manuf, disposal,
-                              maintenance.e_intervention,
-                              maintenance.n_devices, maintenance.lifetime)
+
+            dataset = session
+            lifetime_units, e_manuf, disposal = prepare_maintenance(dataset)
             session['maintenance'] = json.dumps(maintenance.__dict__)
+            m_session = maintenance_sched(lifetime_units, e_manuf, disposal,
+                                          maintenance.__dict__)
+            session['maintenance'] = m_session
             return redirect(url_for('home.index'))
     else:
         return render_template("maintenance.html", form=form)
     return redirect(url_for('home.index'))
+
 
 ''' Update the Device removing those sensors that have lifetime smaller than
     application.
     Returns data_for_maint()'''
 
 
-def prepare_maintenance():
-    device = session['device']
-    maintenance = json.loads(session['maintenance'])
+def prepare_maintenance(dataset):
+    device = dataset['device']
+    maintenance = json.loads(dataset['maintenance'])
     spec_sensors = {}
     for key, value in device['sensors'].items():
         value = json.loads(value)
         if value['lifetime'] < maintenance['lifetime']:
             spec_sensors[key] = value
-    return data_for_maint(spec_sensors)
-
-
-''' Updates the energy_manufactoring of the Device removing the energy of those
-    sensors contained in the dictionary spac_sensors'''
-
-
-def update_device_e_manuf(spec_sensors):
-    device = session['device']
-    for key, value in spec_sensors.items():
-        device['e_manufactoring'] -= value['e_manufactoring']
-    return device['e_manufactoring']
+    return data_for_maint(spec_sensors, dataset)
 
 
 ''' Takes as input a dictionary of sensors and returna a triple with:
@@ -65,48 +54,62 @@ def update_device_e_manuf(spec_sensors):
     components are sensors, battery, solar_panel and device'''
 
 
-def data_for_maint(spec_sensors):
-    disposal = []
-    lifetime = []
-    e_manuf = []
+def data_for_maint(spec_sensors, dataset):
+    disposal = {}
+    lifetime = {}
+    e_manuf = {}
     sens_e_manuf = 0
     for key, item in spec_sensors.items():
-        lifetime += [item['lifetime']]
-        e_manuf += [item['e_manufactoring']]
+        lifetime[len(lifetime)] = item['lifetime']
+        e_manuf[len(lifetime)] = item['e_manufactoring']
         sens_e_manuf += item['e_manufactoring']
-    for key, value in session.items():
+    for key, value in dataset.items():
         if key == 'battery' or key == 'solar_panel':
             value = json.loads(value)
-            lifetime += [value['lifetime']]
-            e_manuf += [value['e_manufactoring']]
-            disposal += [value['disposal']]
+            lifetime[key] = value['lifetime']
+            e_manuf[key] = value['e_manufactoring']
+            disposal[key] = value['disposal']
         if key == 'device':
-            e_manuf += [(value['e_manufactoring'] - sens_e_manuf)]
-            disposal += [value['disposal']]
+            e_manuf[key] = (value['e_manufactoring'] - sens_e_manuf)
+            disposal[key] = value['disposal']
             lifetime_dev = 0
-            for code, item in session['device'].items():
+            for code, item in dataset['device'].items():
                 try:
                     lifetime_dev = min(lifetime_dev, item['lifetime'])
                 except (TypeError, KeyError):
                     lifetime_dev = 10000
-            lifetime += [lifetime_dev]
+            lifetime[key] = lifetime_dev
     return (lifetime, e_manuf, disposal)
 
 
-def maintenance_sched(life_units, e_manuf, disposal, e_int,
-                      n_devices, life):
-    print('life units: ',life_units)
+def update_maintenance(n_maintenance, e_manuf, disposal):
+    key_maintenance = {'n_maintenance': n_maintenance,
+                       'e_maintenance': n_maintenance * e_manuf,
+                       'd_maintenance': n_maintenance * disposal}
+    return json.dumps(key_maintenance)
+
+
+def maintenance_sched(life_units, e_manuf, disposal, maintenance_session):
+
+    life = int(maintenance_session['lifetime'])
+    n_devices = maintenance_session['n_devices']
+    e_int = maintenance_session['e_intervention']
+    life_units = [int(item) for key, item in life_units.items()]  # list
+    up_disposal = {}
+    if len(disposal) < (len(e_manuf) - len(up_disposal)):
+        for key, value in e_manuf.items():
+            if key not in disposal:
+                up_disposal[key] = 0
+    for key in disposal:
+        up_disposal[key] = disposal[key]
+
+    print('life units: ', life_units)
     print('e manu: ', e_manuf)
-    print('disposal: ', disposal)
     print('e_int: ', e_int)
     print('n devices: ', n_devices)
     print('life: ', life)
-    life = int(life)
-    life_units = [int(item) for item in life_units]
+    print('disposal: ', up_disposal)
 
-    if(len(disposal) < len(life_units)):
-        while len(disposal) < len(life_units):
-            disposal.insert(0, 0)
     try:
         m = gp.Model()
         m.ModelSense = GRB.MINIMIZE
@@ -114,9 +117,11 @@ def maintenance_sched(life_units, e_manuf, disposal, e_int,
         # Add variables
         x = [[m.addVar(vtype=GRB.BINARY, name="x[%s, %s]" % (i, j))
              for i in range(n_unit)] for j in range(life)]
-        e_manuf_t = [[elem for elem in e_manuf] for i in range(life)]
+        e_manuf_t = [[elem for key, elem in e_manuf.items()]
+                     for i in range(life)]
 
-        disposal_t = [[elem for elem in disposal] for i in range(life)]
+        disposal_t = [[elem for key, elem in up_disposal.items()]
+                      for i in range(life)]
 
         w = [m.addVar(vtype=GRB.BINARY, name="w[%s]" % i) for i in range(life)]
         e_int_t = [e_int for i in range(life)]
@@ -141,38 +146,34 @@ def maintenance_sched(life_units, e_manuf, disposal, e_int,
             for j in range(life):
                 m.addConstr(x[j][i] <= w[j], 'c1')
 
-    #    for i in range(N):
-    #        for j in range(T):
-    #            m.addConstr(x[j][i] == y[j][i], 'c2')
-
         m.optimize()
-
-    #   Print the time in which there will be the maintenances
-    #    for v in m.getVars():
-    #        print('%s %g' % (v.varName, v.x)) if v.x > 0 else ''
 
         for i in range(n_unit):
             r_times = [j for j in range(life) if x[j][i].x >= 0.99]
-            print('component replaced: ', i + 1, ' at times ',
-                  [1 + r_times[k] for k in range(len(r_times))])
-            print("number of replacement ", len(r_times), '\n')
+            key = list(e_manuf.keys())[i]
+            if key == 'battery' or key == 'solar_panel' or key == 'device':
+                maintenance_session[key] = update_maintenance(len(r_times),
+                                                              e_manuf[key],
+                                                              up_disposal[key])
+            else:
+                maintenance_session['sensors'][key] =\
+                    update_maintenance(len(r_times), e_manuf[key],
+                                       up_disposal[key])
 
         maintenance_list = [j + 1 for j in range(life) if w[j].x >= 0.99]
-        print('\nmaintenances: ', maintenance_list)
-        print("number of maintenance ", len(maintenance_list))
+        maintenance_session['n_interventions'] = len(maintenance_list)
+        maintenance_session['tot_e_intervention'] = len(maintenance_list) *\
+            e_int
 
-        print("\nnumber of solutions ", m.SolCount,
-              ' number of Objective functions ', m.NumObj)
+        m.setParam(GRB.Param.ObjNumber, 0)
+        m.setParam(GRB.Param.SolutionNumber, 0)
+        maintenance_session['tot_main_energy'] = (m.ObjNVal / n_devices)
 
-    #   Print the objective's values
-        for i in range(m.NumObj):
-            m.setParam(GRB.Param.ObjNumber, i)
-            print('For the objective function: %d' % i)
-            for e in range(m.SolCount):
-                m.setParam(GRB.Param.SolutionNumber, e)
-                print(' %6g' % m.ObjNVal)
-            print('')
+        m.setParam(GRB.Param.ObjNumber, 1)
+        m.setParam(GRB.Param.SolutionNumber, 0)
+        maintenance_session['tot_main_disposal'] = (m.ObjNVal / n_devices)
 
+        return maintenance_session
     except gp.GurobiError as e:
         print('Error code ' + str(e.errno) + ': ' + str(e))
 

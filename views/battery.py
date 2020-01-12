@@ -15,10 +15,11 @@ def create_battery():
         if form.validate_on_submit():
             new_battery = Battery()
             form.populate_obj(new_battery)
-            if new_battery.efficiency is None:
-                new_battery.auto_set_eff()
-            if new_battery.lifetime is None:
-                new_battery.auto_set_lifetime()
+            new_battery.complete_fields()
+            #if new_battery.efficiency is None:
+            #    new_battery.auto_set_eff()
+            #if new_battery.lifetime is None:
+            #    new_battery.auto_set_lifetime()
             new_battery.compute_disposal()
             new_battery.compute_e_manufactoring()
             new_battery_encoded = json.dumps(new_battery.__dict__)

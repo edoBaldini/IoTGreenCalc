@@ -21,9 +21,10 @@ class Solar_Panel:
     def __init__(self):
         self.technology = None
         self.surface = 0                   # In [m2]
-        self.irradiance = 0            # Daily irradiation [Kwh / m2]
+        self.irradiance = 0            # Daily irradiation [kWh / m2]
         self.s_hours = 0                   # Daily solar hours
         self.lifetime = 43.73
+        self.kwp = 0
 
     def compute_e_manufactoring(self):
         self.e_manufactoring = self.surface *\
@@ -42,3 +43,4 @@ class Solar_Panel:
 
     def auto_set_eff(self):
         self.efficiency = self.EFFICIENCY[self.technology]
+        self.kwp = self.efficiency * self.surface

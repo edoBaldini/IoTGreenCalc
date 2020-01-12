@@ -9,6 +9,13 @@ class Maintenance:
         self.n_devices = 0
         self.lifetime = 0
         self.e_intervention = 0
+        self.battery = {}
+        self.solar_panel = {}
+        self.sensors = {}
+        self.tot_e_intervention = 0
+        self.n_interventions = 0
+        self.tot_main_energy = 0
+        self.tot_main_disposal = 0
 
     def update_e_intervention(self):
         self.e_intervention = (self.avg_distance * self.avg_fuel_cons) / 100 *\

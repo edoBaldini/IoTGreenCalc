@@ -12,44 +12,71 @@
     <p> Flask is Fun </p>
     <form id="form1" action="/" method="POST" enctype="multipart/form-data">
     <select id="mySelect" name = "component">
-      {% if not session['device'] %}
+      {% if not device %}
         <option value="device">Device</option>
       {% endif %}
-      {% if not session['solar_panel'] %}
+      {% if not solar_panel %}
         <option value="solar_panel">Solar Panel</option>
       {% endif %}
-      {% if not session['battery'] %}
+      {% if not battery %}
       <option value="battery">Battery</option>
       {% endif %}
     </select>
     <input type="submit" value="Submit">
     </form>
-    <form id="form2" action="/" method="POST" enctype="multipart/form-data">
-      <p> {% if session['battery'] %}
-        {{session['battery']}}
-        <input type="submit" name="battery" value="delete">
-      {% endif %} </p>
-      <p> {% if session['solar_panel'] %}
-        {{session['solar_panel']}}
-        <input type="submit" name="solar_panel" value="delete">
-      {% endif %} </p>
-      <p> {% if session['device'] %}
-        {{session['device']}}
-        <input type="submit" name="device" value="delete">
-      {% endif %} </p>
-     </form>
 
-    {% if session['device'] and session['battery'] and session['solar_panel'] %}
+    {% if device and battery and solar_panel and  not maintenance%}
       <form id="form3" action="/" method="POST" enctype="multipart/form-data">
         <p>
           <input type="submit" name="maintenance" value="Maintenance">
         </p>
       </form>
     {% endif %}
+    <form id="form2" action="/" method="POST" enctype="multipart/form-data">
+      <p> {% if battery %}
+        Battery:
+        e_manufactoring: {{battery["e_manufactoring"]}} <br>
+        disposal: {{battery["disposal"]}}
+        <input type="submit" name="battery" value="delete">
+      {% endif %} </p>
+      <p> {% if solar_panel %}
+        Solar Panel
+        e_manufactoring: {{solar_panel["e_manufactoring"]}} <br>
+        disposal: {{solar_panel["disposal"]}}
+        <input type="submit" name="solar_panel" value="delete">
+      {% endif %} </p>
+      <p> {% if device %}
+        Device
+        e_manufactoring: {{device["e_manufactoring"]}} <br>
+        disposal: {{device["disposal"]}} <br>
+        daily_e_required; {{device['daily_e_required']}}
+        <input type="submit" name="device" value="delete">
+      {% endif %} </p>
+      <p> {% if maintenance %}
+        Maintenance
+        e_manufactoring {{maintenance['tot_main_energy']}} <br>
+        disposal {{maintenance['tot_main_disposal']}}<br>
+        number of interventions {{maintenance['n_interventions']}}
+        <input type="submit" name="maintenance" value="delete">
+      {% endif %} </p>
+     </form>
+     {% if g_main %}
+        Greener proposal:<br>
+        Battery:
+        e_manufactoring: {{g_battery["e_manufactoring"]}} <br>
+        disposal: {{g_battery["disposal"]}}<br>
+        capacity [mWh]: {{g_battery["capacity"]}}<br><br>
 
-    {% if session['maintenance'] %}
-      {{session['maintenance']}}
-    {% endif %}
+        Solar Panel:
+        e_manufactoring: {{g_sp["e_manufactoring"]}}<br>
+        disposal: {{g_sp["disposal"]}}<br>
+        surface:  {{g_sp["surface"]}}<br><br>
+
+        Maintenance:
+        e_manufactoring {{g_main["tot_main_energy"]}}<br>
+        disposal  {{g_main["tot_main_disposal"]}}<br>
+        number of interventions {{g_main["n_interventions"]}}
+      {% endif %}
     {% endblock %}
 
   </body>
