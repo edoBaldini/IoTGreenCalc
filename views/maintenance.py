@@ -27,7 +27,7 @@ def create_maintenance():
             session['maintenance'] = m_session
             return redirect(url_for('home.index'))
     else:
-        return render_template("maintenance.html", form=form)
+        return render_template("element.html", form=form)
     return redirect(url_for('home.index'))
 
 
@@ -94,6 +94,7 @@ def maintenance_sched(life_units, e_manuf, disposal, maintenance_session):
     life = int(maintenance_session['lifetime'])
     n_devices = maintenance_session['n_devices']
     e_int = maintenance_session['e_intervention']
+    print("lifeunits, ", life_units)
     life_units = [int(item) for key, item in life_units.items()]  # list
     up_disposal = {}
     if len(disposal) < (len(e_manuf) - len(up_disposal)):

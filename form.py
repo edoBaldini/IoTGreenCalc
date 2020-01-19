@@ -5,7 +5,7 @@ from wtforms.validators import (DataRequired, InputRequired, NumberRange,
 
 
 class DutyCycleForm(FlaskForm):
-    duty_cycle = f.FloatField(u'Duty cycle of the device',
+    duty_cycle = f.FloatField(u'Duty cycle of the device (%)',
                               validators=[DataRequired(),
                                           NumberRange(min=0.0, max=100.0)])
     voltage = f.FloatField(u'Set the voltage of the device',
@@ -77,7 +77,7 @@ class SolarForm(FlaskForm):
     efficiency = f.FloatField(u'Efficiecny, optional',
                               validators=[Optional(),
                                           NumberRange(min=0.0, max=100.0)])
-    lifetime = f.FloatField(u'estimated lifetime, not required',
+    lifetime = f.FloatField(u'estimated lifetime, optional',
                             validators=[Optional()])
 
     display = ['technology', 'surface', 'irradiance', 's_hours', 'efficiency',
@@ -88,12 +88,12 @@ class MaintenanceForm(FlaskForm):
     avg_distance = f.FloatField(u'Average distance for the intervention in km',
                                 validators=[DataRequired(),
                                             NumberRange(min=0.0)])
-    avg_fuel_cons = f.FloatField(u'Average fuel needed for 100 km optional',
-                                 validators=[Optional(),
+    avg_fuel_cons = f.FloatField(u'Average fuel needed for 100 km',
+                                 validators=[DataRequired(),
                                              NumberRange(min=0.0)])
-    conv_factor = f.FloatField(u'Conversion factor from liter of fuel to kWh'
-                               'optional', validators=[Optional(),
-                                                       NumberRange(min=0.0)])
+    conv_factor = f.FloatField(u'Conversion factor from liter of fuel to kWh',
+                               validators=[DataRequired(),
+                                           NumberRange(min=0.0)])
     n_devices = f.FloatField(u'Number of devices that require maintenance',
                              validators=[DataRequired(),
                                          NumberRange(min=1.0)])

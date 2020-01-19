@@ -40,8 +40,8 @@ class Battery:
         self.disposal = self.weight * self.DISPOSAL_KG[self.technology]
 
     def complete_fields(self):
-        self.auto_set_eff() if self.efficiency == 0 else self.efficiency
-        self.auto_set_lifetime() if self.lifetime == 0 else self.lifetime
+        self.auto_set_eff() if self.efficiency is None else self.efficiency
+        self.auto_set_lifetime() if self.lifetime is None else self.lifetime
         self.auto_set_density() if self.density == 0 else self.density
 
     def auto_set_eff(self):

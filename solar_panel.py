@@ -17,13 +17,14 @@ class Solar_Panel:
                   "CdTe": 10.90}
 
     WH2MJ = 3600 * 10 ** (- 6)                   # CONVERSION FROM WH TO MJ
+    LIFETIME = 43.73
 
     def __init__(self):
         self.technology = None
         self.surface = 0                   # In [m2]
         self.irradiance = 0            # Daily irradiation [kWh / m2]
         self.s_hours = 0                   # Daily solar hours
-        self.lifetime = 43.73
+        self.lifetime = 0
         self.kwp = 0
 
     def compute_e_manufactoring(self):
@@ -44,3 +45,10 @@ class Solar_Panel:
     def auto_set_eff(self):
         self.efficiency = self.EFFICIENCY[self.technology]
         self.kwp = self.efficiency * self.surface
+
+    def auto_set_lifetime(self):
+        self.lifetime = self.LIFETIME
+
+    def complete_fields(self):
+        self.auto_set_eff() if self.efficiency is None else self.efficiency
+        self.auto_set_lifetime() if self.lifetime is None else self.lifetime

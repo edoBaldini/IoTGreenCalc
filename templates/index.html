@@ -1,83 +1,126 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
-    <title>Flask Tutorial</title>
+  
+    <title>IoT model</title>
+
   </head>
-  <body>
-    {% extends "header.html" %}
-    {% block content %}
+ <body>
+ {% extends "header.html" %}
+ {% block content %}
+  <div class="h-100">
+    <div class="masthead">
+      <div class="masthead-bg"></div>
+      <div class="container h-100">
+      <div class="row h-100">
+        <div class="col-12 my-auto">
+          <div class="masthead-content text-white py-5 py-md-0">
+            <h1 class="mb-3">Your model!</h1>
+            <p class="mb-5">Select a component</p>
+            <div class="form-holder">
+              <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
+                <select class="form-control" id="mySelect" name = "component" multiple>
+                  {% if not device %}
+                    <option class="option" value="device">Device</option>
+                  {% else %}
+                    <option class="option" value="">Device Completed</option>
+                  {% endif %}
+                  {% if not solar_panel %}
+                    <option class="option" value="solar_panel">Solar Panel</option>
+                  {% else %}
+                    <option class="option" value="">Solar Panel Completed</option>
+                  {% endif %}
+                  {% if not battery %}
+                    <option class="option" value="battery">Battery</option>
+                  {% else %}
+                    <option class="option" value="">Battery Completed</option>
+                  {% endif %}
+                </select>
+                <div><br></div>
+                <div class="input-group-append">
+                  <input type="submit" class="btn btn-secondary"value="Submit">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
+  <div class="h-100">
+    <div class="masthead masthead-2">
+      <div class="masthead-bg"></div>
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-12 my-auto" style="position:absolute">
+            <div class="masthead-content text-white py-5 py-md-0">
+              <h1 class="mb-3">Your model!</h1>
+              <div class="form-holder">
+                <h2> Your solution </h>
+                <div class="form-control"> 
+                {% if device and battery and solar_panel and  not maintenance%} 
+                  <form id="form3" action="/" method="POST" enctype="multipart/form-data"> 
+                    <p> 
+                      <input type="submit" name="maintenance" value="Maintenance"> 
+                    </p> 
+                  </form> 
+                {% endif %} 
+                <form id="form2" action="/" method="POST" enctype="multipart/form-data"> 
+                  <p> {% if battery %} 
+                    Battery: 
+                    e_manufactoring: {{battery["e_manufactoring"]}} <br> 
+                    disposal: {{battery["disposal"]}} 
+                    <input type="submit" name="battery" value="delete"> 
+                  {% endif %} </p> 
+                  <p> {% if solar_panel %} 
+                    Solar Panel 
+                    e_manufactoring: {{solar_panel["e_manufactoring"]}} <br> 
+                    disposal: {{solar_panel["disposal"]}} 
+                    <input type="submit" name="solar_panel" value="delete"> 
+                  {% endif %} </p> 
+                  <p> {% if device %} 
+                    Device 
+                    e_manufactoring: {{device["e_manufactoring"]}} <br> 
+                    disposal: {{device["disposal"]}} <br> 
+                    daily_e_required; {{device['daily_e_required']}} 
+                    <input type="submit" name="device" value="delete"> 
+                  {% endif %} </p> 
+                  <p> {% if maintenance %} 
+                    Maintenance 
+                    e_manufactoring {{maintenance['tot_main_energy']}} <br> 
+                    disposal {{maintenance['tot_main_disposal']}}<br> 
+                    number of interventions {{maintenance['n_interventions']}} 
+                    <input type="submit" name="maintenance" value="delete"> 
+                  {% endif %} </p> 
+                 </form> 
+                 {% if g_main %} 
+                    Greener proposal:<br> 
+                    Battery: 
+                    e_manufactoring: {{g_battery["e_manufactoring"]}} <br> 
+                    disposal: {{g_battery["disposal"]}}<br> 
+                    capacity [mWh]: {{g_battery["capacity"]}}<br><br> 
+            
+                    Solar Panel: 
+                    e_manufactoring: {{g_sp["e_manufactoring"]}}<br> 
+                    disposal: {{g_sp["disposal"]}}<br> 
+                    surface:  {{g_sp["surface"]}}<br><br> 
+            
+                    Maintenance: 
+                    e_manufactoring {{g_main["tot_main_energy"]}}<br> 
+                    disposal  {{g_main["tot_main_disposal"]}}<br> 
+                    number of interventions {{g_main["n_interventions"]}} 
+                  {% endif %}                 </div>
+              </div>    
+            </div>    
+          </div>    
+        </div>    
+      </div>    
+    </div>
+  </div>
 
-    <h1> My First Try Using Flask </h1>
-    <p> Flask is Fun </p>
-    <form id="form1" action="/" method="POST" enctype="multipart/form-data">
-    <select id="mySelect" name = "component">
-      {% if not device %}
-        <option value="device">Device</option>
-      {% endif %}
-      {% if not solar_panel %}
-        <option value="solar_panel">Solar Panel</option>
-      {% endif %}
-      {% if not battery %}
-      <option value="battery">Battery</option>
-      {% endif %}
-    </select>
-    <input type="submit" value="Submit">
-    </form>
 
-    {% if device and battery and solar_panel and  not maintenance%}
-      <form id="form3" action="/" method="POST" enctype="multipart/form-data">
-        <p>
-          <input type="submit" name="maintenance" value="Maintenance">
-        </p>
-      </form>
-    {% endif %}
-    <form id="form2" action="/" method="POST" enctype="multipart/form-data">
-      <p> {% if battery %}
-        Battery:
-        e_manufactoring: {{battery["e_manufactoring"]}} <br>
-        disposal: {{battery["disposal"]}}
-        <input type="submit" name="battery" value="delete">
-      {% endif %} </p>
-      <p> {% if solar_panel %}
-        Solar Panel
-        e_manufactoring: {{solar_panel["e_manufactoring"]}} <br>
-        disposal: {{solar_panel["disposal"]}}
-        <input type="submit" name="solar_panel" value="delete">
-      {% endif %} </p>
-      <p> {% if device %}
-        Device
-        e_manufactoring: {{device["e_manufactoring"]}} <br>
-        disposal: {{device["disposal"]}} <br>
-        daily_e_required; {{device['daily_e_required']}}
-        <input type="submit" name="device" value="delete">
-      {% endif %} </p>
-      <p> {% if maintenance %}
-        Maintenance
-        e_manufactoring {{maintenance['tot_main_energy']}} <br>
-        disposal {{maintenance['tot_main_disposal']}}<br>
-        number of interventions {{maintenance['n_interventions']}}
-        <input type="submit" name="maintenance" value="delete">
-      {% endif %} </p>
-     </form>
-     {% if g_main %}
-        Greener proposal:<br>
-        Battery:
-        e_manufactoring: {{g_battery["e_manufactoring"]}} <br>
-        disposal: {{g_battery["disposal"]}}<br>
-        capacity [mWh]: {{g_battery["capacity"]}}<br><br>
-
-        Solar Panel:
-        e_manufactoring: {{g_sp["e_manufactoring"]}}<br>
-        disposal: {{g_sp["disposal"]}}<br>
-        surface:  {{g_sp["surface"]}}<br><br>
-
-        Maintenance:
-        e_manufactoring {{g_main["tot_main_energy"]}}<br>
-        disposal  {{g_main["tot_main_disposal"]}}<br>
-        number of interventions {{g_main["n_interventions"]}}
-      {% endif %}
-    {% endblock %}
+  {% endblock %}
 
   </body>
 </html>

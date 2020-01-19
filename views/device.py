@@ -63,7 +63,7 @@ def sensor():
                 return redirect(url_for('device.create_device'))
     else:
         return redirect(url_for('.index'))
-    return render_template("sensor.html", form=form)
+    return render_template("element.html", form=form)
 
 
 @device.route("/board", methods=["GET", "POST"])
@@ -76,7 +76,7 @@ def board():
             new_element.compute_disposal()
             update_device('boards', new_element)
             return redirect(url_for('device.create_device'))
-    return render_template("board.html", form=form)
+    return render_template("element.html", form=form)
 
 
 @device.route("/processor", methods=["GET", "POST"])
@@ -89,7 +89,7 @@ def processor():
             new_element.compute_e_manufactoring()
             update_device('processor', new_element)
             return redirect(url_for('device.create_device'))
-    return render_template("processor.html", form=form)
+    return render_template("element.html", form=form)
 
 
 @device.route("/radio", methods=["GET", "POST"])
@@ -102,5 +102,5 @@ def radio():
             new_element.compute_e_manufactoring()
             update_device('radio', new_element)
             return redirect(url_for('device.create_device'))
-    return render_template("radio.html", form=form)
+    return render_template("element.html", form=form)
 

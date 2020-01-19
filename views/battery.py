@@ -16,13 +16,9 @@ def create_battery():
             new_battery = Battery()
             form.populate_obj(new_battery)
             new_battery.complete_fields()
-            #if new_battery.efficiency is None:
-            #    new_battery.auto_set_eff()
-            #if new_battery.lifetime is None:
-            #    new_battery.auto_set_lifetime()
             new_battery.compute_disposal()
             new_battery.compute_e_manufactoring()
             new_battery_encoded = json.dumps(new_battery.__dict__)
             session['battery'] = new_battery_encoded
             return redirect(url_for('home.index'))
-    return render_template("battery.html", form=form)
+    return render_template("element.html", form=form)
