@@ -202,6 +202,7 @@ body video {
 }*/
 
 
+
 .form-row {
   display: flex;
   margin-bottom: 29px;
@@ -265,4 +266,7 @@ select.form-control {
   box-shadow: 3px 3px 10px rgba(119, 119, 119, 0.5);
 }
 
+.menu-items-left{
+  left: 5%;
+}
 

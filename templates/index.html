@@ -15,14 +15,42 @@
       <div class="container h-100">
       <div class="row h-100">
         <div class="leftbox">
-          <nav>
-            <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
-              <a id="Device" class="option" href="{{url_for('device.create_device')}}">Device</a> <br />
-              <a id="Solar Panel" class="option">Solar Panel</a><br />
-              <a id="Battery" class="option">Battery</a><br />
-              <a id="Maintenance" class="option">Maintenance</a><br />
-            </form>
-          </nav>
+        </div>
+        <div class="form-holder my-auto col-12 menu-items-left row">
+          <div class="col-sm-2 align-self-center">
+            <nav>
+              <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
+                <a id="Device" class="option" href="{{url_for('device.create_device')}}">Device</a> <br />
+                <a id="Solar Panel" class="option" href="{{url_for('solar_panel.create_solar_panel')}}">Solar Panel</a><br />
+                <a id="Battery" class="option" href="{{url_for('battery.create_battery')}}">Battery</a><br />
+                {% if device and battery and solar_panel and  not maintenance%}
+                  <a id="Maintenance" class="option" href="{{url_for('maintenance.create_maintenance')}}">Maintenance</a><br />
+                {% else %}
+                  <a id="Maintenance" class="option">Maintenance</a><br />
+                {% endif %} 
+              </form>
+            </nav>
+          </div>
+        <div class = "col-sm-10 align-self-center">
+            {% if form %}
+              <form class="form-group" action="" method="POST">
+                {{ form.hidden_tag() }}
+                <h2 class="formTitle">This is an element</h2>
+                <fieldset>
+                  {% for field in form.display %}
+                    <label for="{{ field }}" >{{ form[field].label }}</label>
+                    {{ form[field](class_="form-control col-md-6")}}
+                    {% if form[field].errors %}
+                      {% for e in form[field].errors %}
+                        <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
+                      {% endfor %}
+                    {% endif %}
+                  {% endfor %}      
+                </fieldset>
+                <button class="button buttonJeans" type="submit">Submit</button>
+              </form>
+            {% endif %}
+          </div>
         </div>
         <!-- <div class="col-12 my-auto"> -->
         <!--   <div class="masthead-content text-white py-5 py-md-0"> -->

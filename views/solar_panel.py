@@ -22,4 +22,9 @@ def create_solar_panel():
             solar_panel_encoded = json.dumps(solar_panel.__dict__)
             session['solar_panel'] = solar_panel_encoded
             return redirect(url_for('home.index'))
-    return render_template("element.html", form=form)
+    elif session['solar_panel']:
+        solar_panel = json.loads(session['solar_panel'])
+        for e, key in zip(form, solar_panel):
+            print(key, e)
+            e.data = solar_panel[key]
+    return render_template("index.html", form=form)

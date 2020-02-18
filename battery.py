@@ -28,8 +28,8 @@ class Battery:
         self.efficiency = 0
         self.density = 0
         self.capacity = 0
-        self.e_manufactoring = 0
         self.weight = 0
+        self.e_manufactoring = 0
         self.disposal = 0
 
     def compute_e_manufactoring(self):

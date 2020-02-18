@@ -7,7 +7,7 @@ import json
 battery = Blueprint('battery', __name__)
 
 
-@battery.route("/battery", methods=["GET", "POST"])
+@battery.route("/#battery", methods=["GET", "POST"])
 def create_battery():
     form = BatteryForm()
     if request.method == 'POST':
@@ -21,4 +21,9 @@ def create_battery():
             new_battery_encoded = json.dumps(new_battery.__dict__)
             session['battery'] = new_battery_encoded
             return redirect(url_for('home.index'))
-    return render_template("element.html", form=form)
+    elif session['battery']:
+        battery = json.loads(session['battery'])
+        for e, key in zip(form, battery):
+            e.data = battery[key]
+    return render_template("index.html", form=form, device=None, battery=None,
+                           solar_panel=None, maintenance=None)

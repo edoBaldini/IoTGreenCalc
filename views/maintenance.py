@@ -27,7 +27,7 @@ def create_maintenance():
             session['maintenance'] = m_session
             return redirect(url_for('home.index'))
     else:
-        return render_template("element.html", form=form)
+        return render_template("index.html", form=form)
     return redirect(url_for('home.index'))
 
 
@@ -115,9 +115,11 @@ def maintenance_sched(life_units, e_manuf, disposal, maintenance_session):
         m = gp.Model()
         m.ModelSense = GRB.MINIMIZE
         n_unit = len(life_units)
+
         # Add variables
         x = [[m.addVar(vtype=GRB.BINARY, name="x[%s, %s]" % (i, j))
              for i in range(n_unit)] for j in range(life)]
+
         e_manuf_t = [[elem for key, elem in e_manuf.items()]
                      for i in range(life)]
 
@@ -125,6 +127,7 @@ def maintenance_sched(life_units, e_manuf, disposal, maintenance_session):
                       for i in range(life)]
 
         w = [m.addVar(vtype=GRB.BINARY, name="w[%s]" % i) for i in range(life)]
+
         e_int_t = [e_int for i in range(life)]
 
         # Objective function
