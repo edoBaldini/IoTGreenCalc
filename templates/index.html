@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-  
+    <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css'><link rel="stylesheet" href="../static/css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
     <title>IoT model</title>
 
   </head>
@@ -13,37 +14,47 @@
       <div class="masthead-bg"></div>
       <div class="container h-100">
       <div class="row h-100">
-        <div class="col-12 my-auto">
-          <div class="masthead-content text-white py-5 py-md-0">
-            <h1 class="mb-3">Your model!</h1>
-            <p class="mb-5">Select a component</p>
-            <div class="form-holder">
-              <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
-                <select class="form-control" id="mySelect" name = "component" multiple>
-                  {% if not device %}
-                    <option class="option" value="device">Device</option>
-                  {% else %}
-                    <option class="option" value="">Device Completed</option>
-                  {% endif %}
-                  {% if not solar_panel %}
-                    <option class="option" value="solar_panel">Solar Panel</option>
-                  {% else %}
-                    <option class="option" value="">Solar Panel Completed</option>
-                  {% endif %}
-                  {% if not battery %}
-                    <option class="option" value="battery">Battery</option>
-                  {% else %}
-                    <option class="option" value="">Battery Completed</option>
-                  {% endif %}
-                </select>
-                <div><br></div>
-                <div class="input-group-append">
-                  <input type="submit" class="btn btn-secondary"value="Submit">
-                </div>
-              </form>
-            </div>
-          </div>
+        <div class="leftbox">
+          <nav>
+            <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
+              <a id="Device" class="option" href="{{url_for('device.create_device')}}">Device</a> <br />
+              <a id="Solar Panel" class="option">Solar Panel</a><br />
+              <a id="Battery" class="option">Battery</a><br />
+              <a id="Maintenance" class="option">Maintenance</a><br />
+            </form>
+          </nav>
         </div>
+        <!-- <div class="col-12 my-auto"> -->
+        <!--   <div class="masthead-content text-white py-5 py-md-0"> -->
+        <!--     <h1 class="mb-3">Your model!</h1> -->
+        <!--     <p class="mb-5">Select a component</p> -->
+        <!--     <div class="form-holder"> -->
+        <!--       <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data"> -->
+        <!--         <select class="form-control" id="mySelect" name = "component" multiple> -->
+        <!--           {% if not device %} -->
+        <!--             <option class="option" value="device">Device</option> -->
+        <!--           {% else %} -->
+        <!--             <option class="option" value="">Device Completed</option> -->
+        <!--           {% endif %} -->
+        <!--           {% if not solar_panel %} -->
+        <!--             <option class="option" value="solar_panel">Solar Panel</option> -->
+        <!--           {% else %} -->
+        <!--             <option class="option" value="">Solar Panel Completed</option> -->
+        <!--           {% endif %} -->
+        <!--           {% if not battery %} -->
+        <!--             <option class="option" value="battery">Battery</option> -->
+        <!--           {% else %} -->
+        <!--             <option class="option" value="">Battery Completed</option> -->
+        <!--           {% endif %} -->
+        <!--         </select> -->
+        <!--         <div><br></div> -->
+        <!--         <div class="input-group-append"> -->
+        <!--           <input type="submit" class="btn btn-secondary"value="Submit"> -->
+        <!--         </div> -->
+        <!--       </form> -->
+        <!--     </div> -->
+        <!--   </div> -->
+        <!-- </div> -->
       </div>
       </div>
     </div>

@@ -14,7 +14,7 @@ def index():
     if len(session) == 0:
         session['battery'] = None
         session['solar_panel'] = None
-        session['device'] = None
+        session['device'] = Device().__dict__
         session['maintenance'] = None
 
     if request.method == 'POST':
