@@ -31,14 +31,15 @@ def create_device():
     #                                                device['radio'])
     #device['disposal'] = Device.disposal_dict(device['boards'])
     session['device'] = device
-    return render_template("index.html", device_bool=1)
+    return render_template("index.html", title_form='Device', device_bool=1)
 
 
-def update_device(component_name, component):
+def update_device(component_name, component, index_component=-1):
     device = session['device']
     component_encoded = json.dumps(component.__dict__)
     if component_name == 'sensors' or component_name == 'boards':
-        index_component = str(len(device[component_name]))
+        index_component = str(len(device[component_name])) + 1 if\
+            index_component == -1 else str(index_component)
         device[component_name][index_component] = component_encoded
     else:
         device[component_name] = component_encoded
@@ -72,14 +73,38 @@ def sensor():
 @device.route("/#board", methods=["GET", "POST"])
 def board():
     form = BoardForm()
+    boards = session['device']['boards']
+    forms = [BoardForm() for i in boards]
+    r_form = forms if len(boards) > 0 else [form]
     if request.method == 'POST':
         if form.validate_on_submit():
-            new_element = Board()
-            form.populate_obj(new_element)
-            new_element.compute_disposal()
-            update_device('boards', new_element)
+            if request.form.get('delete', None):
+                session.modified = True
+                del session['device']['boards'][request.form.get('delete', None)]
+            else:
+                new_element = Board()
+                form.populate_obj(new_element)
+                new_element.compute_disposal()
+                index = int(request.form.get('submit')) if\
+                    request.form.get('submit') else -1
+                update_device('boards', new_element, index)
             return redirect(url_for('device.create_device'))
-    return render_template("element.html", form=form)
+
+        if request.form.get('add', None) == 'add':
+            board = Board()
+            board_encoded = json.dumps(board.__dict__)
+            index = len(session['device']['boards'])
+            session.modified = True
+            session['device']['boards'][str(index)] = board_encoded
+            return redirect(url_for('device.board'))
+
+    elif session['device']['boards']:
+        for f, p_m in zip(forms, boards):
+            board = json.loads(boards[p_m])
+            for e, key in zip(f, board):
+                e.data = board[key]
+    return render_template("index.html", device_bool=1, title_form='Boards',
+                           form=r_form)
 
 
 @device.route("/#processor", methods=["GET", "POST"])
@@ -98,7 +123,8 @@ def processor():
         processor = json.loads(session['device']['processor'])
         for e, key in zip(form, processor):
             e.data = processor[key]
-    return render_template("index.html", device_bool=1, form=form)
+    return render_template("index.html", device_bool=1, title_form='Processor',
+                           form=form)
 
 
 @device.route("/#radio", methods=["GET", "POST"])
@@ -115,9 +141,9 @@ def radio():
     elif session['device']['radio']:
         radio = json.loads(session['device']['radio'])
         for e, key in zip(form, radio):
-            print(e, key)
             e.data = radio[key]
-    return render_template("index.html", device_bool=1, form=form)
+    return render_template("index.html", device_bool=1, title_form='Radio',
+                           form=form)
 
 
 @device.route("/#configuration", methods=["GET", "POST"])
@@ -136,7 +162,7 @@ def configuration():
         device = session['device']
         form.duty_cycle.data = device['duty_cycle']
         form.voltage.data = device['voltage']
-    return render_template("index.html", device_bool=1, form=form)
+    return render_template("index.html", device_bool=1, title_form='Configuration', form=form)
 
 
 

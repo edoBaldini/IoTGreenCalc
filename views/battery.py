@@ -25,5 +25,5 @@ def create_battery():
         battery = json.loads(session['battery'])
         for e, key in zip(form, battery):
             e.data = battery[key]
-    return render_template("index.html", form=form, device=None, battery=None,
+    return render_template("index.html", form=form, title_form='Battery', device=None, battery=None,
                            solar_panel=None, maintenance=None)

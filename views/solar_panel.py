@@ -27,4 +27,4 @@ def create_solar_panel():
         for e, key in zip(form, solar_panel):
             print(key, e)
             e.data = solar_panel[key]
-    return render_template("index.html", form=form)
+    return render_template("index.html", title_form='Solar Panel', form=form)

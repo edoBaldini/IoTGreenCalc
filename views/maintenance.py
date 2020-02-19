@@ -27,7 +27,7 @@ def create_maintenance():
             session['maintenance'] = m_session
             return redirect(url_for('home.index'))
     else:
-        return render_template("index.html", form=form)
+        return render_template("index.html", title_form='Maintenance', form=form)
     return redirect(url_for('home.index'))
 
 

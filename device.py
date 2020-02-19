@@ -50,11 +50,12 @@ class Component:
 
 class Board(Component):
 
-    DISPOSAL_KG = 0.38
     weight = 0
     active_mode = 0
     sleep_mode = 0
     disposal = None
+    DISPOSAL_KG = 0.38
+
 
     def compute_disposal(self):
         self.DISPOSAL_KG
