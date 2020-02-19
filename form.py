@@ -19,14 +19,15 @@ class ElementForm(FlaskForm):
                                validators=[InputRequired()])
     sleep_mode = f.FloatField(u'Energy in sleep mode',
                               validators=[InputRequired()])
-    area = f.FloatField(u'Area of the element in cm2',
-                        validators=[DataRequired()])
     lifetime = f.FloatField(u'Estimated lifetime',
                             validators=[DataRequired()])
+    area = f.FloatField(u'Area of the element in cm2',
+                        validators=[DataRequired()])
+
     display = ['active_mode',
                'sleep_mode',
-               'area',
-               'lifetime']
+               'lifetime',
+               'area']
 
 
 class BoardForm(FlaskForm):

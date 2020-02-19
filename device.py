@@ -69,12 +69,12 @@ class Board(Component):
 
 class Element(Component):
 
-    MANUFACTURING_ENERGY = 5.74
     lifetime = 0
     area = 0
     active_mode = 0
     sleep_mode = 0
     e_manufactoring = None
+    MANUFACTURING_ENERGY = 5.74
 
     def compute_e_manufactoring(self):
         self.MANUFACTURING_ENERGY  # = 5.74 needed to put this data in __dict__

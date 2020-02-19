@@ -265,8 +265,27 @@ select.form-control {
   background: #7ED386;
   box-shadow: 3px 3px 10px rgba(119, 119, 119, 0.5);
 }
+.nav_left {
+  padding-top: 24rem;
+  background: #7ED386;
+  box-shadow: 3px 3px 10px rgba(119, 119, 119, 0.5);
+
+}
+.leftbox2 {
+  padding-top: 24rem;
+  float: left;
+  top: -5%;
+  left: 5%;
+  position: absolute;
+  width: 30%;
+  height: 110%;
+  background: #7ED386;
+  box-shadow: 3px 3px 10px rgba(119, 119, 119, 0.5);
+}
 
 .menu-items-left{
   left: 5%;
 }
-
+.leftbox-color{
+  opacity:90%;
+}

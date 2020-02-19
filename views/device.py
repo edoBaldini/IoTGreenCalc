@@ -7,28 +7,31 @@ import json
 device = Blueprint('device', __name__)
 
 
-@device.route("/device", methods=["GET", "POST"])
+@device.route("/#device", methods=["GET", "POST"])
 def create_device():
-    form = DutyCycleForm()
     device = session['device']
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            duty_cycle = request.form['duty_cycle']
-            voltage = request.form['voltage']
-            device['duty_cycle'] = duty_cycle
-            device['voltage'] = voltage
-
-    device['daily_e_required'] = Device.compute_e_required(
-        float(device['duty_cycle']),
-        float(device['active_mode']),
-        float(device['sleep_mode']),
-        float(device['voltage']))
+    # if request.method == 'POST':
+    #     if form.validate_on_submit():
+    #         duty_cycle = request.form['duty_cycle']
+    #         voltage = request.form['voltage']
+    #         device['duty_cycle'] = duty_cycle
+    #         device['voltage'] = voltage
+    if device:
+        device['daily_e_required'] = Device.compute_e_required(
+            float(device['duty_cycle']),
+            float(device['active_mode']),
+            float(device['sleep_mode']),
+            float(device['voltage']))
+    else:
+        new_device = Device()
+        new_device = json.dumps(new_device.__dict__)
+        session['device'] = new_device
     #device['e_manufactoring'] = Device.e_manuf_dict(device['sensors'],
     #                                                device['processor'],
     #                                                device['radio'])
     #device['disposal'] = Device.disposal_dict(device['boards'])
     session['device'] = device
-    return render_template("device.html", form=form, device=session['device'])
+    return render_template("index.html", device_bool=1)
 
 
 def update_device(component_name, component):
@@ -50,7 +53,7 @@ def update_device(component_name, component):
     session['device'] = device
 
 
-@device.route("/sensor", methods=["GET", "POST"])
+@device.route("/#sensor", methods=["GET", "POST"])
 def sensor():
     if 'device' in session:
         form = ElementForm()
@@ -66,7 +69,7 @@ def sensor():
     return render_template("element.html", form=form)
 
 
-@device.route("/board", methods=["GET", "POST"])
+@device.route("/#board", methods=["GET", "POST"])
 def board():
     form = BoardForm()
     if request.method == 'POST':
@@ -79,20 +82,26 @@ def board():
     return render_template("element.html", form=form)
 
 
-@device.route("/processor", methods=["GET", "POST"])
+@device.route("/#processor", methods=["GET", "POST"])
 def processor():
     form = ElementForm()
     if request.method == 'POST':
+
         if form.validate_on_submit():
             new_element = Element()
             form.populate_obj(new_element)
             new_element.compute_e_manufactoring()
             update_device('processor', new_element)
             return redirect(url_for('device.create_device'))
-    return render_template("element.html", form=form)
+
+    elif session['device']['processor']:
+        processor = json.loads(session['device']['processor'])
+        for e, key in zip(form, processor):
+            e.data = processor[key]
+    return render_template("index.html", device_bool=1, form=form)
 
 
-@device.route("/radio", methods=["GET", "POST"])
+@device.route("/#radio", methods=["GET", "POST"])
 def radio():
     form = ElementForm()
     if request.method == 'POST':
@@ -102,5 +111,33 @@ def radio():
             new_element.compute_e_manufactoring()
             update_device('radio', new_element)
             return redirect(url_for('device.create_device'))
-    return render_template("element.html", form=form)
+
+    elif session['device']['radio']:
+        radio = json.loads(session['device']['radio'])
+        for e, key in zip(form, radio):
+            print(e, key)
+            e.data = radio[key]
+    return render_template("index.html", device_bool=1, form=form)
+
+
+@device.route("/#configuration", methods=["GET", "POST"])
+def configuration():
+    form = DutyCycleForm()
+    if request.method == 'POST':
+        device = session['device']
+        if form.validate_on_submit():
+            duty_cycle = request.form['duty_cycle']
+            voltage = request.form['voltage']
+            session.modified = True
+            session['device']['duty_cycle'] = duty_cycle
+            session['device']['voltage'] = voltage
+            return redirect(url_for('device.create_device'))
+    elif session['device']:
+        device = session['device']
+        form.duty_cycle.data = device['duty_cycle']
+        form.voltage.data = device['voltage']
+    return render_template("index.html", device_bool=1, form=form)
+
+
+
 

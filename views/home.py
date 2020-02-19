@@ -8,7 +8,6 @@ import json
 from .maintenance import prepare_maintenance, maintenance_sched
 home = Blueprint('home', __name__)
 
-
 @home.route('/', methods=["GET", "POST"])
 def index():
     if len(session) == 0:
