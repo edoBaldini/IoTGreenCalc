@@ -25,9 +25,9 @@
       <div class="container h-100">
       <div class="h-100 row col-12">
         <div class="form-holder my-auto col-12 menu-items-left row h-100">
-          <div class="h-100 col-sm-2 nav_left"> 
+          <div class="h-100 col-sm-2"> 
             <div class="align-self-center my-auto">
-              <nav class="navbar">
+              <nav class="navbar small-rounded-nav" >
                 <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
                   <ul class="navbar-nav">
                     <li class="navbar-item">
@@ -56,9 +56,9 @@ Back</a> <br />
             </div>
           </div>
           {% if device_bool %}
-          <div class="h-100 col-sm-2 nav_left leftbox-color"> 
+          <div class="h-100 col-sm-2 leftbox-color"> 
             <div class="align-self-center my-auto">
-                <nav class="navbar">
+                <nav class="navbar small-rounded-nav" >
                   <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
                     <ul class="navbar-nav">
                       <li class="navbar-item">
@@ -163,21 +163,21 @@ Back</a> <br />
                 <div id="accordion">
                 {% for f in form %}
                   {% set counter = loop.index0 %}
-                    <div class="card">
+                    <div class="card card-color">
                       <div class="card-header">
-                        <a class="card-link" data-toggle="collapse" href="#collapse{{counter}}">
+                        <a style="color: rgba(255, 255, 255, 0.85)" class="card-link color-link" data-toggle="collapse" href="#collapse{{counter}}">
                           {{title_form}} {{counter}}
                         </a>
                       </div>
                       <div id="collapse{{counter}}" class="collapse" data-parent="#accordion">
-                        <div class="card-body">
-                          <form class="form-group" action="" method="POST">
+                        <div class="card-body card-b-color">
+                          <form class="form-group " action="" method="POST">
                             {{ f.hidden_tag() }}
                             <h2 class="formTitle">{{title_form}}</h2>
                             <fieldset>
                               {% for field in f.display %}
                                 <label for="{{ field }}" >{{ f[field].label }}</label>
-                                {{ f[field](class_="f-control col-md-6")}}
+                                {{ f[field](class_="f-control col-md-2")}}
                                 {% if f[field].errors %}
                                   {% for e in f[field].errors %}
                                     <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
@@ -199,13 +199,13 @@ Back</a> <br />
                 {% endfor %}
                 </div>
               {% else %}
-                <form class="form-group" action="" method="POST">
+                <!-- <form class="form-group" action="" method="POST">
                   {{ form.hidden_tag() }}
                   <h2 class="formTitle">{{title_form}}</h2>
                   <fieldset>
                     {% for field in form.display %}
                       <label for="{{ field }}" >{{ form[field].label }}</label>
-                      {{ form[field](class_="form-control col-md-6")}}
+                      {{ form[field](class_="form-control col-md-2")}}
                       {% if form[field].errors %}
                         {% for e in form[field].errors %}
                           <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
@@ -214,7 +214,32 @@ Back</a> <br />
                     {% endfor %}      
                   </fieldset>
                   <button class="button buttonJeans" type="submit">Submit</button>
-                </form>
+                </form> -->
+              <div id="accordion">
+                    <div class="card card-color">
+                      <div id="collapse" class="" data-parent="#accordion">
+                        <div class="card-body card-b-color">
+                          <form class="form-group" action="" method="POST">
+                            {{ form.hidden_tag() }}
+                            <h2 class="formTitle">{{title_form}}</h2>
+                            <fieldset>
+                              {% for field in form.display %}
+                                <label for="{{ field }}" >{{ form[field].label }}</label>
+                                {{ form[field](class_="f-control col-md-2")}}
+                                {% if form[field].errors %}
+                                  {% for e in form[field].errors %}
+                                    <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
+                                  {% endfor %}
+                                {% endif %}
+                              {% endfor %}      
+                            </fieldset>
+                            <button class="button buttonJeans" type="submit" name="submit" value="{{counter}}">Submit</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
               {% endif %}
             {% endif %}
           </div>
