@@ -49,8 +49,8 @@ body video {
     left: 0;
     height: 100%;
     width: 100%;
-    background-color: #269253 ;
-    opacity: .7;
+/*    background-color: #269253 ;
+*/    opacity: .7;
     z-index: 1;
 }
 .masthead {
@@ -97,7 +97,7 @@ body video {
     .masthead {
     height: 100%;
     min-height: 0;
-    width: 50%;
+    width: 100%;
     padding-bottom: 0;
 }
 
@@ -284,8 +284,14 @@ select.form-control {
 }
 
 .menu-items-left{
-  left: 5%;
+  right: 25%;
 }
 .leftbox-color{
   opacity:90%;
+}
+
+.nav-fields-settings{
+  width: 100%;
+  color: #EAFFEF;
+  border-color: transparent;
 }

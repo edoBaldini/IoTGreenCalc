@@ -4,7 +4,16 @@
     <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.0.10/css/all.css'>
 <!--     <link rel="stylesheet" href="../static/css/style.css">
  -->    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
-    <title>IoT model</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+
+
+  <title>IoT model</title>
 
   </head>
  <body>
@@ -22,19 +31,23 @@
                 <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
                   <ul class="navbar-nav">
                     <li class="navbar-item">
-                      <a id="Device" class="option" href="{{url_for('device.create_device')}}">Device</a> <br />
+                      <a id="Device" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('home.index')}}"><img style="width:20%" src="../static/img/home.svg" alt="home">
+Back</a> <br />
                     </li>
                     <li class="navbar-item">
-                      <a id="Solar Panel" class="option" href="{{url_for('solar_panel.create_solar_panel')}}">Solar Panel</a><br />
+                      <a id="Device" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('device.create_device')}}">Device</a> <br />
+                    </li>
+                    <li class="navbar-item">
+                      <a id="Solar Panel" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('solar_panel.create_solar_panel')}}">Solar Panel</a><br />
                     </li>
                     <li class="navbar-item">  
-                      <a id="Battery" class="option" href="{{url_for('battery.create_battery')}}">Battery</a><br />
+                      <a id="Battery" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('battery.create_battery')}}">Battery</a><br />
                     </li>
                     <li class="navbar-item">
-                      {% if device and battery and solar_panel and  not maintenance%}
-                        <a id="Maintenance" class="option" href="{{url_for('maintenance.create_maintenance')}}">Maintenance</a><br />
+                      {% if device and battery and solar_panel%}
+                        <a id="Maintenance" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('maintenance.create_maintenance')}}">Maintenance</a><br />
                       {% else %}
-                        <a id="Maintenance" class="option">Maintenance</a><br />
+                        <a id="Maintenance" class="btn btn-outline-success nav-fields-settings disabled ">Maintenance</a><br />
                       {% endif %} 
                     </li>
                   </ul>
@@ -49,19 +62,19 @@
                   <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
                     <ul class="navbar-nav">
                       <li class="navbar-item">
-                        <a id="Maintenance" class="option" href="{{url_for('device.radio')}}">Radio</a><br />
+                        <a id="Maintenance" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('device.radio')}}">Radio</a><br />
                       </li>
                       <li class="navbar-item">
-                        <a id="Battery" class="option" href="{{url_for('device.board')}}">Boards</a><br />
+                        <a id="Battery" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('device.board')}}">Boards</a><br />
                       </li>
                       <li class="navbar-item">
-                        <a id="Solar Panel" class="option" href="{{url_for('solar_panel.create_solar_panel')}}">Sensors</a><br />
+                        <a id="Solar Panel" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('device.sensor')}}">Sensors</a><br />
                       </li>
                       <li class="navbar-item">
-                        <a id="Maintenance" class="option" href="{{url_for('device.processor')}}">Processor</a><br />
+                        <a id="Maintenance" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('device.processor')}}">Processor</a><br />
                       </li>
                       <li class="navbar-item">
-                        <a id="Device" class="option" href="{{url_for('device.configuration')}}">Configuration</a> <br />
+                        <a id="Device" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('device.configuration')}}">Configuration</a> <br />
                       </li>
                   </form>
                 </nav>
@@ -69,35 +82,122 @@
           </div>
           {% endif %}
           <div class = "align-self-center col-sm-8">
+          {% if values %}
+            <canvas id="myChart" width="450" height="450"></canvas>
+            <script>
+            var ctx = document.getElementById('myChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: [
+                      {% for i in labels %}
+                        "{{i}}",
+                      {% endfor %}
+                    ],
+                    datasets: [{
+                        label: 'MJ impact',
+                        data: [
+                        {% for v in values %}
+                          "{{v}}",
+                        {% endfor %}
+                        ],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'MJ impact',
+                        data: [
+                        {% for v in g_values %}
+                          "{{v}}",
+                        {% endfor %}
+                        ],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)'
+                        ],
+                        borderWidth: 1
+                    }],
+            
+                },
+                options: {
+                  responsive: false,
+                  circumference: 2 * Math.PI,
+                  rotation: -1 * Math.PI,
+                  title: {
+                    display: true,
+                    text: 'Configuration of the energy impact of the Green (inner) and Real (outer)'
+                  },
+                  legend: {
+                    display: false
+                  }
+                }
+            });
+            </script>
+            {% endif %}
             {% if form %}
-              {% if title_form == 'Boards'%}
-                {% for f in form %}
-                {% set counter = loop.index0 %}
-                  <form class="form-group" action="" method="POST">
-                    {{ f.hidden_tag() }}
-                    <h2 class="formTitle">{{title_form}}</h2>
-                    <fieldset>
-                      {% for field in f.display %}
-                        <label for="{{ field }}" >{{ f[field].label }}</label>
-                        {{ f[field](class_="f-control col-md-6")}}
-                        {% if f[field].errors %}
-                          {% for e in f[field].errors %}
-                            <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
-                          {% endfor %}
-                        {% endif %}
-                      {% endfor %}      
-                    </fieldset>
-                    <button class="button buttonJeans" type="submit" name="submit" value="{{counter}}">Submit</button>
-                    {% if f.weight.data%}
-                      <button class="button buttonJeans" type="delete" name="delete" value="{{counter}}">Delete</button>
-                    {% endif %}
-                  </form>
-                {% endfor %}
-                {% if form[0].weight.data %}
+              {% if title_form == 'Boards' or title_form == 'Sensors'%}
+                {% set l = form|length - 1%}
                   <form id="form2" action="" method="POST" enctype="multipart/form-data"> 
                     <button class="button buttonJeans" type="submit" name="add" value="add">Add</button>
                   </form>
-                {% endif %}
+
+                <div id="accordion">
+                {% for f in form %}
+                  {% set counter = loop.index0 %}
+                    <div class="card">
+                      <div class="card-header">
+                        <a class="card-link" data-toggle="collapse" href="#collapse{{counter}}">
+                          {{title_form}} {{counter}}
+                        </a>
+                      </div>
+                      <div id="collapse{{counter}}" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                          <form class="form-group" action="" method="POST">
+                            {{ f.hidden_tag() }}
+                            <h2 class="formTitle">{{title_form}}</h2>
+                            <fieldset>
+                              {% for field in f.display %}
+                                <label for="{{ field }}" >{{ f[field].label }}</label>
+                                {{ f[field](class_="f-control col-md-6")}}
+                                {% if f[field].errors %}
+                                  {% for e in f[field].errors %}
+                                    <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
+                                  {% endfor %}
+                                {% endif %}
+                              {% endfor %}      
+                            </fieldset>
+                            <button class="button buttonJeans" type="submit" name="submit" value="{{counter}}">Submit</button>
+                            {% if f.active_mode.data%}
+                              <button class="button buttonJeans" type="delete" name="delete" value="{{counter}}">   Delete</button>
+                            {% endif %}
+                            {% if title_form=='Boards' and f.weight.data%}
+                              <button class="button buttonJeans" type="delete" name="delete" value="{{counter}}">   Delete</button>
+                            {% endif %}
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                {% endfor %}
+                </div>
               {% else %}
                 <form class="form-group" action="" method="POST">
                   {{ form.hidden_tag() }}
@@ -119,114 +219,10 @@
             {% endif %}
           </div>
         </div>
-        <!-- <div class="col-12 my-auto"> -->
-        <!--   <div class="masthead-content text-white py-5 py-md-0"> -->
-        <!--     <h1 class="mb-3">Your model!</h1> -->
-        <!--     <p class="mb-5">Select a component</p> -->
-        <!--     <div class="form-holder"> -->
-        <!--       <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data"> -->
-        <!--         <select class="form-control" id="mySelect" name = "component" multiple> -->
-        <!--           {% if not device %} -->
-        <!--             <option class="option" value="device">Device</option> -->
-        <!--           {% else %} -->
-        <!--             <option class="option" value="">Device Completed</option> -->
-        <!--           {% endif %} -->
-        <!--           {% if not solar_panel %} -->
-        <!--             <option class="option" value="solar_panel">Solar Panel</option> -->
-        <!--           {% else %} -->
-        <!--             <option class="option" value="">Solar Panel Completed</option> -->
-        <!--           {% endif %} -->
-        <!--           {% if not battery %} -->
-        <!--             <option class="option" value="battery">Battery</option> -->
-        <!--           {% else %} -->
-        <!--             <option class="option" value="">Battery Completed</option> -->
-        <!--           {% endif %} -->
-        <!--         </select> -->
-        <!--         <div><br></div> -->
-        <!--         <div class="input-group-append"> -->
-        <!--           <input type="submit" class="btn btn-secondary"value="Submit"> -->
-        <!--         </div> -->
-        <!--       </form> -->
-        <!--     </div> -->
-        <!--   </div> -->
-        <!-- </div> -->
       </div>
       </div>
     </div>
   </div>
-<!--   <div class="h-100">
-    <div class="masthead masthead-2">
-      <div class="masthead-bg"></div>
-      <div class="container h-100">
-        <div class="row h-100">
-          <div class="col-12 my-auto" style="position:absolute">
-            <div class="masthead-content text-white py-5 py-md-0">
-              <h1 class="mb-3">Your model!</h1>
-              <div class="form-holder">
-                <h2> Your solution </h>
-                <div class="form-control"> 
-                {% if device and battery and solar_panel and  not maintenance%} 
-                  <form id="form3" action="/" method="POST" enctype="multipart/form-data"> 
-                    <p> 
-                      <input type="submit" name="maintenance" value="Maintenance"> 
-                    </p> 
-                  </form> 
-                {% endif %} 
-                <form id="form2" action="/" method="POST" enctype="multipart/form-data"> 
-                  <p> {% if battery %} 
-                    Battery: 
-                    e_manufactoring: {{battery["e_manufactoring"]}} <br> 
-                    disposal: {{battery["disposal"]}} 
-                    <input type="submit" name="battery" value="delete"> 
-                  {% endif %} </p> 
-                  <p> {% if solar_panel %} 
-                    Solar Panel 
-                    e_manufactoring: {{solar_panel["e_manufactoring"]}} <br> 
-                    disposal: {{solar_panel["disposal"]}} 
-                    <input type="submit" name="solar_panel" value="delete"> 
-                  {% endif %} </p> 
-                  <p> {% if device %} 
-                    Device 
-                    e_manufactoring: {{device["e_manufactoring"]}} <br> 
-                    disposal: {{device["disposal"]}} <br> 
-                    daily_e_required; {{device['daily_e_required']}} 
-                    <input type="submit" name="device" value="delete"> 
-                  {% endif %} </p> 
-                  <p> {% if maintenance %} 
-                    Maintenance 
-                    e_manufactoring {{maintenance['tot_main_energy']}} <br> 
-                    disposal {{maintenance['tot_main_disposal']}}<br> 
-                    number of interventions {{maintenance['n_interventions']}} 
-                    <input type="submit" name="maintenance" value="delete"> 
-                  {% endif %} </p> 
-                 </form> 
-                 {% if g_main %} 
-                    Greener proposal:<br> 
-                    Battery: 
-                    e_manufactoring: {{g_battery["e_manufactoring"]}} <br> 
-                    disposal: {{g_battery["disposal"]}}<br> 
-                    capacity [mWh]: {{g_battery["capacity"]}}<br><br> 
-            
-                    Solar Panel: 
-                    e_manufactoring: {{g_sp["e_manufactoring"]}}<br> 
-                    disposal: {{g_sp["disposal"]}}<br> 
-                    surface:  {{g_sp["surface"]}}<br><br> 
-            
-                    Maintenance: 
-                    e_manufactoring {{g_main["tot_main_energy"]}}<br> 
-                    disposal  {{g_main["tot_main_disposal"]}}<br> 
-                    number of interventions {{g_main["n_interventions"]}} 
-                  {% endif %}                 </div>
-              </div>    
-            </div>    
-          </div>    
-        </div>    
-      </div>    
-    </div>
-  </div> -->
-
-
   {% endblock %}
-
   </body>
 </html>

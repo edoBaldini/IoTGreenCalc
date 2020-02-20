@@ -2,20 +2,22 @@ class Solar_Panel:
 
     TECHNOLOGY = ["mono-Si", "multi-Si"]  # "CdTe"]
 
-    MANUFACTURING_ENERGY = {"mono-Si": 5195.55,  # IN MEGAJOULES [MJ]
-                            "multi-Si": 4047.9}
+    MANUFACTURING_ENERGY = {"mono-Si": 5476.100,  # IN MEGAJOULES [MJ]
+                            "multi-Si": 4676.100}
                            # "CdTe": 3749.16}
 
-    DISPOSAL_KG = {"Si": 0.0447}                 # IN KILOGRAMS [Kg]
+    DISPOSAL_KG = {"Si": 0.1602}                 # IN KILOGRAMS [Kg]
                    # "CdTe": 0.0487}
 
     DENSITY_KG_WP = {"Si": 0.102}
                      # "CdTe": 0.202}
 
-    EFFICIENCY = {"mono-Si": 13,               # DEFINED AS [Kwp / m2]
+    EFFICIENCY = {"mono-Si": 17,               # DEFINED AS [Kwp / m2]
                   "multi-Si": 12.30}
                   
                   # "CdTe": 10.90}
+    EFFICIENCY_W = {"mono-Si": 80,
+                    "multi-Si": 80}
 
     WH2MJ = 3600 * 10 ** (- 6)                   # CONVERSION FROM WH TO MJ
     LIFETIME = 43.73
@@ -28,6 +30,8 @@ class Solar_Panel:
         self.lifetime = 0
         self.efficiency = 0
         self.kwp = 0
+        self.efficiency_w = 0
+        self.weight = 0
 
     def compute_e_manufactoring(self):
         self.e_manufactoring = self.surface *\
@@ -36,8 +40,11 @@ class Solar_Panel:
     def compute_disposal(self):
         t = 'Si'
         eff = self.efficiency / 100
-        self.disposal = eff * self.surface * (10**3) *\
+        if self.weight == 0:
+            self.disposal = eff * self.surface * (10**3) *\
             self.DENSITY_KG_WP[t] * self.DISPOSAL_KG[t]
+        else:
+            self.disposal = self.weight * self.DISPOSAL_KG[t]
 
     def daily_energy_produced(self):
         eff = self.efficiency / 100
@@ -47,6 +54,7 @@ class Solar_Panel:
     def auto_set_eff(self):
         self.efficiency = self.EFFICIENCY[self.technology]
         self.kwp = self.efficiency * self.surface
+        self.efficiency_w = self.EFFICIENCY[self.technology]
 
     def auto_set_lifetime(self):
         self.lifetime = self.LIFETIME

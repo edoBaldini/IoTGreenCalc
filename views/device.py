@@ -30,6 +30,7 @@ def create_device():
     #                                                device['processor'],
     #                                                device['radio'])
     #device['disposal'] = Device.disposal_dict(device['boards'])
+    session.modified = True
     session['device'] = device
     return render_template("index.html", title_form='Device', device_bool=1)
 
@@ -43,31 +44,106 @@ def update_device(component_name, component, index_component=-1):
         device[component_name][index_component] = component_encoded
     else:
         device[component_name] = component_encoded
-    device['active_mode'] += component.active_mode
-    device['sleep_mode'] += component.sleep_mode
-
-    if component_name == 'boards':
-        device['disposal'] += component.disposal
-    else:
-        device['e_manufactoring'] += component.e_manufactoring
 
     session['device'] = device
+
+    update_power_modes()
+    if component_name == 'boards':
+        update_disposal()
+    else:
+        update_e_manuf()
+
+
+def update_disposal():
+    disposal = 0
+    for k in session['device']['boards']:
+        component = json.loads(session['device']['boards'][k])
+        try:
+            disposal += component['disposal']
+        except KeyError:
+            print('error')
+    session['device']['disposal'] = disposal
+
+
+def update_e_manuf():
+    e_manuf = 0
+    for k in session['device']:
+        if session['device'][k]:
+            if k == 'processor' or k == 'radio':
+                component = json.loads(session['device'][k])
+                e_manuf += component['e_manufactoring']
+            elif k == 'sensors':
+                for s in session['device']['sensors']:
+                    component = json.loads(session['device'][k][s])
+                    e_manuf += component['e_manufactoring']
+    session['device']['e_manufactoring'] = e_manuf
+
+
+def update_power_modes():
+    active_mode = 0
+    sleep_mode = 0
+    for k in session['device']:
+        if session['device'][k]:
+            if k == 'processor' or k == 'radio':
+                component = json.loads(session['device'][k])
+                active_mode += component['active_mode']
+                sleep_mode += component['sleep_mode']
+            if k == 'sensors' or k == 'boards':
+                for elem in session['device'][k]:
+                    component = json.loads(session['device'][k][elem])
+                    active_mode += component['active_mode']
+                    sleep_mode += component['sleep_mode']
+    session['device']['active_mode'] = active_mode
+    session['device']['sleep_mode'] = sleep_mode
 
 
 @device.route("/#sensor", methods=["GET", "POST"])
 def sensor():
-    if 'device' in session:
-        form = ElementForm()
-        if request.method == 'POST':
-            if form.validate_on_submit():
-                new_elem = Element()
-                form.populate_obj(new_elem)
-                new_elem.compute_e_manufactoring()
-                update_device('sensors', new_elem)
-                return redirect(url_for('device.create_device'))
-    else:
-        return redirect(url_for('.index'))
-    return render_template("element.html", form=form)
+    form = ElementForm()
+    sensors = session['device']['sensors']
+    forms = [ElementForm() for i in sensors]
+    r_form = forms if len(sensors) > 0 else [form]
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            if request.form.get('delete', None):
+                session.modified = True
+                del session['device']['sensors'][request.form.get('delete', None)]
+            else:
+                new_element = Element()
+                form.populate_obj(new_element)
+                new_element.compute_e_manufactoring()
+                index = int(request.form.get('submit')) if\
+                    request.form.get('submit') else -1
+                update_device('sensors', new_element, index)
+            return redirect(url_for('device.create_device'))
+
+        if request.form.get('add', None) == 'add':
+            sensor = Element()
+            sensor_encoded = json.dumps(sensor.__dict__)
+            index = len(session['device']['sensors'])
+            session.modified = True
+            session['device']['sensors'][str(index)] = sensor_encoded
+            return redirect(url_for('device.sensor'))
+
+    elif session['device']['sensors']:
+        for f, p_m in zip(forms, sensors):
+            sensor = json.loads(sensors[p_m])
+            for e, key in zip(f, sensor):
+                e.data = sensor[key]
+    return render_template("index.html", device_bool=1, title_form='Sensors',
+                           form=r_form)
+    #if 'device' in session:
+    #    form = ElementForm()
+    #    if request.method == 'POST':
+    #        if form.validate_on_submit():
+    #            new_elem = Element()
+    #            form.populate_obj(new_elem)
+    #            new_elem.compute_e_manufactoring()
+    #            update_device('sensors', new_elem)
+    #            return redirect(url_for('device.create_device'))
+    #else:
+    #    return redirect(url_for('.index'))
+    #return render_template("element.html", form=form)
 
 
 @device.route("/#board", methods=["GET", "POST"])
@@ -154,14 +230,17 @@ def configuration():
         if form.validate_on_submit():
             duty_cycle = request.form['duty_cycle']
             voltage = request.form['voltage']
+            output_regulator = request.form['output_regulator']
             session.modified = True
             session['device']['duty_cycle'] = duty_cycle
             session['device']['voltage'] = voltage
+            session['device']['output_regulator'] = output_regulator
             return redirect(url_for('device.create_device'))
     elif session['device']:
         device = session['device']
         form.duty_cycle.data = device['duty_cycle']
         form.voltage.data = device['voltage']
+        form.output_regulator = device['output_regulator']
     return render_template("index.html", device_bool=1, title_form='Configuration', form=form)
 
 

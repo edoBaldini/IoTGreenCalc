@@ -11,7 +11,10 @@ class DutyCycleForm(FlaskForm):
     voltage = f.FloatField(u'Set the voltage of the device',
                            validators=[DataRequired(),
                                        NumberRange(min=0.0, max=250.0)])
-    display = ['duty_cycle', 'voltage']
+    output_regulator = f.FloatField(u'Efficiecny, output regulator',
+                                    validators=[DataRequired(), NumberRange(
+                                                min=0.0, max=100.0)])
+    display = ['duty_cycle', 'voltage', 'output_regulator']
 
 
 class ElementForm(FlaskForm):
@@ -32,11 +35,9 @@ class ElementForm(FlaskForm):
 
 class BoardForm(FlaskForm):
     active_mode = f.FloatField(u'Energy in active mode',
-                               validators=[InputRequired(),
-                                           NumberRange(min=0.0)])
+                               validators=[InputRequired()])
     sleep_mode = f.FloatField(u'Energy in sleep mode',
-                              validators=[InputRequired(),
-                                          NumberRange(min=0.0)])
+                              validators=[InputRequired()])
     weight = f.FloatField(u'weight of the board in kg',
                           validators=[DataRequired()])
     display = ['active_mode',
@@ -55,8 +56,7 @@ class BatteryForm(FlaskForm):
                               validators=[Optional(),
                                           NumberRange(min=0.0, max=100.0)])
     density = f.FloatField(u'Density, optional',
-                           validators=[Optional(),
-                                       NumberRange(min=0.0, max=100.0)])
+                           validators=[Optional()])
     capacity = f.FloatField(u'capacity in [mAh]',
                             validators=[InputRequired(), NumberRange(min=0)])
     weight = f.FloatField(u'Weight of the battery in kg',
@@ -83,9 +83,12 @@ class SolarForm(FlaskForm):
     efficiency = f.FloatField(u'Efficiecny, optional',
                               validators=[Optional(),
                                           NumberRange(min=0.0, max=100.0)])
-
+    efficiency_w = f.FloatField(u'Efficiecny wear-out, optional',
+                                validators=[Optional(),
+                                            NumberRange(min=0.0, max=100.0)])
+    weight = f.FloatField(u'Weight ', validators=[DataRequired()])
     display = ['technology', 'surface', 'irradiance', 's_hours', 'lifetime',
-               'efficiency']
+               'efficiency', 'efficiency_w', 'weight']
 
 
 class MaintenanceForm(FlaskForm):
