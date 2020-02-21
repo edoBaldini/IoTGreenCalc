@@ -317,3 +317,11 @@ select.form-control {
   border-color: rgba(54, 162, 235, 1);
   color: rgba(255, 255, 255, 0.85);
 }
+
+.canvas-color{
+  background-color: rgba(28, 55, 101, 0.96);
+  border-color: rgba(54, 162, 235, 1);
+  color: rgba(255, 255, 255, 0.85);
+  border: 4px solid rgba(0,0,0,.125);
+
+}

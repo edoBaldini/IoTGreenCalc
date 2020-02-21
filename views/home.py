@@ -97,33 +97,64 @@ def index():
         g_sp = json.loads(session['green']['solar_panel'])
         print('green ', session['green']['maintenance'])
 
-        values = compute_percentage(session)
-        g_values = compute_percentage(session['green'])
+        e_values = compute_e_values(session)
+        e_g_values = compute_e_values(session['green'])
+
+        w_values = compute_w_values(session)
+        w_g_values = compute_w_values(session['green'])
+
+        energy_ratio = compute_ratio(e_values, e_g_values)
+        waste_ratio = compute_ratio(w_values, w_g_values)
         labels = ["Device", "SolarPanel", "Battery", "Maintenance"]
         return render_template("index.html", device=session['device'],
                                battery=battery,
                                solar_panel=solar_panel,
                                maintenance=session['maintenance'],
-                               g_battery=g_battery,
-                               g_sp=g_sp,
-                               g_main=session['green']['maintenance'], labels=labels, values=values, g_values=g_values)
+                               labels=labels, e_values=e_values,
+                               e_g_values=e_g_values, w_values=w_values,
+                               w_g_values=w_g_values,
+                               energy_ratio=energy_ratio,
+                               waste_ratio=waste_ratio)
     else:
-        return render_template("index.html", device=session['device'],
+        return render_template("index.html",
+                               device=session['device'],
                                battery=battery,
                                solar_panel=solar_panel,
                                maintenance=session['maintenance'])
 
 
-def compute_percentage(dataset):
-    e_device = dataset['device']['e_manufactoring']
-    e_sp = json.loads(dataset['solar_panel'])['e_manufactoring']
-    e_b = json.loads(dataset['battery'])['e_manufactoring']
-    e_m = dataset['maintenance']['tot_main_energy']
-    tot = e_device + e_sp + e_b + e_m
-    return [(e_device * 100 / tot), (e_sp * 100 / tot), (e_b * 100 / tot),
-            (e_m * 100 / tot)]
+def compute_ratio(real, green):
+    tot_real = 0
+    tot_green = 0
+    for r, g in zip(real, green):
+        tot_real += r
+        tot_green += g
+    return int(tot_real/tot_green)
+
+def compute_e_values(dataset):
+    w_device = dataset['device']['e_manufactoring']
+    w_device_rounded = round(w_device, 2)
+    w_sp = json.loads(dataset['solar_panel'])['e_manufactoring']
+    w_sp_rounded = round(w_sp, 2)
+    w_b = json.loads(dataset['battery'])['e_manufactoring']
+    w_b_rounded = round(w_b, 2)
+    w_m = dataset['maintenance']['tot_main_energy']
+    w_m_rounded = round(w_m, 2)
+
+    return [w_device_rounded, w_sp_rounded, w_b_rounded, w_m_rounded]
 
 
+def compute_w_values(dataset):
+    w_device = dataset['device']['disposal'] * 1000
+    w_device_rounded = round(w_device, 2)
+    w_sp = json.loads(dataset['solar_panel'])['disposal'] * 1000
+    w_sp_rounded = round(w_sp, 2)
+    w_b = json.loads(dataset['battery'])['disposal'] * 1000
+    w_b_rounded = round(w_b, 2)
+    w_m = dataset['maintenance']['tot_main_disposal'] * 1000
+    w_m_rounded = round(w_m, 2)
+
+    return [w_device_rounded, w_sp_rounded, w_b_rounded, w_m_rounded]
 
 
 def green():

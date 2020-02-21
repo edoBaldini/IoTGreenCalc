@@ -22,10 +22,9 @@
   <div class="h-100">
     <div class="masthead">
       <div class="masthead-bg"></div>
-      <div class="container h-100">
-      <div class="h-100 row col-12">
-        <div class="form-holder my-auto col-12 menu-items-left row h-100">
-          <div class="h-100 col-sm-2"> 
+      <div class="h-100">
+        <div class="row">
+          <div style="padding-left: 3%; width: min-content;"> 
             <div class="align-self-center my-auto">
               <nav class="navbar small-rounded-nav" >
                 <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
@@ -56,7 +55,7 @@ Back</a> <br />
             </div>
           </div>
           {% if device_bool %}
-          <div class="h-100 col-sm-2 leftbox-color"> 
+          <div class="" style="padding-left: 3%; width: min-content;"> 
             <div class="align-self-center my-auto">
                 <nav class="navbar small-rounded-nav" >
                   <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
@@ -80,14 +79,46 @@ Back</a> <br />
                 </nav>
             </div>
           </div>
+          {% elif energy_ratio %}
+          <div class="col-sm-2"> </div>
+          {% else %}
+          <div class=" col-sm-2 leftbox-color"> 
+            <div class="align-self-center my-auto">
+                <nav class="navbar small-rounded-nav" style="background-color:transparent;"  >
+                  <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
+                    <ul class="navbar-nav">
+                      <li class="navbar-item"> 
+                        <a id="Maintenance" style="color:transparent" href="{{url_for('device.radio')}}">Radio</a><br />
+                      </li>
+                      <li class="navbar-item">
+                        <a id="Battery" style="color:transparent" href="{{url_for('device.board')}}">Boards</a><br />
+                      </li>
+                      <li class="navbar-item">
+                        <a id="Solar Panel" style="color:transparent" href="{{url_for('device.sensor')}}">Sensors</a><br />
+                      </li>
+                      <li class="navbar-item">
+                        <a id="Maintenance" style="color:transparent" href="{{url_for('device.processor')}}">Processor</a><br />
+                      </li>
+                      <li class="navbar-item">
+                        <a id="Device" style="color:transparent" href="{{url_for('device.configuration')}}">Configuration</a> <br />
+                      </li>
+                  </form>
+                </nav>
+            </div>
+          </div>
           {% endif %}
-          <div class = "align-self-center col-sm-8">
-          {% if values %}
-            <canvas id="myChart" width="450" height="450"></canvas>
+
+        <div class="row col-12" style="padding-top:5%; padding-left:2.7%">
+        {% if e_values %}
+<!--         <div class="col-sm-2 align-self-center" style="text-align: center; color: #f7eded"> <h7 style="font-weight:bold;"> Energy impact of your solution</h7> <h1 style="color:#e24b49"> <span style="font-size:80px; ">{{energy_ratio}}</span>x</h1>
+          <h7 style="font-weight:bold;">than the green impact</h7></div> -->
+          <div class = "align-self-center col-sm-5 canvas-color" style="float: none; margin: 0 auto; text-align:center;border-radius: 30px">
+            <div class="row" style="justify-content:center">
+            <canvas class="" id="myChart" width="450px" height="300"></canvas>
             <script>
             var ctx = document.getElementById('myChart').getContext('2d');
             var myChart = new Chart(ctx, {
-                type: 'doughnut',
+                type: 'bar',
                 data: {
                     labels: [
                       {% for i in labels %}
@@ -95,44 +126,56 @@ Back</a> <br />
                       {% endfor %}
                     ],
                     datasets: [{
-                        label: 'MJ impact',
+                        label: 'Your solution',
                         data: [
-                        {% for v in values %}
+                        {% for v in e_values %}
                           "{{v}}",
                         {% endfor %}
                         ],
+                        // backgroundColor: [
+                        //     'rgba(255, 99, 132, 0.2)',
+                        //     'rgba(54, 162, 235, 0.2)',
+                        //     'rgba(255, 206, 86, 0.2)',
+                        //     'rgba(75, 192, 192, 0.2)'
+                        // ],
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)'
+                            '#e24b49',
+                            '#e24b49',
+                            '#e24b49',
+                            '#e24b49'
                         ],
+                        // borderColor: [
+                        //     'rgba(255, 99, 132, 1)',
+                        //     'rgba(54, 162, 235, 1)',
+                        //     'rgba(255, 206, 86, 1)',
+                        //     'rgba(75, 192, 192, 1)'
+                        // ],
                         borderColor: [
                             'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)'
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 99, 132, 1)'
                         ],
                         borderWidth: 1
                     },
                     {
-                        label: 'MJ impact',
+                        label: 'Green solution',
                         data: [
-                        {% for v in g_values %}
-                          "{{v}}",
+                        {% for g in e_g_values %}
+                          "{{g}}",
                         {% endfor %}
                         ],
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)'
+                            '#00b894',
+                            '#00b894',
+                            '#00b894',
+                            '#00b894'
                         ],
                         borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)'
+                            'rgba(126, 211, 134, 1)',
+                            'rgba(126, 211, 134, 1)',
+                            'rgba(126, 211, 134, 1)',
+                            'rgba(126, 211, 134, 1)'
                         ],
                         borderWidth: 1
                     }],
@@ -140,20 +183,76 @@ Back</a> <br />
                 },
                 options: {
                   responsive: false,
-                  circumference: 2 * Math.PI,
-                  rotation: -1 * Math.PI,
                   title: {
                     display: true,
-                    text: 'Configuration of the energy impact of the Green (inner) and Real (outer)'
+                    text: 'Energy impact (MJ)',
+                    fontFamily: 'Lora',
+                    fontSize: 20,
+                    fontColor: 'rgba(255, 255, 255, 0.85)',
+                    lineHeight: 1.4
+                  },
+                  tooltips: {
+                      enabled: true
+                  },
+                  hover: {
+                      animationDuration: 1
+                  },
+                  scales: {
+                    yAxes: [{
+                      display: false,
+                      gridLines: {
+                          drawBorder: false,
+                      }
+                    }],
+                    xAxes: [{
+                      //display: false, // this will hide vertical lines
+                      ticks: {
+                        fontFamily: 'Lora',
+                        fontSize: 16,
+                        fontColor: "rgba(255, 255, 255, 0.85)"
+                      },
+                      gridLines: {
+                          display: false,
+                          drawBorder: false,
+                      }
+                    }],
+                  },
+                  animation: {
+                    duration: 1,
+                    onComplete: function () {
+                      var chartInstance = this.chart,
+                      ctx = chartInstance.ctx;
+                      ctx.textAlign = 'center';
+                      ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+                      ctx.textBaseline = 'bottom';
+                      // ctx.font = Chart.helpers.fontString('Lora', 'small', 'Lora');
+                      ctx.font = "16px Lora";
+                      this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+                        meta.data.forEach(function (bar, index) {
+                          var data = dataset.data[index];
+                          ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                        });
+                      });
+                    }
                   },
                   legend: {
                     display: false
                   }
-                }
+              }
             });
             </script>
+          </div>
+          <div class="row" style="justify-content: center">
+            <h1 style="color:rgba(255, 255, 255, 0.85)"> <span style="font-size:80px; ">{{energy_ratio}}</span>x</h1>
+          </div>
+          <div class="row" style="justify-content: center; padding-bottom:10px">
+          <h7> than the green solution</h7>
+        </div>
             {% endif %}
             {% if form %}
+             <div class = "align-self-center col-sm-6" style="float: none; margin: 0 auto;">
+
               {% if title_form == 'Boards' or title_form == 'Sensors'%}
                 {% set l = form|length - 1%}
                   <form id="form2" action="" method="POST" enctype="multipart/form-data"> 
@@ -169,21 +268,32 @@ Back</a> <br />
                           {{title_form}} {{counter}}
                         </a>
                       </div>
-                      <div id="collapse{{counter}}" class="collapse" data-parent="#accordion">
+                      {% if counter == 0 %}
+                        <div id="collapse{{counter}}" class="collapse show" data-parent="#accordion">
+                      {% else %}
+                        <div id="collapse{{counter}}" class="collapse" data-parent="#accordion">
+                      {% endif %}
+
                         <div class="card-body card-b-color">
-                          <form class="form-group " action="" method="POST">
+                          <form class="form-group" style="padding-left:15%" action="" method="POST">
                             {{ f.hidden_tag() }}
                             <h2 class="formTitle">{{title_form}}</h2>
                             <fieldset>
+                              <div class="form-group row">
                               {% for field in f.display %}
+                                <div class="col-sm-6">
                                 <label for="{{ field }}" >{{ f[field].label }}</label>
-                                {{ f[field](class_="f-control col-md-2")}}
+                                </div>
+                                <div class="col-auto">
+                                {{ f[field](class_="f-control col-auto")}}
                                 {% if f[field].errors %}
                                   {% for e in f[field].errors %}
                                     <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
                                   {% endfor %}
                                 {% endif %}
-                              {% endfor %}      
+                              </div>
+                              {% endfor %} 
+                              </div>     
                             </fieldset>
                             <button class="button buttonJeans" type="submit" name="submit" value="{{counter}}">Submit</button>
                             {% if f.active_mode.data%}
@@ -219,19 +329,25 @@ Back</a> <br />
                     <div class="card card-color">
                       <div id="collapse" class="" data-parent="#accordion">
                         <div class="card-body card-b-color">
-                          <form class="form-group" action="" method="POST">
+                          <form class="form-group" style="padding-left:15%" action="" method="POST">
                             {{ form.hidden_tag() }}
                             <h2 class="formTitle">{{title_form}}</h2>
                             <fieldset>
+                              <div class="form-group row">
                               {% for field in form.display %}
+                                <div class="col-sm-6">
                                 <label for="{{ field }}" >{{ form[field].label }}</label>
-                                {{ form[field](class_="f-control col-md-2")}}
+                                </div>
+                                <div class="col-auto">
+                                {{ form[field](class_="f-control col-auto")}}
                                 {% if form[field].errors %}
                                   {% for e in form[field].errors %}
                                     <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
                                   {% endfor %}
                                 {% endif %}
-                              {% endfor %}      
+                              </div>
+                              {% endfor %} 
+                              </div>     
                             </fieldset>
                             <button class="button buttonJeans" type="submit" name="submit" value="{{counter}}">Submit</button>
                           </form>
@@ -243,9 +359,144 @@ Back</a> <br />
               {% endif %}
             {% endif %}
           </div>
+          {% if w_values %}
+          <div class = "align-self-center col-sm-5 canvas-color" style="float: none; margin: 0 auto; text-align:center;border-radius: 30px">
+            <div class="row" style="justify-content:center">
+          <canvas class=""  id="myChart2" width="450px" height="300"></canvas>
+            <script>
+            var ctx = document.getElementById('myChart2').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                      {% for i in labels %}
+                        "{{i}}",
+                      {% endfor %}
+                    ],
+                    datasets: [{
+                        label: 'Your solution',
+                        data: [
+                        {% for v in w_values %}
+                          "{{v}}",
+                        {% endfor %}
+                        ],
+                        // backgroundColor: [
+                        //     'rgba(255, 99, 132, 0.2)',
+                        //     'rgba(54, 162, 235, 0.2)',
+                        //     'rgba(255, 206, 86, 0.2)',
+                        //     'rgba(75, 192, 192, 0.2)'
+                        // ],
+                        backgroundColor: [
+                            '#e24b49',
+                            '#e24b49',
+                            '#e24b49',
+                            '#e24b49'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Green solution',
+                        data: [
+                        {% for g in w_g_values %}
+                          "{{g}}",
+                        {% endfor %}
+                        ],
+                        backgroundColor: [
+                            '#00b894',
+                            '#00b894',
+                            '#00b894',
+                            '#00b894'
+                        ],
+                        borderColor: [
+                            'rgba(126, 211, 134, 1)',
+                            'rgba(126, 211, 134, 1)',
+                            'rgba(126, 211, 134, 1)',
+                            'rgba(126, 211, 134, 1)'
+                        ],
+                        borderWidth: 1
+                    }],
+            
+                },
+                options: {
+                  responsive: false,
+                  title: {
+                    display: true,
+                    text: ['Waste impact (g)',''],
+                    fontFamily: 'Lora',
+                    fontSize: 20,
+                    fontColor: 'rgba(255, 255, 255, 0.85)'
+                  },
+                  tooltips: {
+                      enabled: true
+                  },
+                  hover: {
+                      animationDuration: 1
+                  },
+                  scales: {
+                    yAxes: [{
+                      display: false,
+                      gridLines: {
+                          drawBorder: false,
+                      }
+                    }],
+                    xAxes: [{
+                      //display: false, // this will hide vertical lines
+                      ticks: {
+                        fontFamily: 'Lora',
+                        fontSize: 16,
+                        fontColor: "rgba(255, 255, 255, 0.85)"
+                      },
+                      gridLines: {
+                          display: false,
+                          drawBorder: false,
+                      }
+                    }],
+                  },
+                  animation: {
+                    duration: 1,
+                    onComplete: function () {
+                      var chartInstance = this.chart,
+                      ctx = chartInstance.ctx;
+                      ctx.textAlign = 'center';
+                      ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+                      ctx.textBaseline = 'bottom';
+                      // ctx.font = Chart.helpers.fontString('Lora', 'small', 'Lora');
+                      ctx.font = "16px Lora";
+                      this.data.datasets.forEach(function (dataset, i) {
+                        var meta = chartInstance.controller.getDatasetMeta(i);
+                        meta.data.forEach(function (bar, index) {
+                          var data = dataset.data[index];
+                          ctx.fillText(data, bar._model.x, bar._model.y - 5);
+                        });
+                      });
+                    }
+                  },
+                  legend: {
+                    display: false
+                  }
+              }
+            });
+            </script>
+          </div>
+          <div class="row" style="justify-content: center;">
+            <h1 style="color:rgba(255, 255, 255, 0.85)"> <span style="font-size:80px; ">{{waste_ratio}}</span>x</h1>
+            
+          </div>
+          <div class="row" style="justify-content: center; padding-bottom:10px">
+            <h7> than the green solution</h7>
+          </div>
         </div>
+<!--         <div class="col-sm-2" style="text-align: center"> </p> <h1> <span style="font-size:80px">{{energy_ratio}}</span>x</h1></div>
+ -->            {% endif %}
+
       </div>
-      </div>
+      
     </div>
   </div>
   {% endblock %}
