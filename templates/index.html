@@ -107,7 +107,20 @@ Back</a> <br />
             </div>
           </div>
           {% endif %}
-
+          <div class="col-sm-6"></div>
+          <div class=" col-sm-2 leftbox-color" style="margin-left: 3%;padding-left: 7.5%;"> 
+            <div class="align-self-center my-auto">
+              <nav class="navbar small-rounded-nav" >
+                <form class="form-holder" id="form1" action="/" method="POST" enctype="multipart/form-data">
+                  <ul class="navbar-nav">
+                    <li class="navbar-item" style="text-align: center;">
+                      <img style="width:50%" src="../static/img/cc.svg" alt="home"><a id="Device" class="btn btn-outline-success list-group-item-action nav-fields-settings" href="{{url_for('home.index')}}">Impact calculator for IoT solutions</a> <br />
+                    </li>
+                  </ul>
+                </form>
+              </nav>
+            </div>
+          </div>
         <div class="row col-12" style="padding-top:5%; padding-left:2.7%">
         {% if e_values %}
 <!--         <div class="col-sm-2 align-self-center" style="text-align: center; color: #f7eded"> <h7 style="font-weight:bold;"> Energy impact of your solution</h7> <h1 style="color:#e24b49"> <span style="font-size:80px; ">{{energy_ratio}}</span>x</h1>
