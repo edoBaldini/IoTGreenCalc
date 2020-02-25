@@ -1,62 +1,98 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
-    <meta charset="utf-8">
-    <title>Flask Tutorial</title>
+    <title>IoT model</title>
   </head>
   <body>
     {% extends "header.html" %}
     {% block content %}
-    <p>
-        <form action="" method="POST">
-          {{ form.hidden_tag() }}
-          <h2 class="formTitle">Duty Cycle</h2>
-          <fieldset>
-            {% for field in form.display %}
-              <label class="labelFor" for="{{ field }}">{{ form[field].label }}</label>
-              {{ form[field] }}
-              {% if form[field].errors %}
-                {% for e in form[field].errors %}
-                  <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
-                {% endfor %}
+    <div class="h-100">
+      <div class="masthead">
+      <div class="masthead-bg"></div>
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-12 my-auto">
+            <div class="masthead-content text-white py-5 py-md-0">
+              <h1 class="mb-3">Your model!</h1>
+              <div class="form-holder">
+               <p>
+                <form action="" method="POST">
+                  {{ form.hidden_tag() }}
+                  <h2 class="formTitle">Duty Cycle</h2>
+                  <fieldset>
+                    {% for field in form.display %}
+                      <label class="labelFor" for="{{ field }}">{{ form[field].label }}</label>
+                      {{ form[field] }}
+                      {% if form[field].errors %}
+                        {% for e in form[field].errors %}
+                          <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
+                        {% endfor %}
+                      {% endif %}
+                    {% endfor %}      
+                  </fieldset>
+                  <button class="button buttonJeans" type="submit">Submit</button>
+                </form>
+              </p>
+              <h2> Device <br /></h2>
+              <h5> Choose a component  </h5>
+              <div class="form-control"> 
+                <a class="option" href="{{ url_for('device.board') }}">BOARD</a>, 
+                <a class="option" href="{{ url_for('device.sensor') }}">SENSOR</a>,
+                {% if not session['device']['processor'] %}
+                  <a class="option" href="{{ url_for('device.processor') }}">PROCESSOR</a>,
+                {% endif %}
+                {% if not session['device']['radio'] %}
+                <a class="option" href="{{ url_for('device.radio') }}">RADIO</a>
+                {% endif %}
+              </div>
+              {% if ((device['boards']|length) and (device['sensors']|length) and 
+                      device['duty_cycle'] and device['daily_e_required']) > 0 and
+                      (device['processor'] and device['radio'] is not none)%}
+                <form id="form2" action="/" method="POST" enctype="multipart/form-data">
+                  <input type="submit" name="submit_button" value="Completed">
+                </form>
               {% endif %}
-            {% endfor %}      
-          </fieldset>
-          <button class="button buttonJeans" type="submit">Submit</button>
-        </form>
-      </p>
-    <h1> Device </h1>
-
-    <p> 
-        <a href="{{ url_for('device.board') }}">     board     </a>, 
-        <a href="{{ url_for('device.sensor') }}">    sensor    </a>,
-        {% if not session['device']['processor'] %}
-          <a href="{{ url_for('device.processor') }}"> processor </a>,
-        {% endif %}
-        {% if not session['device']['radio'] %}
-        <a href="{{ url_for('device.radio') }}">     radio     </a>
-        {% endif %}
-    </p>
-    {% for key in device %}
-      {% if key == 'sensors' or key == 'boards'%}
-        <p>{{key}}
-        {% for k in device[key] %}
-          {{device[key][k]}}
-        </p>
-        {% endfor %}
-      {% else %}
-          <p>{{key}} {{device[key]}}</p>
-      {% endif %}
-    {% endfor %}
-
-    {% if ((device['boards']|length) and (device['sensors']|length) and 
-            device['duty_cycle'] and device['daily_e_required']) > 0 and
-            (device['processor'] and device['radio'] is not none)%}
-      <form id="form2" action="/" method="POST" enctype="multipart/form-data">
-        <input type="submit" name="submit_button" value="Completed">
-      </form>
+              </div>    
+            </div>    
+          </div>    
+        </div>    
+      </div>    
+      </div>
+    </div>
+    {% if ((device['boards']|length) or (device['sensors']|length) or 
+            device['duty_cycle'] or device['daily_e_required']) or
+            (device['processor'] or device['radio'] is not none)%}
+    <div class="h-100">
+      <div class="masthead masthead-2">
+      <div class="masthead-bg"></div>
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-12 my-auto" style="position:absolute">
+            <div class="masthead-content text-white py-5 py-md-0">
+              <h1 class="mb-3">Your model!</h1>
+              <div class="form-holder">
+              <h2> Device </h>
+              <div class="form-control"> 
+              {% for key in device %}
+                {% if key == 'sensors' or key == 'boards'%}
+                  <p class="option">{{key}}
+                  {% for k in device[key] %}
+                    {{device[key][k]}}
+                  </p >
+                  {% endfor %}
+                {% else %}
+                    <p class="option">{{key}} {{device[key]}}</p>
+                {% endif %}
+              {% endfor %}
+              </div>
+              </div>    
+            </div>    
+          </div>    
+        </div>    
+      </div>    
+      </div>
+    </div>
     {% endif %}
-
     {% endblock %}
   </body>
 </html>

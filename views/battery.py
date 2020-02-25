@@ -7,7 +7,7 @@ import json
 battery = Blueprint('battery', __name__)
 
 
-@battery.route("/battery", methods=["GET", "POST"])
+@battery.route("/#battery", methods=["GET", "POST"])
 def create_battery():
     form = BatteryForm()
     if request.method == 'POST':
@@ -16,13 +16,14 @@ def create_battery():
             new_battery = Battery()
             form.populate_obj(new_battery)
             new_battery.complete_fields()
-            #if new_battery.efficiency is None:
-            #    new_battery.auto_set_eff()
-            #if new_battery.lifetime is None:
-            #    new_battery.auto_set_lifetime()
             new_battery.compute_disposal()
             new_battery.compute_e_manufactoring()
             new_battery_encoded = json.dumps(new_battery.__dict__)
             session['battery'] = new_battery_encoded
             return redirect(url_for('home.index'))
-    return render_template("battery.html", form=form)
+    elif session['battery']:
+        battery = json.loads(session['battery'])
+        for e, key in zip(form, battery):
+            e.data = battery[key]
+    return render_template("index.html", form=form, title_form='Battery', device=None, battery=None,
+                           solar_panel=None, maintenance=None)

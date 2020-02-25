@@ -5,13 +5,16 @@ from wtforms.validators import (DataRequired, InputRequired, NumberRange,
 
 
 class DutyCycleForm(FlaskForm):
-    duty_cycle = f.FloatField(u'Duty cycle of the device',
+    duty_cycle = f.FloatField(u'Duty cycle of the device (%)',
                               validators=[DataRequired(),
                                           NumberRange(min=0.0, max=100.0)])
     voltage = f.FloatField(u'Set the voltage of the device',
                            validators=[DataRequired(),
                                        NumberRange(min=0.0, max=250.0)])
-    display = ['duty_cycle', 'voltage']
+    output_regulator = f.FloatField(u'Efficiecny, output regulator',
+                                    validators=[DataRequired(), NumberRange(
+                                                min=0.0, max=100.0)])
+    display = ['duty_cycle', 'voltage', 'output_regulator']
 
 
 class ElementForm(FlaskForm):
@@ -19,23 +22,22 @@ class ElementForm(FlaskForm):
                                validators=[InputRequired()])
     sleep_mode = f.FloatField(u'Energy in sleep mode',
                               validators=[InputRequired()])
-    area = f.FloatField(u'Area of the element in cm2',
-                        validators=[DataRequired()])
     lifetime = f.FloatField(u'Estimated lifetime',
                             validators=[DataRequired()])
+    area = f.FloatField(u'Area of the element in cm2',
+                        validators=[DataRequired()])
+
     display = ['active_mode',
                'sleep_mode',
-               'area',
-               'lifetime']
+               'lifetime',
+               'area']
 
 
 class BoardForm(FlaskForm):
     active_mode = f.FloatField(u'Energy in active mode',
-                               validators=[InputRequired(),
-                                           NumberRange(min=0.0)])
+                               validators=[InputRequired()])
     sleep_mode = f.FloatField(u'Energy in sleep mode',
-                              validators=[InputRequired(),
-                                          NumberRange(min=0.0)])
+                              validators=[InputRequired()])
     weight = f.FloatField(u'weight of the board in kg',
                           validators=[DataRequired()])
     display = ['active_mode',
@@ -48,24 +50,26 @@ class BatteryForm(FlaskForm):
                                choices=[('Li-Ion', 'Li-Ion'), ('PbA', 'PbA'),
                                         ('NiMh', 'NiMh')],
                                validators=[InputRequired()])
-    weight = f.FloatField(u'Weight of the battery in kg',
-                          validators=[InputRequired(), NumberRange(min=0)])
+    lifetime = f.FloatField(u'estimated lifetime, optional',
+                            validators=[Optional(), NumberRange(min=0.0)])
     efficiency = f.FloatField(u'Efficiecny, optional',
                               validators=[Optional(),
                                           NumberRange(min=0.0, max=100.0)])
-    lifetime = f.FloatField(u'estimated lifetime, optional',
-                            validators=[Optional(), NumberRange(min=0.0)])
+    density = f.FloatField(u'Density, optional',
+                           validators=[Optional()])
     capacity = f.FloatField(u'capacity in [mAh]',
                             validators=[InputRequired(), NumberRange(min=0)])
+    weight = f.FloatField(u'Weight of the battery in kg',
+                          validators=[InputRequired(), NumberRange(min=0)])
 
-    display = ['technology', 'weight', 'efficiency', 'lifetime', 'capacity']
+    display = ['technology', 'lifetime', 'efficiency', 'density', 'capacity',
+               'weight']
 
 
 class SolarForm(FlaskForm):
     technology = f.SelectField(u'Select Technology',
                                choices=[("mono-Si", "mono-Si"),
-                                        ("multi-Si", "multi-Si"),
-                                        ("CdTe", "CdTe")],
+                                        ("multi-Si", "multi-Si")],
                                validators=[DataRequired()])
     surface = f.FloatField(u'Surface of the solar panel in [m2]',
                            validators=[DataRequired(), NumberRange(min=0.0)])
@@ -74,26 +78,29 @@ class SolarForm(FlaskForm):
                                           NumberRange(min=0.0)])
     s_hours = f.FloatField(u'Daily sunny hours',
                            validators=[DataRequired(), NumberRange(min=0.0)])
+    lifetime = f.FloatField(u'estimated lifetime, optional',
+                            validators=[Optional()])
     efficiency = f.FloatField(u'Efficiecny, optional',
                               validators=[Optional(),
                                           NumberRange(min=0.0, max=100.0)])
-    lifetime = f.FloatField(u'estimated lifetime, not required',
-                            validators=[Optional()])
-
-    display = ['technology', 'surface', 'irradiance', 's_hours', 'efficiency',
-               'lifetime']
+    efficiency_w = f.FloatField(u'Efficiecny wear-out, optional',
+                                validators=[Optional(),
+                                            NumberRange(min=0.0, max=100.0)])
+    weight = f.FloatField(u'Weight ', validators=[DataRequired()])
+    display = ['technology', 'surface', 'irradiance', 's_hours', 'lifetime',
+               'efficiency', 'efficiency_w', 'weight']
 
 
 class MaintenanceForm(FlaskForm):
     avg_distance = f.FloatField(u'Average distance for the intervention in km',
                                 validators=[DataRequired(),
                                             NumberRange(min=0.0)])
-    avg_fuel_cons = f.FloatField(u'Average fuel needed for 100 km optional',
-                                 validators=[Optional(),
+    avg_fuel_cons = f.FloatField(u'Average fuel needed for 100 km',
+                                 validators=[DataRequired(),
                                              NumberRange(min=0.0)])
-    conv_factor = f.FloatField(u'Conversion factor from liter of fuel to kWh'
-                               'optional', validators=[Optional(),
-                                                       NumberRange(min=0.0)])
+    conv_factor = f.FloatField(u'Conversion factor from liter of fuel to kWh',
+                               validators=[DataRequired(),
+                                           NumberRange(min=0.0)])
     n_devices = f.FloatField(u'Number of devices that require maintenance',
                              validators=[DataRequired(),
                                          NumberRange(min=1.0)])

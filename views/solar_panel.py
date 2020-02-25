@@ -15,12 +15,15 @@ def create_solar_panel():
         if form.validate_on_submit():
             solar_panel = Solar_Panel()
             form.populate_obj(solar_panel)
-            if solar_panel.efficiency is None:
-                solar_panel.auto_set_eff()
+            solar_panel.complete_fields()
             solar_panel.compute_disposal()
             solar_panel.compute_e_manufactoring()
             solar_panel.daily_energy_produced()
             solar_panel_encoded = json.dumps(solar_panel.__dict__)
             session['solar_panel'] = solar_panel_encoded
             return redirect(url_for('home.index'))
-    return render_template("solar_panel.html", form=form)
+    elif session['solar_panel']:
+        solar_panel = json.loads(session['solar_panel'])
+        for e, key in zip(form, solar_panel):
+            e.data = solar_panel[key]
+    return render_template("index.html", title_form='Solar Panel', form=form)

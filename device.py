@@ -12,6 +12,7 @@ class Device:
         self.daily_e_required = 0
         self.e_manufactoring = 0
         self.disposal = 0
+        self.output_regulator = 0
 
     def add_sensor(self, s):
         self.sensors[len(self.sensors)] = s
@@ -50,11 +51,12 @@ class Component:
 
 class Board(Component):
 
-    DISPOSAL_KG = 0.38
     weight = 0
     active_mode = 0
     sleep_mode = 0
     disposal = None
+    DISPOSAL_KG = 0.38
+
 
     def compute_disposal(self):
         self.DISPOSAL_KG
@@ -69,12 +71,12 @@ class Board(Component):
 
 class Element(Component):
 
-    MANUFACTURING_ENERGY = 5.74
     lifetime = 0
     area = 0
     active_mode = 0
     sleep_mode = 0
     e_manufactoring = None
+    MANUFACTURING_ENERGY = 5.544
 
     def compute_e_manufactoring(self):
         self.MANUFACTURING_ENERGY  # = 5.74 needed to put this data in __dict__
