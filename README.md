@@ -40,5 +40,8 @@ It is possible to indicates information related to:
 
 When all the forms are submited the service show the graphs of the impacts and the comparison between the user and the green soltuions.
 
-## Authon
+![](https://github.com/edoBaldini/IoTGreenCalc/blob/master/images_readme/Schermata%202020-03-04%20alle%2017.07.31.png?raw=true "Solar panel form") ![](https://github.com/edoBaldini/IoTGreenCalc/blob/master/images_readme/Schermata%202020-03-04%20alle%2017.07.50.png?raw=true)
+
+
+## Author
 Edoardo Baldini
