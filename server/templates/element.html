@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <title>IoT model</title>
+  </head>
+  <body>
+    {% extends "header.html" %}
+    {% block content %}
+    <div class="h-100">
+    <div class="masthead">
+      <div class="masthead-bg"></div>
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-12 my-auto">
+            <div class="masthead-content text-white py-5 py-md-0">
+              <h1 class="mb-3">Your model!</h1>
+              <div class="form-holder">
+               <p>
+                <form action="" method="POST">
+                  {{ form.hidden_tag() }}
+                  <h2 class="formTitle">This is an element</h2>
+                  <fieldset>
+                    {% for field in form.display %}
+                      <label class="labelFor" for="{{ field }}">{{ form[field].label }}</label>
+                      {{ form[field] }}
+                      {% if form[field].errors %}
+                        {% for e in form[field].errors %}
+                          <p class="help-block" style="color:red;">{{ e }} Check the type inserted</p>
+                        {% endfor %}
+                      {% endif %}
+                    {% endfor %}      
+                  </fieldset>
+                  <button class="button buttonJeans" type="submit">Submit</button>
+                </form>
+              </p>
+              </div>    
+            </div>    
+          </div>    
+        </div>    
+      </div>    
+    </div>
+    </div>
+    {% endblock %}
+  </body>
+</html>
+
