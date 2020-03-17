@@ -85,7 +85,7 @@
 
 <script>
 export default {
-  name: 'Home',
+  name: 'HelloWorld',
   data() {
     return {
       msg: 'Welcome to Your Vue.js App',

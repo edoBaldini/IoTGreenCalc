@@ -1,4 +1,4 @@
-# green-vue-graphic
+# vue-frontend
 
 > A Vue.js project
 

@@ -1,5 +1,5 @@
 {
-  "name": "green-vue-graphic",
+  "name": "vue-frontend",
   "version": "1.0.0",
   "description": "A Vue.js project",
   "author": "Edoardo <edoardo-baldini@virgilio.it>",
@@ -11,11 +11,11 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "axios": "^0.18.1",
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.19",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue-videobg": "^2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
