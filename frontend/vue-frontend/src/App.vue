@@ -1,12 +1,22 @@
 /* eslint-disable */
 <template>
   <section class="VideoBg">
+    <div id="home-top-video">
     <video autoplay playsinline loop :muted="muted" ref="video">
-       <source :src='require("@/assets/mp4/bg.mp4")' type='video/mp4'>
+       <source class="VideoBg_color" :src='require("@/assets/mp4/bg.mp4")' type='video/mp4'>
     </video>
-    <div class="VideoBg__content">
-      <slot></slot>
     </div>
+    <b-container fluid style="padding-left:5%; padding-right:5%; padding-top:3%">
+      <b-card class="b-card-header-color">
+        <b-card-text class="font-set">IOT IMPACT CALCULATOR</b-card-text>
+      </b-card>
+      <b-card style="background-color:transparent">
+        <b-card-text>impact calculator for tua madre</b-card-text>
+        <b-card-text>impact calculator for tua madre</b-card-text>
+        <b-card-text>impact calculator for tua madre</b-card-text>
+        <b-card-text>impact calculator for tua madre</b-card-text>
+      </b-card>
+    </b-container>
   </section>
 </template>
 
@@ -85,6 +95,7 @@ export default {
 
 
 <style>
+ @import './assets/css/style.css';
   .VideoBg {
     position: relative;
     background-size: cover;
@@ -105,4 +116,44 @@ export default {
     width: 100%;
     height: 100%;
   }
+
+  .VideoBg_color {
+    background-color: black !important;
+  }
+
+  .font-set{
+    font-family: Elianto;
+    font-size: 60px;
+    text-align: center;
+    color:#eaffef;
+  }
+  .b-card-header-color{
+    background-color:rgba(126, 211, 134, 0);
+    color:#eaffef;
+  }
+  .b-card-text-color{
+    background-color: rgba(28,55,101,.96);
+    color:#eaffef;
+  }
+
+#home-top-video:before {
+  content:"";
+  position: absolute;
+  top:0;
+  right:0;
+  left:0;
+  bottom:0;
+  z-index:1;
+  background: rgba(0, 46, 102, .8);
+}
+
+#home-top-video {
+  left: 0%;
+  top: 0%;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
 </style>
