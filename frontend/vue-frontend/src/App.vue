@@ -1,159 +1,208 @@
 /* eslint-disable */
 <template>
-  <section class="VideoBg">
-    <div id="home-top-video">
-    <video autoplay playsinline loop :muted="muted" ref="video">
-       <source class="VideoBg_color" :src='require("@/assets/mp4/bg.mp4")' type='video/mp4'>
-    </video>
-    </div>
+  <section>
+    <video-bg> </video-bg>
     <b-container fluid style="padding-left:5%; padding-right:5%; padding-top:3%">
       <b-card class="b-card-header-color">
         <b-card-text class="font-set">IOT IMPACT CALCULATOR</b-card-text>
       </b-card>
       <b-card style="background-color:transparent">
-        <b-card-text>impact calculator for tua madre</b-card-text>
-        <b-card-text>impact calculator for tua madre</b-card-text>
-        <b-card-text>impact calculator for tua madre</b-card-text>
-        <b-card-text>impact calculator for tua madre</b-card-text>
+        <b-card-text>
+        <form-wizard @on-complete="onComplete"
+                     title=""
+                     subtitle=""
+                     color="rgba(126, 211, 134, 1)"
+                     error-color="#a94442"
+                     back-button-text="back"
+                     next-button-text="next"
+                     >
+            <tab-content title="Start" color="red"></tab-content>
+            <tab-content title="Solar Panel"
+                         icon="" :before-change="validateFirstTab">
+               <vue-form-generator :model="model"
+                                   :schema="firstTabSchema"
+                                   :options="formOptions"
+                                   ref="firstTabForm"
+                                   class="stepTitle"
+                                   >
+               </vue-form-generator>
+            </tab-content>
+            <tab-content title="Battery"
+                         icon="" :before-change="validateSecondTab">
+             <vue-form-generator :model="model"
+                                   :schema="secondTabSchema"
+                                   :options="formOptions"
+                                   ref="secondTabForm"
+                                   >
+               </vue-form-generator>
+            </tab-content>
+            <tab-content title="Device"
+                         icon="" :before-change="validateSecondTab">
+             <vue-form-generator :model="model"
+                                   :schema="secondTabSchema"
+                                   :options="formOptions"
+                                   ref="secondTabForm"
+                                   >
+               </vue-form-generator>
+            </tab-content>
+            <tab-content title="Maintenance"
+                         icon="ti-check">
+              <h4>Your json is ready!</h4>
+              <div class="panel-body">
+                <pre v-if="model" v-html="prettyJSON"></pre>
+              </div>
+            </tab-content>
+        </form-wizard>
+        </b-card-text>
       </b-card>
     </b-container>
   </section>
 </template>
 
 <script>
+// eslint-disable-next-line no-new
+import 'vue-form-generator/dist/vfg.css';
+import VueFormGenerator from 'vue-form-generator';
+import VideoBG from './components/VideoBG';
+// eslint-disable-next-line import/extensions
+import prettyJSON from '../prettyJson.js';
+
 export default {
-  props: {
-    sources: {
-      type: Array,
-      required: true,
-    },
-    img: {
-      type: String,
-    },
-    muted: {
-      type: Boolean,
-      default: true,
-    },
+  components: {
+    'video-bg': VideoBG,
+    'vue-form-generator': VueFormGenerator.component,
   },
   data() {
     return {
-      videoRatio: null,
+      model: {
+        firstName: '',
+        lastName: '',
+        email: '',
+        streetName: '',
+        streetNumber: '',
+        city: '',
+        country: '',
+      },
+      formOptions: {
+        validationErrorClass: 'has-error',
+        validationSuccessClass: 'has-success',
+        validateAfterChanged: true,
+      },
+      firstTabSchema: {
+        fields: [{
+          type: 'input',
+          inputType: 'text',
+          label: 'First name',
+          model: 'firstName',
+          required: true,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.string,
+          styleClasses: 'col-xs-6',
+        },
+        {
+          type: 'input',
+          inputType: 'text',
+          label: 'Last name',
+          model: 'lastName',
+          required: true,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.string,
+          styleClasses: 'col-xs-6',
+        },
+        {
+          type: 'input',
+          inputType: 'text',
+          label: 'Email',
+          model: 'email',
+          required: true,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.email,
+          styleClasses: 'col-xs-12',
+        },
+        ],
+      },
+      secondTabSchema: {
+        fields: [
+          {
+            type: 'input',
+            inputType: 'text',
+            label: 'Street name',
+            model: 'streetName',
+            required: true,
+            // eslint-disable-next-line no-undef
+            validator: VueFormGenerator.validators.string,
+            styleClasses: 'col-xs-9',
+          },
+          {
+            type: 'input',
+            inputType: 'text',
+            label: 'Street number',
+            model: 'streetNumber',
+            required: true,
+            // eslint-disable-next-line no-undef
+            validator: VueFormGenerator.validators.string,
+            styleClasses: 'col-xs-3',
+          },
+          {
+            type: 'input',
+            inputType: 'text',
+            label: 'City',
+            model: 'city',
+            required: true,
+            // eslint-disable-next-line no-undef
+            validator: VueFormGenerator.validators.string,
+            styleClasses: 'col-xs-6',
+          },
+          {
+            type: 'select',
+            label: 'Country',
+            model: 'country',
+            required: true,
+            // eslint-disable-next-line no-undef
+            validator: VueFormGenerator.validators.string,
+            values: ['United Kingdom', 'Romania', 'Germany'],
+            styleClasses: 'col-xs-6',
+          },
+        ],
+      },
     };
   },
-  mounted() {
-    this.setImageUrl();
-    this.setContainerHeight();
-    if (this.videoCanPlay()) {
-      this.$refs.video.oncanplay = () => {
-        if (!this.$refs.video) return;
-        this.videoRatio = this.$refs.video.videoWidth / this.$refs.video.videoHeight;
-        this.setVideoSize();
-        this.$refs.video.style.visibility = 'visible';
-      };
-    }
-    window.addEventListener('resize', this.resize);
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.resize);
-  },
   methods: {
-    resize() {
-      this.setContainerHeight();
-      if (this.videoCanPlay()) {
-        this.setVideoSize();
-      }
+    onComplete() {
+      // eslint-disable-next-line no-alert
+      alert('Yay. Done!');
     },
-    videoCanPlay() {
-      return !!this.$refs.video.canPlayType;
+    validateFirstTab() {
+      return this.$refs.firstTabForm.validate();
     },
-    setImageUrl() {
-      if (this.img) {
-        this.$el.style.backgroundImage = `url(${this.img})`;
-      }
+    validateSecondTab() {
+      return this.$refs.secondTabForm.validate();
     },
-    setContainerHeight() {
-      this.$el.style.height = `${window.innerHeight}px`;
-    },
-    setVideoSize() {
-      let width;
-      let height;
-      const containerRatio = this.$el.offsetWidth / this.$el.offsetHeight;
-      if (containerRatio > this.videoRatio) {
-        width = this.$el.offsetWidth;
-      } else {
-        height = this.$el.offsetHeight;
-      }
-      this.$refs.video.style.width = width ? `${width}px` : 'auto';
-      this.$refs.video.style.height = height ? `${height}px` : 'auto';
-    },
-    getMediaType(src) {
-      return `video/, ${src.split('.').pop()}`;
+  },
+  computed: {
+    prettyJSON() {
+      return prettyJSON(this.model);
     },
   },
 };
+
 </script>
 
 
 <style>
  @import './assets/css/style.css';
-  .VideoBg {
-    position: relative;
-    background-size: cover;
-    background-position: center;
-    overflow: hidden;
-  }
-  .VideoBg video {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    visibility: hidden;
-    transform: translate(-50%, -50%);
-  }
-  .VideoBg__content {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
 
-  .VideoBg_color {
-    background-color: black !important;
-  }
-
-  .font-set{
-    font-family: Elianto;
-    font-size: 60px;
-    text-align: center;
-    color:#eaffef;
-  }
-  .b-card-header-color{
-    background-color:rgba(126, 211, 134, 0);
-    color:#eaffef;
-  }
-  .b-card-text-color{
-    background-color: rgba(28,55,101,.96);
+ /* allows to change the color of each tab title */
+.stepTitle{
     color:#eaffef;
   }
 
-#home-top-video:before {
-  content:"";
-  position: absolute;
-  top:0;
-  right:0;
-  left:0;
-  bottom:0;
-  z-index:1;
-  background: rgba(0, 46, 102, .8);
+.vue-form-generator {
+    color:#eaffef;
 }
 
-#home-top-video {
-  left: 0%;
-  top: 0%;
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
+.errors {
+  color: #a94442;
+  font-weight: bold;
 }
 </style>

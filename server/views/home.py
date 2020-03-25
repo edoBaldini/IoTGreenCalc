@@ -11,52 +11,52 @@ home = Blueprint('home', __name__)
 
 @home.route('/', methods=["GET", "POST"])
 def index():
-    if len(session) == 0:
-        session['battery'] = None
-        session['solar_panel'] = None
-        session['device'] = Device().__dict__
-        session['maintenance'] = None
+    # if len(session) == 0:
+    #     session['battery'] = None
+    #     session['solar_panel'] = None
+    #     session['device'] = Device().__dict__
+    #     session['maintenance'] = None
 
-    session['battery'] = json.dumps({
-                            "technology": "Li-Ion", 
-                            "lifetime": 9.0, 
-                            "efficiency": 90.0, 
-                            "density": 140.516129, 
-                            "capacity": 6600.0, 
-                            "weight": 0.155, 
-                            "e_manufactoring": 25.544, 
-                            "disposal": 0.08556000000000001
-                            })
-    session['solar_panel'] = json.dumps({
-                                            "technology": "mono-Si", 
-                                            "surface": 0.03744, 
-                                            "irradiance": 1.127419355, 
-                                            "s_hours": 9.0, 
-                                            "lifetime": 20.0, 
-                                            "efficiency": 17.0, 
-                                            "kwp": 0, 
-                                            "efficiency_w": 80.0, 
-                                            "weight": 0.54, 
-                                            "disposal": 0.08650800000000002, 
-                                            "e_manufactoring": 205.02518400000002, 
-                                            "e_produced": 0.025832875358534402
-                                        })
-    sensors = {'0': json.dumps({"active_mode": 11.0, "sleep_mode": 0.0, "lifetime": 1000000.0, "area": 13.8, "e_manufactoring": 76.5072}),
-                '1': json.dumps({"active_mode": 0.006, "sleep_mode": 0.0, "lifetime": 1000000.0, "area": 0.278, "e_manufactoring": 1.541232}),
-                '2': json.dumps({"active_mode": 0.5, "sleep_mode": 0.0, "lifetime": 1000000.0, "area": 0.283, "e_manufactoring": 1.5689519999999997}),
-                '3': json.dumps({"active_mode": 0.38, "sleep_mode": 0.0, "lifetime": 1000000.0, "area": 0.976, "e_manufactoring": 5.410944}),
-                '4': json.dumps({"active_mode": 3.0, "sleep_mode": 0.0, "lifetime": 10.0, "area": 0.665, "e_manufactoring": 3.68676}),
-                '5': json.dumps({"active_mode": 26.0, "sleep_mode": 0.0, "lifetime": 10.0, "area": 0.636, "e_manufactoring": 3.525984}),
-                '6': json.dumps({"active_mode": 34.0, "sleep_mode": 0.0, "lifetime": 10.0, "area": 0.636, "e_manufactoring": 3.525984})}
-    boards = {'0': json.dumps({"active_mode": 0.0, "sleep_mode": 0.0, "weight": 0.02, "disposal": 0.0076}),
-                '1': json.dumps({"active_mode": 0.0, "sleep_mode": 0.0, "weight": 0.02, "disposal": 0.0076})}
-    processor = json.dumps({"active_mode": 9.0, "sleep_mode": 0.062,  "lifetime": 1000000.0, "area": 2.641, "e_manufactoring": 14.641703999999999})
-    radio = json.dumps({ "active_mode": 0.303030303, "sleep_mode": 0.0, "lifetime": 1000000.0, "area": 6.731, "e_manufactoring": 37.316663999999996})
+    # session['battery'] = json.dumps({
+    #                         "technology": "Li-Ion", 
+    #                         "lifetime": 9.0, 
+    #                         "efficiency": 90.0, 
+    #                         "density": 140.516129, 
+    #                         "capacity": 6600.0, 
+    #                         "weight": 0.155, 
+    #                         "e_manufactoring": 25.544, 
+    #                         "disposal": 0.08556000000000001
+    #                         })
+    # session['solar_panel'] = json.dumps({
+    #                                         "technology": "mono-Si", 
+    #                                         "surface": 0.03744, 
+    #                                         "irradiance": 1.127419355, 
+    #                                         "s_hours": 9.0, 
+    #                                         "lifetime": 20.0, 
+    #                                         "efficiency": 17.0, 
+    #                                         "kwp": 0, 
+    #                                         "efficiency_w": 80.0, 
+    #                                         "weight": 0.54, 
+    #                                         "disposal": 0.08650800000000002, 
+    #                                         "e_manufactoring": 205.02518400000002, 
+    #                                         "e_produced": 0.025832875358534402
+    #                                     })
+    # sensors = {'0': json.dumps({"active_mode": 11.0, "sleep_mode": 0.0, "lifetime": 1000000.0, "area": 13.8, "e_manufactoring": 76.5072}),
+    #             '1': json.dumps({"active_mode": 0.006, "sleep_mode": 0.0, "lifetime": 1000000.0, "area": 0.278, "e_manufactoring": 1.541232}),
+    #             '2': json.dumps({"active_mode": 0.5, "sleep_mode": 0.0, "lifetime": 1000000.0, "area": 0.283, "e_manufactoring": 1.5689519999999997}),
+    #             '3': json.dumps({"active_mode": 0.38, "sleep_mode": 0.0, "lifetime": 1000000.0, "area": 0.976, "e_manufactoring": 5.410944}),
+    #             '4': json.dumps({"active_mode": 3.0, "sleep_mode": 0.0, "lifetime": 10.0, "area": 0.665, "e_manufactoring": 3.68676}),
+    #             '5': json.dumps({"active_mode": 26.0, "sleep_mode": 0.0, "lifetime": 10.0, "area": 0.636, "e_manufactoring": 3.525984}),
+    #             '6': json.dumps({"active_mode": 34.0, "sleep_mode": 0.0, "lifetime": 10.0, "area": 0.636, "e_manufactoring": 3.525984})}
+    # boards = {'0': json.dumps({"active_mode": 0.0, "sleep_mode": 0.0, "weight": 0.02, "disposal": 0.0076}),
+    #             '1': json.dumps({"active_mode": 0.0, "sleep_mode": 0.0, "weight": 0.02, "disposal": 0.0076})}
+    # processor = json.dumps({"active_mode": 9.0, "sleep_mode": 0.062,  "lifetime": 1000000.0, "area": 2.641, "e_manufactoring": 14.641703999999999})
+    # radio = json.dumps({ "active_mode": 0.303030303, "sleep_mode": 0.0, "lifetime": 1000000.0, "area": 6.731, "e_manufactoring": 37.316663999999996})
 
-    session['device'] = {'sensors': sensors, 'boards': boards, 'processor': processor,
-                        'radio': radio, 'duty_cycle': '5', 'voltage': '3.3',
-                        'output_regulator': '90', 'disposal': 0.0152, 'e_manufactoring': 147.72542399999998,
-                        'sleep_mode': 0.062, 'active_mode': 84.189030303, 'daily_e_required': 0.001216992383999568}
+    # session['device'] = {'sensors': sensors, 'boards': boards, 'processor': processor,
+    #                     'radio': radio, 'duty_cycle': '5', 'voltage': '3.3',
+    #                     'output_regulator': '90', 'disposal': 0.0152, 'e_manufactoring': 147.72542399999998,
+    #                     'sleep_mode': 0.062, 'active_mode': 84.189030303, 'daily_e_required': 0.001216992383999568}
 
     if request.method == 'POST':
         if request.form.get('component', None) == 'device':
@@ -249,6 +249,3 @@ def inspect_component(component):
     if real:
         for key in real:
             print(key, ': ', real[key], '\n')
-
-
-

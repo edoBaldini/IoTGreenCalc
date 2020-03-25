@@ -22,16 +22,28 @@ class Solar_Panel:
     WH2MJ = 3600 * 10 ** (- 6)                   # CONVERSION FROM WH TO MJ
     LIFETIME = 43.73
 
-    def __init__(self):
-        self.technology = None
-        self.surface = 0                   # In [m2]
-        self.irradiance = 0            # Daily irradiation [kWh / m2]
-        self.s_hours = 0                   # Daily solar hours
-        self.lifetime = 0
-        self.efficiency = 0
-        self.kwp = 0
-        self.efficiency_w = 0
-        self.weight = 0
+    default_data = {
+        'technology': None,
+        'surface': 0,                           # squared meters
+        'irradiance': 0,                        # 
+        's_hours': 0,
+        'lifetime': 0,                          # years   
+        'efficiency': 0,                        
+        'kwp': 0,
+        'efficiency_w': 0,                      # wear-out efficiency
+        'weight': 0                             # kg
+    }
+    
+    def __init__(self,data=default_data):
+        self.technology = data.get('technology')
+        self.surface = data.get('surface')
+        self.irradiance = data.get('irradiance')
+        self.s_hours = data.get('s_hours')
+        self.lifetime = data.get('lifetime')
+        self.efficiency = data.get('efficiency')
+        self.kwp = data.get('kwp')
+        self.efficiency_w = data.get('efficiency_w')
+        self.weight = data.get('weight')
 
     def compute_e_manufactoring(self):
         self.e_manufactoring = self.surface *\
