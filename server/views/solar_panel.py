@@ -32,19 +32,26 @@ solar_panel = Blueprint('solar_panel', __name__)
 @solar_panel.route('/solar_panel', methods=["GET", "POST"])
 def create_solar_panel():
     response_object = {'status': 'success'}
+    print('request method ',request.method)
     if request.method == "POST":
         data = request.get_json()
-        print(data)
-        solar_panel = Solar_Panel(data)
-        solar_panel.complete_fields()
-        solar_panel.compute_disposal()
-        solar_panel.compute_e_manufactoring()
-        solar_panel.daily_energy_produced()
-        solar_panel_encoded = json.dumps(solar_panel.__dict__)
-        session['solar_panel'] = solar_panel_encoded
-        response_object['message'] = 'solar panel added'
+        if data is not None:  
+            solar_panel = Solar_Panel(data)
+            solar_panel.complete_fields()
+            solar_panel.compute_disposal()
+            solar_panel.compute_e_manufactoring()
+            solar_panel.daily_energy_produced()
+            solar_panel_encoded = json.dumps(solar_panel.__dict__)
+            session['solar_panel'] = solar_panel_encoded
+            response_object['message'] = 'solar panel added'
+        else:
+            response_object = {'status': 'error'}
     else:
-        response_object['solar_panel'] = session['solar_panel']
+        if ('solar_panel' in session.keys()):
+            response_object['solar_panel'] = session['solar_panel']
+        else:
+            response_object = {'status': 'error in get'}
+    print('response ',response_object)
     return jsonify(response_object)
 
 # example of json request to add a solar panel:

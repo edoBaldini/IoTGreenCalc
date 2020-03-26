@@ -9,6 +9,7 @@ import Vue from 'vue';
 import App from './App';
 import router from './router';
 
+
 Vue.use(BootstrapVue);
 Vue.component('video-bg', VideoBg);
 Vue.use(FormWizard);
@@ -19,6 +20,9 @@ new Vue({
   el: '#app',
   router,
   components: { App },
+  // data: {
+  //   errorMsg: null,
+  // },
   // methods: {
   //   onComplete() {
   //     // eslint-disable-next-line no-alert
