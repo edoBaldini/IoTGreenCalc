@@ -47,7 +47,9 @@ class Solar_Panel:
         self.kwp = data.get('kwp')
         self.efficiency_w = data.get('efficiency_w')
         self.weight = data.get('weight')
+        
         self.solar_panel_validation()
+        
         self.complete_fields()
         self.compute_e_manufactoring()
         self.compute_disposal()
@@ -67,7 +69,7 @@ class Solar_Panel:
         if all(value for value in validation_status.values()):
             return True
         else:
-            raise TechnologyError(validation_status)
+            raise SolarPanelError(validation_status)
 
     def compute_e_manufactoring(self):
         self.e_manufactoring = self.surface *\
@@ -103,6 +105,6 @@ class Solar_Panel:
         self.efficiency_w = self.EFFICIENCY[self.technology]
 
 
-class TechnologyError(Exception):
+class SolarPanelError(Exception):
     def __init__(self, message):
         self.message = message
