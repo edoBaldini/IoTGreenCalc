@@ -24,9 +24,9 @@ class Solar_Panel:
 
     default_data = {
         'technology': None,
-        'surface': 3,                           # squared meters
-        'irradiance': 3,                        # daily irradiance in Mj
-        's_hours': 3,
+        'surface': 0,                           # squared meters
+        'irradiance': 0,                        # daily irradiance in Mj
+        's_hours': 0,
         'lifetime': 0,                          # years
         'efficiency': 0,
         'kwp': 0,
@@ -47,9 +47,27 @@ class Solar_Panel:
         self.kwp = data.get('kwp')
         self.efficiency_w = data.get('efficiency_w')
         self.weight = data.get('weight')
-        self.e_manufacturing = data.get('e_manufacturing')
-        self.disposal = data.get('disposal')
-        self.e_produced = data.get('e_produced')
+        self.solar_panel_validation()
+        self.complete_fields()
+        self.compute_e_manufactoring()
+        self.compute_disposal()
+        self.daily_energy_produced()
+
+    def solar_panel_validation(self):
+        validation_status = {}
+        validation_status['technology'] = self.technology in self.TECHNOLOGY
+        validation_status['surface'] = self.surface > 0.0
+        validation_status['irradiance'] = self.irradiance > 0.0
+        validation_status['s_hours'] = (self.s_hours > 0.0 and self.s_hours < 24)
+        validation_status['lifetime'] = self.lifetime >= 0.0
+        validation_status['efficiency'] = (self.efficiency >= 0.0 and self.efficiency <= 100.0)
+        validation_status['kwp'] = self.kwp >= 0
+        validation_status['efficiency_w'] = (self.efficiency_w >= 0.0 and self.efficiency_w <= 100.0)
+        validation_status['weight'] = self.weight > 0
+        if all(value for value in validation_status.values()):
+            return True
+        else:
+            raise TechnologyError(validation_status)
 
     def compute_e_manufactoring(self):
         self.e_manufactoring = self.surface *\
@@ -69,14 +87,22 @@ class Solar_Panel:
         self.e_produced = self.surface * self.irradiance * eff *\
             (10**3) * self.WH2MJ
 
+    def complete_fields(self):
+        self.auto_set_eff() if self.efficiency is 0 else self.efficiency
+        self.auto_set_lifetime() if self.lifetime is 0 else self.lifetime
+        self.auto_set_eff_w() if self.efficiency_w is 0 else self.efficiency_w
+
     def auto_set_eff(self):
         self.efficiency = self.EFFICIENCY[self.technology]
         self.kwp = self.efficiency * self.surface
-        self.efficiency_w = self.EFFICIENCY[self.technology]
 
     def auto_set_lifetime(self):
         self.lifetime = self.LIFETIME
 
-    def complete_fields(self):
-        self.auto_set_eff() if self.efficiency is None else self.efficiency
-        self.auto_set_lifetime() if self.lifetime is None else self.lifetime
+    def auto_set_eff_w(self):
+        self.efficiency_w = self.EFFICIENCY[self.technology]
+
+
+class TechnologyError(Exception):
+    def __init__(self, message):
+        self.message = message
