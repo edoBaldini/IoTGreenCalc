@@ -8,7 +8,7 @@ from iot_green_calculator.battery import Battery, BatteryError
 
 log = logging.getLogger(__name__)
 
-ns = api.namespace('battery', description='Battery panel operations')
+ns = api.namespace('battery', description='Battery operations')
 
 
 @ns.route('/')
@@ -22,7 +22,7 @@ class CategoryCollection(Resource):
     def post(self):
         data = request.json
         try:
-            battery = Battery(data) # inside the solar panel constructor there is an additional validator
+            battery = Battery(data) # inside the battery constructor there is an additional validator
         except BatteryError as e:
             print(e.message)
             return e.message, 400

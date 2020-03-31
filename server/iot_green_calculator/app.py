@@ -5,6 +5,9 @@ from flask import Flask, Blueprint
 from iot_green_calculator import settings
 from iot_green_calculator.api.endpoints.solar_panel import ns as solar_panel_namespace
 from iot_green_calculator.api.endpoints.battery import ns as battery
+from iot_green_calculator.api.endpoints.element import ns as element
+from iot_green_calculator.api.endpoints.board import ns as board
+from iot_green_calculator.api.endpoints.board import ns as device
 from iot_green_calculator.api.restplus import api
 
 app = Flask(__name__)
@@ -28,6 +31,9 @@ def initialize_app(flask_app):
     api.init_app(blueprint)
     api.add_namespace(solar_panel_namespace)
     api.add_namespace(battery)
+    api.add_namespace(element)
+    api.add_namespace(board)
+    api.add_namespace(device)
     flask_app.register_blueprint(blueprint)
 
 
