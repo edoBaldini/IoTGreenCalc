@@ -19,10 +19,14 @@ export default {
   data() {
     return {
       model: {
-        streetName: '',
-        streetNumber: '',
-        city: '',
-        country: '',
+        technology: 'Li-Ion',
+        lifetime: 0,
+        efficiency: 0,
+        density: 0,
+        capacity: 0,
+        weight: '',
+        e_manufactoring: '',
+        disposal: '',
       },
       formOptions: {
         validationErrorClass: 'has-error',
@@ -30,47 +34,95 @@ export default {
         validateAfterChanged: true,
       },
       batteryTabSchema: {
-        fields: [
-          {
-            type: 'input',
-            inputType: 'text',
-            label: 'Street name',
-            model: 'streetName',
-            required: true,
-            // eslint-disable-next-line no-undef
-            validator: VueFormGenerator.validators.string,
-            styleClasses: 'col-xs-9',
-          },
-          {
-            type: 'input',
-            inputType: 'text',
-            label: 'Street number',
-            model: 'streetNumber',
-            required: true,
-            // eslint-disable-next-line no-undef
-            validator: VueFormGenerator.validators.string,
-            styleClasses: 'col-xs-3',
-          },
-          {
-            type: 'input',
-            inputType: 'text',
-            label: 'City',
-            model: 'city',
-            required: true,
-            // eslint-disable-next-line no-undef
-            validator: VueFormGenerator.validators.string,
-            styleClasses: 'col-xs-6',
-          },
-          {
-            type: 'select',
-            label: 'Country',
-            model: 'country',
-            required: true,
-            // eslint-disable-next-line no-undef
-            validator: VueFormGenerator.validators.string,
-            values: ['United Kingdom', 'Romania', 'Germany'],
-            styleClasses: 'col-xs-6',
-          },
+        fields: [{
+          type: 'select',
+          label: 'Technology',
+          model: 'technology',
+          values: ['Li-Ion', 'PbA', 'NiMh'],
+          required: true,
+          // eslint-disable-next-line no-undef
+          styleClasses: 'col-xs-6',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Lifetime (years)',
+          model: 'lifetime',
+          required: false,
+          min: 0,
+          step: 1,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.number,
+          styleClasses: 'col-xs-6',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Efficiency',
+          model: 'efficiency',
+          required: false,
+          min: 0,
+          step: 0.1,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.number,
+          styleClasses: 'col-xs-12',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Density (Wh)',
+          model: 'density',
+          required: false,
+          min: 0,
+          step: 0.1,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.number,
+          styleClasses: 'col-xs-12',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Capacity (mAh)',
+          model: 'capacity',
+          required: true,
+          min: 0,
+          step: 0.1,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.number,
+          styleClasses: 'col-xs-12',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Weight (kg)',
+          model: 'weight',
+          required: true,
+          min: Number.MIN_VALUE,
+          step: 0.1,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.number,
+          styleClasses: 'col-xs-12',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Manufacturing energy (Mj)',
+          model: 'e_manufactoring',
+          readonly: true,
+          disabled: true,
+          // eslint-disable-next-line no-undef
+          styleClasses: 'col-xs-12',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Disposal (kg)',
+          model: 'disposal',
+          readonly: true,
+          disabled: true,
+          // eslint-disable-next-line no-undef
+          styleClasses: 'col-xs-12',
+        },
         ],
       },
     };

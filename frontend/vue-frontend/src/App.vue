@@ -32,6 +32,7 @@
             <tab-content title="Device"
                          icon="" :before-change="() => postData('device-form')">
               <device-form ref="device-form"></device-form>
+              <sensors-form ref="sensors-form"></sensors-form>
             </tab-content>
            <tab-content title="Maintenance"
                          icon="ti-check">
@@ -62,17 +63,18 @@ import VideoBG from './components/VideoBG';
 import SolarPanelStep from './components/SolarPanelStep';
 import BatteryPanelStep from './components/BatteryStep';
 import DeviceStep from './components/DeviceStep';
+import SensorsStep from './components/SensorsStep';
 import MaintenanceStep from './components/MaintenanceStep';
-import prettyJSON from '../prettyJson';
+// import prettyJSON from '../prettyJson';
 
 const apiEnpoints = {
-  'solar-panel-form': 'solar_panel',
-  'battery-form': 'battery',
-  'device-form': 'device',
-  'maintenance-form': 'maintenance',
+  'solar-panel-form': 'solar_panel/',
+  'battery-form': 'battery/',
+  'device-form': 'device/',
+  'maintenance-form': 'maintenance/',
 };
 
-const path = 'http://127.0.0.1:5000/';
+const path = 'http://127.0.0.1:8888/api/';
 
 export default {
   components: {
@@ -81,6 +83,7 @@ export default {
     'solar-panel-form': SolarPanelStep,
     'battery-form': BatteryPanelStep,
     'device-form': DeviceStep,
+    'sensors-form': SensorsStep,
     'maintenance-form': MaintenanceStep,
   },
   data() {
@@ -107,31 +110,33 @@ export default {
       // eslint-disable-next-line no-alert
       alert('Yay. Done!');
     },
+
+    getData(ref) {
+      axios.get(path + apiEnpoints[ref]).then((res) => {
+        this.$refs[ref].model = res.data;
+      });
+    },
+
     postData(ref) {
       return new Promise((resolve, reject) => {
         if (this.$refs[ref].validate()) {
-          axios.get((path + apiEnpoints[ref])).then((res) => {
-            alert('right request', res);
-          // this.getResource(ref);
+          // axios.get((path + apiEnpoints[ref])).then((res) => {
+          axios.post(path + apiEnpoints[ref], this.$refs[ref].model).then((res) => {
+            this.$refs[ref].model = res.data;
+            // console.log(res.data);
+            resolve(true);
           })
             .catch((error) => {
               // eslint-disable-next-line
-              prettyJSON(this.$refs[ref].model);
-              console.log(error);
-              reject('something does not work in communication with the server, try again');
+              // alert(prettyJSON(this.$refs[ref].model));
+              console.log(error.response);
+              reject('the data provided are not admitted');
             });
         } else {
           reject('form not properly compiled');
         }
       });
     },
-    //   if (this.$refs[ref].validate()) {
-    //     alert('sei valido per questo form ', prettyJSON(this.$refs[ref].model));
-    //     axios.post(path + apiEnpoints[ref], prettyJSON(this.$refs[ref].model));
-    //   } else {
-    //     this.errorHandler('form not properly compiled');
-    //   }
-    // },
     errorHandler(msg) {
       this.errorMsg = msg;
     },
@@ -147,6 +152,10 @@ export default {
 
 <style>
  @import './assets/css/style.css';
+
+body {
+  background-color: #163766;
+}
 
  /* allows to change the color of each tab title */
 .stepTitle{
