@@ -10,7 +10,7 @@ class Device:
         'duty_cycle': 0,
         'voltage': 0,
         'daily_e_required': None,
-        'e_manufactoring': None,
+        'e_manufacturing': None,
         'disposal': None, 
         'output_regulator': 0
     }
@@ -33,7 +33,7 @@ class Device:
             raise DeviceError('error in the provided boards, sensors, radio\
                                 or processor')
         
-        self.compute_e_manufactoring(self.sensors, self.processor, self.radio)
+        self.compute_e_manufacturing(self.sensors, self.processor, self.radio)
         self.disposal(self.boards)
         self.compute_e_required(self.duty_cycle, self.active_mode, self.sleep_mode, self.voltage)
 
@@ -67,12 +67,12 @@ class Device:
     def add_board(self, b):
         self.boards[len(self.boards)] = b
 
-    def compute_e_manufactoring(self, sensors, processor, radio):
-        self.e_manufactoring = 0
+    def compute_e_manufacturing(self, sensors, processor, radio):
+        self.e_manufacturing = 0
         for s in sensors.values():
-            self.e_manufactoring += s.e_manufactoring
-        self.e_manufactoring += processor.e_manufactoring
-        self.e_manufactoring += radio.e_manufactoring
+            self.e_manufacturing += s.e_manufacturing
+        self.e_manufacturing += processor.e_manufacturing
+        self.e_manufacturing += radio.e_manufacturing
 
     def disposal_dict(self, boards):
         self.disposal = 0
@@ -140,7 +140,7 @@ class Element():
         'area': 0,
         'active_mode': 0,
         'sleep_mode': 0,
-        'e_manufacturing': None,
+        'e_manufacturing': None
     }
 
     def __init__(self, data=default_data):
@@ -151,7 +151,7 @@ class Element():
        
        self.element_validation()
 
-       self.e_manufactoring = self.compute_e_manufactoring()
+       self.compute_e_manufacturing()
 
     def element_validation(self):
         validation_status = {}
@@ -164,9 +164,9 @@ class Element():
         else:
             raise ElementError(validation_status)
 
-    def compute_e_manufactoring(self):
+    def compute_e_manufacturing(self):
         self.MANUFACTURING_ENERGY  # needed to put this data in __dict__
-        self.e_manufactoring = self.area * self.MANUFACTURING_ENERGY
+        self.e_manufacturing = self.area * self.MANUFACTURING_ENERGY
 
 class ElementError(Exception):
     def __init__(self, message):

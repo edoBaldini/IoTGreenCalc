@@ -50,7 +50,7 @@ class Battery:
     def battery_validation(self):
         validation_satus = {}
         validation_satus['technology'] = self.technology in self.TECHNOLOGY
-        validation_satus['lifetime'] = self.lifetime > 0.0
+        validation_satus['lifetime'] = self.lifetime >= 0.0
         validation_satus['efficiency'] = self.efficiency >= 0.0 and self.efficiency < 100
         validation_satus['density'] = self.density >= 0.0
         validation_satus['capacity'] = self.capacity > 0.0
@@ -60,7 +60,7 @@ class Battery:
         else:
             raise BatteryError(validation_satus)
 
-    def compute_e_manufactoring(self):
+    def compute_e_manufacturing(self):
         self.e_manufactoring = self.weight *\
             self.MANUFACTURING_ENERGY[self.technology]
 

@@ -49,7 +49,8 @@ class Solar_Panel:
         self.weight = data.get('weight')
         
         self.solar_panel_validation()
-        
+
+#   Lifetime, Efficiency and Efficiency_w if equal to 0 will be replaced with common parameters
         self.complete_fields()
         self.compute_e_manufactoring()
         self.compute_disposal()

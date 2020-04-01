@@ -44,7 +44,7 @@
             id="sensor-modal"
             title="Add a new sensor"
             hide-footer>
-        <b-form @submit="onSubmit" @reset="onReset" class="w-100">
+        <b-form @submit=onSubmit @reset="onReset" class="w-100" ref="element-form">
             <vue-form-generator :model="model"
                                 :schema="sensorTabSchema"
                                 :options="formOptions"
@@ -59,18 +59,23 @@
     </b-modal>
   </div>
 </template>
-// TODO FINISH ADD SENSOR SUBMIT AND THEN CHECK IF IT IS ADDED IN DEVICESETUP
 <script>
 import 'vue-form-generator/dist/vfg.css';
 import VueFormGenerator from 'vue-form-generator';
+import axios from 'axios';
 import prettyJSON from '../../prettyJson';
+
+const apiEnpoints = {
+  'element-form': 'element/',
+};
+const path = 'http://127.0.0.1:8888/api/';
 
 export default {
   data() {
     return {
-      sensors: [],
+      sensors: {},
+      counter_sensors: 0,
       message: '',
-      showMessage: false,
       model: {
         lifetime: 0,
         area: 0,
@@ -148,20 +153,43 @@ export default {
     validate() {
       return this.$refs.sensorTabSchema.validate();
     },
-    onSubmit() {
-      alert('yay');
-    },
-    onReset(evt) {
-      evt.preventDefault();
-      this.$refs.addSensorModal.hide();
-      this.initForm();
-    },
     initForm() {
       this.model.lifetime = '';
       this.model.area = '';
       this.model.active_mode = '';
       this.model.sleep_mode = '';
       this.model.e_manufacturing = null;
+    },
+    addSensor() {
+      return new Promise((resolve, reject) => {
+        if (this.validate()) {
+          axios.post(path + apiEnpoints['element-form'], this.model).then((res) => {
+            this.sensors[this.counter_sensors] = res.data;
+            this.counter_sensors += 1;
+            this.initForm();
+            // console.log(res.data);
+            resolve(true);
+          })
+            .catch((error) => {
+              // eslint-disable-next-line
+              // alert(prettyJSON(this.$refs[ref].model));
+              console.log(error.response);
+              reject('the data provided are not admitted');
+            });
+        } else {
+          reject('form not properly compiled');
+        }
+      });
+    },
+    onSubmit(evt) {
+      evt.preventDefault();
+      this.$refs.addSensorModal.hide();
+      this.addSensor();
+    },
+    onReset(evt) {
+      evt.preventDefault();
+      this.$refs.addSensorModal.hide();
+      this.initForm();
     },
   },
   computed: {

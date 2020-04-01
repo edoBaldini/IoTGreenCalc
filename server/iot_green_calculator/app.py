@@ -2,15 +2,17 @@ import logging.config
 
 import os
 from flask import Flask, Blueprint
+from flask_cors import CORS
 from iot_green_calculator import settings
 from iot_green_calculator.api.endpoints.solar_panel import ns as solar_panel_namespace
 from iot_green_calculator.api.endpoints.battery import ns as battery
 from iot_green_calculator.api.endpoints.element import ns as element
 from iot_green_calculator.api.endpoints.board import ns as board
-from iot_green_calculator.api.endpoints.board import ns as device
+from iot_green_calculator.api.endpoints.device import ns as device
 from iot_green_calculator.api.restplus import api
 
 app = Flask(__name__)
+cors = CORS(app)
 logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), '../logging.conf'))
 logging.config.fileConfig(logging_conf_path)
 log = logging.getLogger(__name__)
