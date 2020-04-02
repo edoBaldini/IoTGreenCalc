@@ -1,8 +1,8 @@
 class Device:
 
     default_data = {
-        'boards': {},
-        'sensors': {},
+        'boards': [],
+        'sensors': [],
         'processor': None,
         'radio': None, 
         'active_mode': None,
@@ -19,7 +19,8 @@ class Device:
         self.duty_cycle = data.get('duty_cycle')
         self.voltage = data.get('voltage')
         self.output_regulator = data.get('output_regulator')
-
+        self.active_mode = 0
+        self.sleep_mode = 0
         self.device_validation()
 
         ''' these fields do not need a validation because the validation
@@ -34,7 +35,8 @@ class Device:
                                 or processor')
         
         self.compute_e_manufacturing(self.sensors, self.processor, self.radio)
-        self.disposal(self.boards)
+        self.compute_disposal(self.boards)
+        self.compute_active_sleep()
         self.compute_e_required(self.duty_cycle, self.active_mode, self.sleep_mode, self.voltage)
 
 
@@ -50,35 +52,42 @@ class Device:
             raise DeviceError(validation_satus)
 
     def add_multiple_boards(self, boards):
-        self.boards = {}
-        for b in boards.values():
+        self.boards = []
+        for b in boards:
             new_board = Board(b)
-            self.add_board(new_board)
+            self.boards.append(new_board)
     
     def add_multiple_sensors(self, sensors):
-        self.sensors = {}
-        for s in sensors.values():
+        self.sensors = []
+        for s in sensors:
             new_sensor = Element(s)
-            self.add_sensor(new_sensor)
-
-    def add_sensor(self, s):
-        self.sensors[len(self.sensors)] = s
-
-    def add_board(self, b):
-        self.boards[len(self.boards)] = b
+            self.sensors.append(new_sensor)
 
     def compute_e_manufacturing(self, sensors, processor, radio):
         self.e_manufacturing = 0
-        for s in sensors.values():
+        for s in sensors:
             self.e_manufacturing += s.e_manufacturing
         self.e_manufacturing += processor.e_manufacturing
         self.e_manufacturing += radio.e_manufacturing
 
-    def disposal_dict(self, boards):
+    def compute_disposal(self, boards):
         self.disposal = 0
-        for b in boards.values():
-            self.boards += b.disposal
+        for b in boards:
+            self.disposal += b.disposal
+    
+    def compute_active_sleep(self):
+        for sensor in self.sensors:
+            self.active_mode += sensor.active_mode
+            self.sleep_mode += sensor.sleep_mode
+        self.active_mode += self.processor.active_mode
+        self.active_mode += self.radio.active_mode
 
+        for board in self.boards:
+            self.active_mode += board.active_mode
+            self.sleep_mode += board.sleep_mode
+        self.sleep_mode += self.processor.sleep_mode
+        self.sleep_mode += self.radio.sleep_mode    
+        
 # Energy required daily in Mj
     def compute_e_required(self, duty_cycle, active_mode, sleep_mode, voltage):
         dc = duty_cycle / 100

@@ -11,24 +11,26 @@
 import 'vue-form-generator/dist/vfg.css';
 import VueFormGenerator from 'vue-form-generator';
 import prettyJSON from '../../prettyJson';
-import SensorsStep from './SensorsStep';
+import ElementsStep from './ElementsStep';
+import ProcessorRadioStep from './ProcessorRadioStep';
 
 
 export default {
   components: {
     'vue-form-generator': VueFormGenerator.component,
-    'sensors-form': SensorsStep,
+    'elements-form': ElementsStep,
+    'processor-radio-form': ProcessorRadioStep,
 
   },
   data() {
     return {
       model: {
-        boards: {},
-        sensors: SensorsStep.model,
+        boards: null,
+        sensors: null,
         processor: null,
         radio: null,
-        active_mode: '',
-        sleep_mode: '',
+        active_mode: null,
+        sleep_mode: null,
         duty_cycle: '',
         voltage: '',
         output_regulator: '',
@@ -43,30 +45,6 @@ export default {
       },
       deviceTabSchema: {
         fields: [
-          {
-            type: 'input',
-            inputType: 'number',
-            label: 'Active mode (mA)',
-            model: 'active_mode',
-            required: false,
-            min: Number.MIN_VALUE,
-            step: 0.1,
-            // eslint-disable-next-line no-undef
-            validator: VueFormGenerator.validators.number,
-            styleClasses: 'col-xs-6',
-          },
-          {
-            type: 'input',
-            inputType: 'number',
-            label: 'Sleep mode (mA)',
-            model: 'sleep_mode',
-            required: true,
-            min: Number.MIN_VALUE,
-            step: 0.1,
-            // eslint-disable-next-line no-undef
-            validator: VueFormGenerator.validators.number,
-            styleClasses: 'col-xs-12',
-          },
           {
             type: 'input',
             inputType: 'number',
@@ -152,4 +130,6 @@ export default {
     },
   },
 };
+
+
 </script>

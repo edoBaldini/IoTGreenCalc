@@ -406,7 +406,6 @@ export default {
           this.boards[this.editModelBoard.index] = res.data;
           this.boards.push(1);
           this.boards.pop();
-          console.log(this.boards);
           resolve(true);
         })
           .catch((error) => {

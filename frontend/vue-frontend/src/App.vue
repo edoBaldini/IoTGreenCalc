@@ -32,7 +32,8 @@
             <tab-content title="Device"
                          icon="" :before-change="() => postData('device-form')">
               <device-form ref="device-form"></device-form>
-              <sensors-form ref="sensors-form"></sensors-form>
+              <elements-form ref="elements-form"></elements-form>
+              <processor-radio-form ref="processor-radio-form"></processor-radio-form>
             </tab-content>
            <tab-content title="Maintenance"
                          icon="ti-check">
@@ -63,7 +64,8 @@ import VideoBG from './components/VideoBG';
 import SolarPanelStep from './components/SolarPanelStep';
 import BatteryPanelStep from './components/BatteryStep';
 import DeviceStep from './components/DeviceStep';
-import SensorsStep from './components/SensorsStep';
+import ElementsStep from './components/ElementsStep';
+import ProcessorRadioStep from './components/ProcessorRadioStep';
 import MaintenanceStep from './components/MaintenanceStep';
 // import prettyJSON from '../prettyJson';
 
@@ -83,7 +85,8 @@ export default {
     'solar-panel-form': SolarPanelStep,
     'battery-form': BatteryPanelStep,
     'device-form': DeviceStep,
-    'sensors-form': SensorsStep,
+    'elements-form': ElementsStep,
+    'processor-radio-form': ProcessorRadioStep,
     'maintenance-form': MaintenanceStep,
   },
   data() {
@@ -116,14 +119,28 @@ export default {
         this.$refs[ref].model = res.data;
       });
     },
-
+    arrayToDict(l) {
+      const d = {};
+      for (let i = 0; i < l.length; i += 1) {
+        d[i] = l[i];
+      }
+      return d;
+    },
+    completeDevice() {
+      this.$refs['device-form'].model.sensors = this.$refs['elements-form'].sensors;
+      this.$refs['device-form'].model.boards = this.$refs['elements-form'].boards;
+      this.$refs['device-form'].model.processor = this.$refs['processor-radio-form'].processor;
+      this.$refs['device-form'].model.radio = this.$refs['processor-radio-form'].radio;
+    },
     postData(ref) {
       return new Promise((resolve, reject) => {
+        if (ref === 'device-form') {
+          this.completeDevice();
+        }
         if (this.$refs[ref].validate()) {
-          // axios.get((path + apiEnpoints[ref])).then((res) => {
           axios.post(path + apiEnpoints[ref], this.$refs[ref].model).then((res) => {
             this.$refs[ref].model = res.data;
-            // console.log(res.data);
+            console.log('after post, ', res.data);
             resolve(true);
           })
             .catch((error) => {

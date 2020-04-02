@@ -28,7 +28,7 @@ board = api.inherit('Board', board_input_fields, {
 })
 
 device_input_fields = api.model('Device input fields', {
-    'duty_cycle': fields.String(required=True, description='duty cycle'),
+    'duty_cycle': fields.Float(required=True, description='duty cycle'),
     'voltage': fields.Float(required=True, description='operation voltage'),
     'output_regulator': fields.Float(required=True, description='efficiency of the\
                                     output regulator'),
