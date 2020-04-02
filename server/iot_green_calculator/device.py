@@ -102,18 +102,18 @@ class Board():
     }
 
     def __init__(self, data=default_data):
-       self.area = data.get('weight')
+       self.weight = data.get('weight')
        self.active_mode = data.get('active_mode')
        self.sleep_mode = data.get('sleep_mode')
        
        self.board_validation()
 
-       self.disposal = self.compute_disposal()
+       self.compute_disposal()
     
 
     def board_validation(self):
         validation_status = {}
-        validation_status['weight'] = self.area > 0
+        validation_status['weight'] = self.weight > 0
         validation_status['active_mode'] = self.active_mode > 0
         validation_status['sleep_mode'] = self.sleep_mode > 0
         if all(value for value in validation_status.values()):

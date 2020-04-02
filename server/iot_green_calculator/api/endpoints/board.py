@@ -26,6 +26,7 @@ class CategoryCollection(Resource):
             print(e.message)
             return e.message, 400
         
+        print(board.__dict__)
         return board.__dict__
 
 
