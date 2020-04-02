@@ -146,7 +146,7 @@ export default {
             .catch((error) => {
               // eslint-disable-next-line
               // alert(prettyJSON(this.$refs[ref].model));
-              console.log(error.response);
+              console.log('error data provided ', error.response);
               reject('the data provided are not admitted');
             });
         } else {

@@ -378,7 +378,6 @@ export default {
     },
     onDeleteSensor(sensor, index) {
       this.sensors.splice(index, 1);
-      console.log(this.sensors);
     },
     addBoard() {
       return new Promise((resolve, reject) => {

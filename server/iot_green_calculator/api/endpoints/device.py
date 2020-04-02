@@ -26,7 +26,6 @@ class CategoryCollection(Resource):
             print(e.message)
             return e.message, 400
         
-
         return self.device_jsonified(device).__dict__
 
     def device_jsonified(self, device):
@@ -41,5 +40,4 @@ class CategoryCollection(Resource):
         device_json.radio = radio
         device_json.sensors = sensors
         device_json.boards = boards
-
         return device_json

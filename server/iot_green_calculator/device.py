@@ -91,7 +91,7 @@ class Device:
 # Energy required daily in Mj
     def compute_e_required(self, duty_cycle, active_mode, sleep_mode, voltage):
         dc = duty_cycle / 100
-        return((dc * active_mode) + ((1 - dc) * sleep_mode)) * 3600 * 24 *\
+        self.daily_e_required = ((dc * active_mode) + ((1 - dc) * sleep_mode)) * 3600 * 24 *\
             voltage * 10 ** (-9)
 
 class DeviceError(Exception):

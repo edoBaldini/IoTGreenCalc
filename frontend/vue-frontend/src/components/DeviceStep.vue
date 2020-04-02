@@ -95,7 +95,7 @@ export default {
             type: 'input',
             inputType: 'number',
             label: 'Manufacturing energy (Mj)',
-            model: 'e_manufactoring',
+            model: 'e_manufacturing',
             readonly: true,
             disabled: true,
             // eslint-disable-next-line no-undef
@@ -121,7 +121,13 @@ export default {
       alert('Yay. Done!');
     },
     validate() {
-      return this.$refs.deviceTabForm.validate();
+      const processorValidate = this.model.processor.e_manufacturing > 0;
+      const radioValidate = this.model.radio.e_manufacturing > 0;
+      const boardsValidate = this.model.boards.length > 0;
+      const sensorsValidate = this.model.sensors.length > 0;
+      console.log('processor ', processorValidate, ' radio ', radioValidate, ' boards ', boardsValidate, ' sensors ', sensorsValidate)
+      return (this.$refs.deviceTabForm.validate() && processorValidate &&
+      radioValidate && boardsValidate && sensorsValidate);
     },
   },
   computed: {
