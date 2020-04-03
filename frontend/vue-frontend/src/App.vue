@@ -38,6 +38,10 @@
             <tab-content title="Maintenance"
                          icon="" :before-change="() => postData('maintenance-form')">
               <maintenance-form ref="maintenance-form"></maintenance-form>
+              <b-modal class="test-modal" title="BootstrapVue" ref="green-comparison"
+              id="green-comparison" hide-footer>
+                <p class="my-4">Hello from modal!</p>
+              </b-modal>
               <div class="panel-body">
                 <pre v-if="model" v-html="model"></pre>
               </div>
@@ -93,16 +97,10 @@ export default {
     return {
       errorMsg: null,
       model: {
-        avg_distance: 0,
-        avg_fuel_cons: 0,
-        conv_factor: 0,
-        n_devices: 0,
-        lifetime: 0,
-        device: null,
-        battery: null,
-        solar_panel: null,
-        tot_e_intervention: null,
-        n_interventions: null,
+        maintenance: null,
+        results: null,
+        green_maintenance: null,
+        green_results: null,
       },
       formOptions: {
         validationErrorClass: 'has-error',
@@ -116,7 +114,9 @@ export default {
       // eslint-disable-next-line no-alert
       alert('Yay. Done!');
     },
-
+    showModalComparison() {
+      this.$refs['green-comparison'].show();
+    },
     getData(ref) {
       axios.get(path + apiEnpoints[ref]).then((res) => {
         this.$refs[ref].model = res.data;
@@ -151,7 +151,11 @@ export default {
         if (this.$refs[ref].validate()) {
           axios.post(path + apiEnpoints[ref], this.$refs[ref].model).then((res) => {
             this.$refs[ref].model = res.data;
-            console.log('after post, ', res.data);
+            if (ref === 'maintenance-form') {
+              this.$refs[ref].model = res.data.maintenance;
+              this.model = res.data;
+              this.showModalComparison();
+            }
             resolve(true);
           })
             .catch((error) => {
@@ -197,5 +201,16 @@ body {
 .errors {
   color: #a94442;
   font-weight: bold;
+}
+
+.modal-dialog {
+    max-width: inherit;
+    /* margin: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100vh; */
+    display: flex;
 }
 </style>
