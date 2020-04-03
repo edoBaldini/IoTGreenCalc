@@ -19,6 +19,14 @@ export default {
   data() {
     return {
       model: {
+        avg_distance: 0,
+        avg_fuel_cons: 0,
+        conv_factor: 0,
+        n_devices: 0,
+        lifetime: 0,
+        device: null,
+        battery: null,
+        solar_panel: null,
       },
       formOptions: {
         validationErrorClass: 'has-error',
@@ -26,7 +34,66 @@ export default {
         validateAfterChanged: true,
       },
       maintenanceTabSchema: {
-        fields: [
+        fields: [{
+          type: 'input',
+          inputType: 'number',
+          label: 'Average distance (km)',
+          model: 'avg_distance',
+          required: true,
+          min: Number.MIN_VALUE,
+          step: 0.1,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.number,
+          styleClasses: 'col-xs-6',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Fuel consumption (l/100km)',
+          model: 'avg_fuel_cons',
+          required: false,
+          min: Number.MIN_VALUE,
+          step: 0.1,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.number,
+          styleClasses: 'col-xs-6',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Conversion factor l to kWh',
+          model: 'conv_factor',
+          required: false,
+          min: Number.MIN_VALUE,
+          step: 0.1,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.number,
+          styleClasses: 'col-xs-12',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Number of devices',
+          model: 'n_devices',
+          required: true,
+          min: 1,
+          step: 1,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.number,
+          styleClasses: 'col-xs-6',
+        },
+        {
+          type: 'input',
+          inputType: 'number',
+          label: 'Application lifetime',
+          model: 'lifetime',
+          required: true,
+          min: 1,
+          step: 1,
+          // eslint-disable-next-line no-undef
+          validator: VueFormGenerator.validators.number,
+          styleClasses: 'col-xs-6',
+        },
         ],
       },
     };

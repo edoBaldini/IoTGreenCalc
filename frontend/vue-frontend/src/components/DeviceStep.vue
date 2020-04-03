@@ -125,7 +125,6 @@ export default {
       const radioValidate = this.model.radio.e_manufacturing > 0;
       const boardsValidate = this.model.boards.length > 0;
       const sensorsValidate = this.model.sensors.length > 0;
-      console.log('processor ', processorValidate, ' radio ', radioValidate, ' boards ', boardsValidate, ' sensors ', sensorsValidate)
       return (this.$refs.deviceTabForm.validate() && processorValidate &&
       radioValidate && boardsValidate && sensorsValidate);
     },
@@ -136,6 +135,5 @@ export default {
     },
   },
 };
-
 
 </script>

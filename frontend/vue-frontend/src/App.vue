@@ -35,12 +35,9 @@
               <elements-form ref="elements-form"></elements-form>
               <processor-radio-form ref="processor-radio-form"></processor-radio-form>
             </tab-content>
-           <tab-content title="Maintenance"
-                         icon="ti-check">
-              <h4>Example of prettyJSON!</h4>
-              <div class="panel-body">
-                <pre v-if="model" v-html="prettyJSON"></pre>
-              </div>
+            <tab-content title="Maintenance"
+                         icon="" :before-change="() => postData('maintenance-form')">
+              <maintenance-form ref="maintenance-form"></maintenance-form>
             </tab-content>
             <div v-if="errorMsg"> <!-- TODO CSS CLASS FOR THE ERROR -->
               <span class="error">{{errorMsg}}</span>
@@ -93,13 +90,6 @@ export default {
     return {
       errorMsg: null,
       model: {
-        firstName: '',
-        lastName: '',
-        email: '',
-        streetName: '',
-        streetNumber: '',
-        city: '',
-        country: '',
       },
       formOptions: {
         validationErrorClass: 'has-error',
@@ -132,10 +122,18 @@ export default {
       this.$refs['device-form'].model.processor = this.$refs['processor-radio-form'].processor;
       this.$refs['device-form'].model.radio = this.$refs['processor-radio-form'].radio;
     },
+    completeMaintenance() {
+      this.$refs['maintenance-form'].model.device = this.$refs['device-form'].model;
+      this.$refs['maintenance-form'].model.battery = this.$refs['battery-form'].model;
+      this.$refs['maintenance-form'].model.solar_panel = this.$refs['solar-panel-form'].model;
+    },
     postData(ref) {
       return new Promise((resolve, reject) => {
         if (ref === 'device-form') {
           this.completeDevice();
+        }
+        if (ref === 'maintenance-form') {
+          this.completeMaintenance();
         }
         if (this.$refs[ref].validate()) {
           axios.post(path + apiEnpoints[ref], this.$refs[ref].model).then((res) => {
