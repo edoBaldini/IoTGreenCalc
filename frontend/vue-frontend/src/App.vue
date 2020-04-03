@@ -38,20 +38,26 @@
             <tab-content title="Maintenance"
                          icon="" :before-change="() => postData('maintenance-form')">
               <maintenance-form ref="maintenance-form"></maintenance-form>
-              <b-modal class="test-modal" title="BootstrapVue" ref="green-comparison"
-              id="green-comparison" hide-footer>
-                <p class="my-4">Hello from modal!</p>
-              </b-modal>
-              <div class="panel-body">
+            </tab-content>
+            <tab-content title="comparison"
+                         icon="">
+                <b-row>
+                  <b-col>
+                    <canvas style="background-color:transparent" id="waste-impact"></canvas>
+                  </b-col>
+                  <b-col>
+                  </b-col>
+                  <b-col>
+                    <canvas style="background-color:transparent" id="energt-impact"></canvas>
+                  </b-col>
+                </b-row>
+              <!-- <div class="panel-body">
                 <pre v-if="model" v-html="model"></pre>
-              </div>
+              </div> -->
             </tab-content>
             <div v-if="errorMsg"> <!-- TODO CSS CLASS FOR THE ERROR -->
               <span class="error">{{errorMsg}}</span>
             </div>
-            <!-- <transition name="fade" mode="out-in">
-               <router-view></router-view>
-            </transition> -->
         </form-wizard>
         </b-card-text>
       </b-card>
@@ -63,6 +69,7 @@
 // eslint-disable-next-line no-new
 import 'vue-form-generator/dist/vfg.css';
 import VueFormGenerator from 'vue-form-generator';
+import Chart from 'chart.js';
 import axios from 'axios';
 import VideoBG from './components/VideoBG';
 import SolarPanelStep from './components/SolarPanelStep';
@@ -71,6 +78,9 @@ import DeviceStep from './components/DeviceStep';
 import ElementsStep from './components/ElementsStep';
 import ProcessorRadioStep from './components/ProcessorRadioStep';
 import MaintenanceStep from './components/MaintenanceStep';
+import { wasteChartData } from './assets/js/chart-data';
+
+
 // import prettyJSON from '../prettyJson';
 
 const apiEnpoints = {
@@ -95,6 +105,7 @@ export default {
   },
   data() {
     return {
+      wasteChartData,
       errorMsg: null,
       model: {
         maintenance: null,
@@ -112,7 +123,6 @@ export default {
   methods: {
     onComplete() {
       // eslint-disable-next-line no-alert
-      alert('Yay. Done!');
     },
     showModalComparison() {
       this.$refs['green-comparison'].show();
@@ -151,11 +161,12 @@ export default {
         if (this.$refs[ref].validate()) {
           axios.post(path + apiEnpoints[ref], this.$refs[ref].model).then((res) => {
             this.$refs[ref].model = res.data;
+
             if (ref === 'maintenance-form') {
               this.$refs[ref].model = res.data.maintenance;
               this.model = res.data;
-              this.showModalComparison();
             }
+
             resolve(true);
           })
             .catch((error) => {
@@ -172,11 +183,23 @@ export default {
     errorHandler(msg) {
       this.errorMsg = msg;
     },
+    createChart(chartId, chartData) {
+      const ctx = document.getElementById(chartId);
+      const myChart = new Chart(ctx, {
+        type: chartData.type,
+        data: chartData.data,
+        options: chartData.options,
+      });
+    },
   },
   computed: {
     prettyJSON() {
       return this.model;
     },
+  },
+  mounted() {
+    this.createChart('waste-impact', this.wasteChartData);
+    this.createChart('energt-impact', this.wasteChartData);
   },
 };
 </script>
@@ -203,14 +226,4 @@ body {
   font-weight: bold;
 }
 
-.modal-dialog {
-    max-width: inherit;
-    /* margin: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100vh; */
-    display: flex;
-}
 </style>

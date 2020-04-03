@@ -121,7 +121,7 @@ def update_maintenance(n_maintenance, e_manuf, disposal):
     key_maintenance = {'n_maintenance': n_maintenance,
                        'e_maintenance': n_maintenance * e_manuf,
                        'd_maintenance': n_maintenance * disposal}
-    return json.dumps(key_maintenance)
+    return key_maintenance
 
 def maintenance_sched(life_units, e_manuf, disposal, maintenance_session):
 

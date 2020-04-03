@@ -5,12 +5,14 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 import BootstrapVue from 'bootstrap-vue';
 import FormWizard from 'vue-form-wizard';
 import VideoBg from 'vue-videobg';
+import Chart from 'chart.js';
 import Vue from 'vue';
 import App from './App';
 import router from './router';
 
 
 Vue.use(BootstrapVue);
+Vue.component('chart-js', Chart);
 Vue.component('video-bg', VideoBg);
 Vue.use(FormWizard);
 Vue.config.productionTip = false;
