@@ -27,12 +27,20 @@ class Device:
             is done in the in the element and board constructor '''
         try:
             self.add_multiple_boards(data.get('boards'))
+        except (BoardError, ElementError) as e:
+            raise DeviceError('error in the provided boards')
+        try:
             self.add_multiple_sensors(data.get('sensors'))
+        except (BoardError, ElementError) as e:
+            raise DeviceError('error in the provided sensors')
+        try:
             self.processor = Element(data.get('processor'))
+        except (BoardError, ElementError) as e:
+            raise DeviceError('error in the processor')
+        try:
             self.radio = Element(data.get('radio'))
         except (BoardError, ElementError) as e:
-            raise DeviceError('error in the provided boards, sensors, radio\
-                                or processor')
+            raise DeviceError('error in the provided radio')
         
         self.compute_e_manufacturing(self.sensors, self.processor, self.radio)
         self.compute_disposal(self.boards)
@@ -123,8 +131,8 @@ class Board():
     def board_validation(self):
         validation_status = {}
         validation_status['weight'] = self.weight > 0
-        validation_status['active_mode'] = self.active_mode > 0
-        validation_status['sleep_mode'] = self.sleep_mode > 0
+        validation_status['active_mode'] = self.active_mode >= 0
+        validation_status['sleep_mode'] = self.sleep_mode >= 0
         if all(value for value in validation_status.values()):
             return True
         else:
@@ -157,7 +165,6 @@ class Element():
        self.lifetime = data.get('lifetime')
        self.active_mode = data.get('active_mode')
        self.sleep_mode = data.get('sleep_mode')
-       
        self.element_validation()
 
        self.compute_e_manufacturing()
@@ -167,7 +174,7 @@ class Element():
         validation_status['area'] = self.area > 0
         validation_status['lifetime'] = self.lifetime > 0
         validation_status['active_mode'] = self.active_mode > 0
-        validation_status['sleep_mode'] = self.sleep_mode > 0
+        validation_status['sleep_mode'] = self.sleep_mode >= 0
         if all(value for value in validation_status.values()):
             return True
         else:

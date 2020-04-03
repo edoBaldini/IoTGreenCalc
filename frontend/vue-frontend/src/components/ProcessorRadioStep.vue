@@ -144,8 +144,18 @@ const path = 'http://127.0.0.1:8888/api/';
 export default {
   data() {
     return {
-      processor: {},
-      radio: {},
+      // processor: {},
+      // radio: {},
+      processor: { area: 2.641,
+        lifetime: 1000000.0,
+        active_mode: 9.0,
+        sleep_mode: 0.062,
+        e_manufacturing: 14.641703999999999 },
+      radio: { area: 6.731,
+        lifetime: 1000000.0,
+        active_mode: 0.303030303,
+        sleep_mode: 0.0,
+        e_manufacturing: 37.316663999999996 },
       model: {
         lifetime: 0,
         area: 0,
@@ -208,7 +218,7 @@ export default {
           label: 'Sleep mode (mA)',
           model: 'sleep_mode',
           required: true,
-          min: Number.MIN_VALUE,
+          min: 0,
           step: 1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,

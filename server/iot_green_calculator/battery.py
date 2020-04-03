@@ -29,7 +29,7 @@ class Battery:
         'density': 0,
         'capacity': 0,
         'weight': 0,
-        'e_manufactoring': None,
+        'e_manufacturing': None,
         'disposal': None
     }
 
@@ -61,7 +61,7 @@ class Battery:
             raise BatteryError(validation_satus)
 
     def compute_e_manufacturing(self):
-        self.e_manufactoring = self.weight *\
+        self.e_manufacturing = self.weight *\
             self.MANUFACTURING_ENERGY[self.technology]
 
     def compute_disposal(self):

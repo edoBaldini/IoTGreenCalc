@@ -12,7 +12,7 @@ battery_input_fields = api.model('Battery input fields', {
 })
 
 battery = api.inherit('Battery', battery_input_fields, {
-    'e_manufactoring': fields.Float(description='Energy spent\
+    'e_manufacturing': fields.Float(description='Energy spent\
                                 for the production of the battery in Mj'),
     'disposal': fields.Float(description='Kg of waste produced\
                                 by the battery disposal'),

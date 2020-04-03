@@ -38,6 +38,9 @@
             <tab-content title="Maintenance"
                          icon="" :before-change="() => postData('maintenance-form')">
               <maintenance-form ref="maintenance-form"></maintenance-form>
+              <div class="panel-body">
+                <pre v-if="model" v-html="model"></pre>
+              </div>
             </tab-content>
             <div v-if="errorMsg"> <!-- TODO CSS CLASS FOR THE ERROR -->
               <span class="error">{{errorMsg}}</span>
@@ -90,6 +93,16 @@ export default {
     return {
       errorMsg: null,
       model: {
+        avg_distance: 0,
+        avg_fuel_cons: 0,
+        conv_factor: 0,
+        n_devices: 0,
+        lifetime: 0,
+        device: null,
+        battery: null,
+        solar_panel: null,
+        tot_e_intervention: null,
+        n_interventions: null,
       },
       formOptions: {
         validationErrorClass: 'has-error',

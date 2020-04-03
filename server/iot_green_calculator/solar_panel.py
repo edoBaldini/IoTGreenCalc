@@ -32,7 +32,7 @@ class Solar_Panel:
         'kwp': 0,
         'efficiency_w': 0,                      # wear-out efficiency
         'weight': 0,                            # kg
-        'e_manufactoring': None,
+        'e_manufacturing': None,
         'disposal': None,
         'e_produced': None,
     }
@@ -52,7 +52,7 @@ class Solar_Panel:
 
 #   Lifetime, Efficiency and Efficiency_w if equal to 0 will be replaced with common parameters
         self.complete_fields()
-        self.compute_e_manufactoring()
+        self.compute_e_manufacturing()
         self.compute_disposal()
         self.daily_energy_produced()
 
@@ -72,8 +72,8 @@ class Solar_Panel:
         else:
             raise SolarPanelError(validation_status)
 
-    def compute_e_manufactoring(self):
-        self.e_manufactoring = self.surface *\
+    def compute_e_manufacturing(self):
+        self.e_manufacturing = self.surface *\
             self.MANUFACTURING_ENERGY[self.technology]
 
     def compute_disposal(self):

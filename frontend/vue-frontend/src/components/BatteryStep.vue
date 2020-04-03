@@ -18,15 +18,25 @@ export default {
   },
   data() {
     return {
+      // model: {
+      //   technology: 'Li-Ion',
+      //   lifetime: 0,
+      //   efficiency: 0,
+      //   density: 0,
+      //   capacity: 0,
+      //   weight: '',
+      //   e_manufacturing: '',
+      //   disposal: '',
+      // },
       model: {
         technology: 'Li-Ion',
-        lifetime: 0,
-        efficiency: 0,
-        density: 0,
-        capacity: 0,
-        weight: '',
-        e_manufactoring: '',
-        disposal: '',
+        lifetime: 9.0,
+        efficiency: 90.0,
+        density: 140.516129,
+        capacity: 6600.0,
+        weight: 0.155,
+        e_manufacturing: 25.544,
+        disposal: 0.08556000000000001,
       },
       formOptions: {
         validationErrorClass: 'has-error',
@@ -107,7 +117,7 @@ export default {
           type: 'input',
           inputType: 'number',
           label: 'Manufacturing energy (Mj)',
-          model: 'e_manufactoring',
+          model: 'e_manufacturing',
           readonly: true,
           disabled: true,
           // eslint-disable-next-line no-undef

@@ -22,7 +22,7 @@ solar_panel_input_fields = api.model('Solar Panel input fields', {
 })
 
 solar_panel = api.inherit('Solar Panel', solar_panel_input_fields, {
-    'e_manufactoring': fields.Float(description='Energy spent\
+    'e_manufacturing': fields.Float(description='Energy spent\
                                 for the production of the solar panel in Mj'),
     'disposal': fields.Float(description='Kg of waste produced\
                                 by the solar panel disposal'),

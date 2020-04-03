@@ -11,7 +11,7 @@ element_input_fields = api.model('Element input fields', {
 
 
 element = api.inherit('Element', element_input_fields, {
-    'e_manufactoring': fields.Float(description='Energy spent\
+    'e_manufacturing': fields.Float(description='Energy spent\
                                 for the production of an element in Mj'),
 
 })
@@ -39,7 +39,7 @@ device_input_fields = api.model('Device input fields', {
 })
 
 device = api.inherit('Device', device_input_fields, {
-    'e_manufactoring': fields.Float(description='Energy spent\
+    'e_manufacturing': fields.Float(description='Energy spent\
                                 for the production of the entire device in Mj'),
     'disposal': fields.Float(required=True, description="Kg of waste produced\
                                 by the entire device disposal"),

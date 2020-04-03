@@ -28,3 +28,10 @@ maintenance = api.inherit('Maintenance', maintenance_input_fields, {
     'tot_main_disposal': fields.Float(description='Total kg of waste produced\
                                 by the maintenance disposal'),
 })
+
+total_result = api.model('Total result', {
+    'maintenance': fields.Nested(maintenance),
+    'maintenance_results': fields.Nested(maintenance),
+    'green': fields.Nested(maintenance),
+    'green_results': fields.Nested(maintenance),
+})
