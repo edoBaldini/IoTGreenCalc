@@ -67,7 +67,7 @@
                   <button
                           type="button"
                           class="btn btn-danger btn-sm"
-                          @click="onDeleteBoard(board, index)">
+                          @click="onDeleteBoard(board, index_b)">
                       Delete
                   </button>
                 </div>
@@ -191,7 +191,7 @@ export default {
         e_manufacturing: 3.68676 },
       { area: 0.636,
         lifetime: 10.0,
-        active_mode: 6.0,
+        active_mode: 26.0,
         sleep_mode: 0.0,
         e_manufacturing: 3.525984 },
       { area: 0.636,
@@ -284,8 +284,8 @@ export default {
           label: 'Sleep mode (mA)',
           model: 'sleep_mode',
           required: true,
-          min: 0,
-          step: 1,
+          min: Number.MIN_VALUE,
+          step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
           styleClasses: 'col-xs-6',
@@ -323,8 +323,8 @@ export default {
           label: 'Sleep mode (mA)',
           model: 'sleep_mode',
           required: true,
-          min: 0,
-          step: 1,
+          min: Number.MIN_VALUE,
+          step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
           styleClasses: 'col-xs-6',

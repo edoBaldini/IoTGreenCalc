@@ -7,6 +7,7 @@ def greenComputation(maintenance):
     solar_panel = Solar_Panel(maintenance.solar_panel).__dict__
     battery = Battery(maintenance.battery).__dict__
     green_solar_panel = compute_g_sp(device, solar_panel, battery)
+    print('\n\n\n\n', green_solar_panel, '\n\n\n\n')
     green_battery = compute_g_b(device, solar_panel, battery)
     green_maintenance = compute_g_m(maintenance, green_solar_panel, green_battery)
     return (green_solar_panel, green_battery, green_maintenance)
@@ -25,6 +26,7 @@ def compute_g_sp(device, solar_panel, battery):
                                     output_regulator *
                                     solar_panel['irradiance'])
     solar_panel['surface'] = g_surface
+    solar_panel['weight'] = 0
     return Solar_Panel(solar_panel)
 
 def compute_g_b(device, solar_panel, battery):

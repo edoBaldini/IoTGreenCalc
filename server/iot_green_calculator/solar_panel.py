@@ -66,7 +66,7 @@ class Solar_Panel:
         validation_status['efficiency'] = (self.efficiency >= 0.0 and self.efficiency <= 100.0)
         validation_status['kwp'] = self.kwp >= 0
         validation_status['efficiency_w'] = (self.efficiency_w >= 0.0 and self.efficiency_w <= 100.0)
-        validation_status['weight'] = self.weight > 0
+        validation_status['weight'] = self.weight >= 0
         if all(value for value in validation_status.values()):
             return True
         else:

@@ -43,19 +43,19 @@
                          icon="">
                 <b-row>
                   <b-col>
-                    <canvas style="background-color:transparent" id="waste-impact"></canvas>
+                    <bar-char ref="energy-chart" v-if="ready" v-bind:title="'Energy impact (Mj)'"
+                    v-bind:values="this.energyV"
+                    v-bind:greenValues="this.greenEnergyV" />
                   </b-col>
+
                   <b-col>
-                  </b-col>
-                  <b-col>
-                    <canvas style="background-color:transparent" id="energt-impact"></canvas>
+                    <bar-char ref="waste-chart" v-if="ready" v-bind:title="'Waste impact (g)'"
+                    v-bind:values="this.disposalV"
+                    v-bind:greenValues="this.greenDisposalV"></bar-char>
                   </b-col>
                 </b-row>
-              <!-- <div class="panel-body">
-                <pre v-if="model" v-html="model"></pre>
-              </div> -->
             </tab-content>
-            <div v-if="errorMsg"> <!-- TODO CSS CLASS FOR THE ERROR -->
+            <div v-if="errorMsg">
               <span class="error">{{errorMsg}}</span>
             </div>
         </form-wizard>
@@ -69,7 +69,6 @@
 // eslint-disable-next-line no-new
 import 'vue-form-generator/dist/vfg.css';
 import VueFormGenerator from 'vue-form-generator';
-import Chart from 'chart.js';
 import axios from 'axios';
 import VideoBG from './components/VideoBG';
 import SolarPanelStep from './components/SolarPanelStep';
@@ -78,7 +77,7 @@ import DeviceStep from './components/DeviceStep';
 import ElementsStep from './components/ElementsStep';
 import ProcessorRadioStep from './components/ProcessorRadioStep';
 import MaintenanceStep from './components/MaintenanceStep';
-import { wasteChartData } from './assets/js/chart-data';
+import BarChar from './components/BarChar';
 
 
 // import prettyJSON from '../prettyJson';
@@ -102,16 +101,31 @@ export default {
     'elements-form': ElementsStep,
     'processor-radio-form': ProcessorRadioStep,
     'maintenance-form': MaintenanceStep,
+    'bar-char': BarChar,
   },
   data() {
     return {
-      wasteChartData,
+      ready: false,
+      energyV: null,
+      greenEnergyV: null,
+      disposalV: null,
+      greenDisposalV: null,
       errorMsg: null,
       model: {
-        maintenance: null,
-        results: null,
-        green_maintenance: null,
-        green_results: null,
+        real: {
+          solar_panel: null,
+          battery: null,
+          device: null,
+          maintenance: null,
+          tot: null,
+        },
+        green: {
+          solar_panel: null,
+          battery: null,
+          device: null,
+          maintenance: null,
+          tot: null,
+        },
       },
       formOptions: {
         validationErrorClass: 'has-error',
@@ -165,6 +179,32 @@ export default {
             if (ref === 'maintenance-form') {
               this.$refs[ref].model = res.data.maintenance;
               this.model = res.data;
+              this.energyV = [this.model.real.device.energy,
+                this.model.real.solar_panel.energy,
+                this.model.real.battery.energy, this.model.real.maintenance.energy];
+
+              this.greenEnergyV = [this.model.green.device.energy,
+                this.model.green.solar_panel.energy,
+                this.model.green.battery.energy, this.model.green.maintenance.energy];
+
+              this.disposalV = [this.model.real.device.disposal * 1000,
+                this.model.real.solar_panel.disposal * 1000,
+                this.model.real.battery.disposal * 1000,
+                this.model.real.maintenance.disposal * 1000];
+
+              this.greenDisposalV = [this.model.green.device.disposal * 1000,
+                this.model.green.solar_panel.disposal * 1000,
+                this.model.green.battery.disposal * 1000,
+                this.model.green.maintenance.disposal * 1000];
+              if (this.$refs['energy-chart']) {
+                this.$refs['energy-chart'].chartData.datasets[0].data = this.energyV;
+                this.$refs['energy-chart'].chartData.datasets[1].data = this.greenEnergyV;
+              }
+              if (this.$refs['waste-chart']) {
+                this.$refs['waste-chart'].chartData.datasets[0].data = this.disposalV;
+                this.$refs['waste-chart'].chartData.datasets[1].data = this.greenDisposalV;
+              }
+              this.ready = true;
             }
 
             resolve(true);
@@ -183,23 +223,11 @@ export default {
     errorHandler(msg) {
       this.errorMsg = msg;
     },
-    createChart(chartId, chartData) {
-      const ctx = document.getElementById(chartId);
-      const myChart = new Chart(ctx, {
-        type: chartData.type,
-        data: chartData.data,
-        options: chartData.options,
-      });
-    },
   },
   computed: {
     prettyJSON() {
       return this.model;
     },
-  },
-  mounted() {
-    this.createChart('waste-impact', this.wasteChartData);
-    this.createChart('energt-impact', this.wasteChartData);
   },
 };
 </script>

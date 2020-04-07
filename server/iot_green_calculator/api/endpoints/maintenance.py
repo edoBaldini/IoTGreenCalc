@@ -5,7 +5,7 @@ import gurobipy as gp
 from gurobipy import GRB, quicksum
 from flask import request
 from flask_restplus import Resource
-from iot_green_calculator.api.maintenance_serializer import maintenance_input_fields, maintenance, total_result
+from iot_green_calculator.api.maintenance_serializer import maintenance_input_fields, maintenance, tot_results
 from iot_green_calculator.api.restplus import api
 from iot_green_calculator.maintenance import Maintenance, MaintenanceError
 from iot_green_calculator.green_proposal import greenComputation
@@ -54,23 +54,36 @@ class CategoryCollection(Resource):
             return e.message, 400
 
             
-        green_solar_panel, green_battery, green_maintenance = greenComputation(maintenance_aux) # THE REFERENCE STEALs YOU THE ORIGINAL VALUE
+        green_solar_panel, green_battery, green_maintenance = greenComputation(maintenance_aux) 
         lifetime_units, e_manuf, disposal = prepare_maintenance(green_maintenance.__dict__)
         green_results = maintenance_sched(lifetime_units, e_manuf, disposal, green_maintenance.__dict__)
-        
-        total_computation = {
-            'maintenance': maintenance.__dict__,
-            'results': results,
-            'green_maintenance': green_maintenance.__dict__,
-            'green_results': green_results
-        }
-        return total_computation
+        r = prepare_result(maintenance)
+        g = prepare_result(green_maintenance)
+        for i, v in r.items():
+            print('real ', i, '-', v, ' green ', g[i])
+        return {'maintenance': maintenance.__dict__, 'real': prepare_result(maintenance), 'green': prepare_result(green_maintenance)}
 
+def prepare_result(maintenance):
+    solar_panel = {'energy': maintenance.solar_panel['e_manufacturing'], 'disposal': maintenance.solar_panel['disposal']}
+    battery = {'energy': maintenance.battery['e_manufacturing'], 'disposal': maintenance.battery['disposal']}
+    device = {'energy': maintenance.device['e_manufacturing'], 'disposal': maintenance.device['disposal']}
+    maintenance = {'energy': maintenance.tot_main_energy, 'disposal': maintenance.tot_main_disposal}
+
+    tot = {'tot_energy': (solar_panel['energy'] + battery['energy'] + device['energy'] + maintenance['energy']),
+            'tot_disposal': (solar_panel['disposal'] + battery['disposal'] + device['disposal'] + maintenance['disposal'])}
+   
+    result = {'solar_panel': solar_panel, 
+                'battery': battery,
+                'device': device,
+                'maintenance':maintenance,
+                'tot': tot
+            }
+
+    return result
 
 ''' Update the Device removing those sensors that have lifetime smaller than
     application.
     Returns data_for_maint()'''
-
 
 def prepare_maintenance(dataset):
     maintenance = dataset

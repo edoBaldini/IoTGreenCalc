@@ -74,31 +74,8 @@ export const wasteChartData = {
         },
       }],
     },
-    animation: {
-      duration: 10000,
-      onComplete() {
-        let chartInstance = this.chart,
-          ctx = chartInstance.ctx;
-        ctx.textAlign = 'center';
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-        ctx.textBaseline = 'bottom';
-        // ctx.font = Chart.helpers.fontString('Lora', 'small', 'Lora');
-        ctx.font = '16px Aileron';
-        this.data.datasets.forEach((dataset, i) => {
-          const meta = chartInstance.controller.getDatasetMeta(i);
-          meta.data.forEach((bar, index) => {
-            const data = dataset.data[index];
-            ctx.fillText(data, bar._model.x, bar._model.y - 5);
-          });
-        });
-      },
-    },
-    legend: {
-      display: false,
-    },
-    responsiveAnimationDuration: 1000, // animation duration after a resize
-
   },
 };
 
 export default wasteChartData;
+

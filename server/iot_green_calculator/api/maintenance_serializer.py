@@ -29,9 +29,21 @@ maintenance = api.inherit('Maintenance', maintenance_input_fields, {
                                 by the maintenance disposal'),
 })
 
-total_result = api.model('Total result', {
+impacts = api.model('Energy and disposal result', {
+    'energy': fields.Float(description='Energy spent in MJ'),
+    'disposal': fields.Float(description='Kg of waste produced')
+    })
+
+results = api.model('Impacts of each component', {
+    'solar_panel': fields.Nested(impacts),
+    'battery': fields.Nested(impacts),
+    'device': fields.Nested(impacts),
+    'maintenance': fields.Nested(impacts),
+    'tot': fields.Nested(impacts),
+})
+
+tot_results = api.model('Results for comparison', {
     'maintenance': fields.Nested(maintenance),
-    'maintenance_results': fields.Nested(maintenance),
-    'green': fields.Nested(maintenance),
-    'green_results': fields.Nested(maintenance),
+    'real': fields.Nested(results),
+    'green': fields.Nested(results),
 })
