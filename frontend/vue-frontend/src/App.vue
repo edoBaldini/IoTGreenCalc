@@ -43,15 +43,14 @@
                          icon="">
                 <b-row>
                   <b-col>
-                    <bar-char ref="energy-chart" v-if="ready" v-bind:title="'Energy impact (Mj)'"
-                    v-bind:values="this.energyV"
-                    v-bind:greenValues="this.greenEnergyV" />
+                    <chart-comparison v-bind:title="'Energy impact (Mj)'"
+                      v-bind:values="this.energyV"
+                      v-bind:greenValues="this.greenEnergyV"></chart-comparison>
                   </b-col>
-
                   <b-col>
-                    <bar-char ref="waste-chart" v-if="ready" v-bind:title="'Waste impact (g)'"
-                    v-bind:values="this.disposalV"
-                    v-bind:greenValues="this.greenDisposalV"></bar-char>
+                    <chart-comparison v-bind:title="'Waste impact (g)'"
+                      v-bind:values="this.disposalV"
+                      v-bind:greenValues="this.greenDisposalV"></chart-comparison>
                   </b-col>
                 </b-row>
             </tab-content>
@@ -77,8 +76,7 @@ import DeviceStep from './components/DeviceStep';
 import ElementsStep from './components/ElementsStep';
 import ProcessorRadioStep from './components/ProcessorRadioStep';
 import MaintenanceStep from './components/MaintenanceStep';
-import BarChar from './components/BarChar';
-
+import BarChartComparison from './assets/js/BarChartComparison';
 
 // import prettyJSON from '../prettyJson';
 
@@ -101,7 +99,7 @@ export default {
     'elements-form': ElementsStep,
     'processor-radio-form': ProcessorRadioStep,
     'maintenance-form': MaintenanceStep,
-    'bar-char': BarChar,
+    'chart-comparison': BarChartComparison,
   },
   data() {
     return {
@@ -196,14 +194,6 @@ export default {
                 this.model.green.solar_panel.disposal * 1000,
                 this.model.green.battery.disposal * 1000,
                 this.model.green.maintenance.disposal * 1000];
-              if (this.$refs['energy-chart']) {
-                this.$refs['energy-chart'].chartData.datasets[0].data = this.energyV;
-                this.$refs['energy-chart'].chartData.datasets[1].data = this.greenEnergyV;
-              }
-              if (this.$refs['waste-chart']) {
-                this.$refs['waste-chart'].chartData.datasets[0].data = this.disposalV;
-                this.$refs['waste-chart'].chartData.datasets[1].data = this.greenDisposalV;
-              }
               this.ready = true;
             }
 

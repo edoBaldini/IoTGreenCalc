@@ -1,11 +1,10 @@
-<template>
-    <bar-chart ref="bar" :chartData="chartData" :options="options"/>
-</template>
+import { Bar, mixins } from 'vue-chartjs';
 
-<script>
-import BarChart from '../assets/js/bar-chart';
+const { reactiveData } = mixins;
 
 export default {
+  extends: Bar,
+  mixins: [reactiveData],
   props: {
     values: {
       type: Array,
@@ -17,12 +16,10 @@ export default {
       type: String,
     },
   },
-  components: {
-    'bar-chart': BarChart,
-  },
-
   data() {
     return {
+      chartData: null,
+      gradient: null,
       options: {
         responsive: true,
         title: {
@@ -59,7 +56,7 @@ export default {
           }],
         },
         animation: {
-          duration: 1000000,
+          duration: 10,
           onComplete() {
             // eslint-disable-next-line one-var
             const chartInstance = this.chart,
@@ -82,54 +79,63 @@ export default {
         legend: {
           display: false,
         },
-        responsiveAnimationDuration: 1000, // animation duration after a resize
-      },
-      easterEgg: {
-        update() {
-          this.chart.update();
-        },
-      },
-      chartData: {
-        labels: ['Device', 'SolarPanel', 'Battery', 'Maintenance'],
-        datasets: [
-          {
-            label: 'Your solution',
-            data: this.values,
-            backgroundColor: [
-              '#e24b49',
-              '#e24b49',
-              '#e24b49',
-              '#e24b49',
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(255, 99, 132, 1)',
-              'rgba(255, 99, 132, 1)',
-              'rgba(255, 99, 132, 1)',
-            ],
-            borderWidth: 1,
-          },
-          {
-            label: 'Green solution',
-            data: this.greenValues,
-            backgroundColor: [
-              '#00b894',
-              '#00b894',
-              '#00b894',
-              '#00b894',
-            ],
-            borderColor: [
-              'rgba(126, 211, 134, 1)',
-              'rgba(126, 211, 134, 1)',
-              'rgba(126, 211, 134, 1)',
-              'rgba(126, 211, 134, 1)',
-            ],
-            borderWidth: 1,
-          },
-        ],
+        // responsiveAnimationDuration: 1000, // animation duration after a resize
       },
     };
   },
-};
+  created() {
+    this.fillData();
+  },
 
-</script>
+  mounted() {
+    this.renderChart(this.chartData, { responsive: true, maintainAspectRatio: false });
+
+    setInterval(() => {
+      this.fillData();
+    }, 1000);
+  },
+
+  methods: {
+    fillData() {
+      this.chartData = {
+        labels: ['Device', 'Solar Panel', 'Battery', 'Maintenance'],
+        datasets: [
+          {
+            label: 'Your solution',
+            backgroundColor: [
+              '#e24b49',
+              '#e24b49',
+              '#e24b49',
+              '#e24b49',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(255, 99, 132, 1)',
+              'rgba(255, 99, 132, 1)',
+              'rgba(255, 99, 132, 1)',
+            ],
+            borderWidth: 1,
+            data: this.values,
+          },
+          {
+            label: 'Green solution',
+            backgroundColor: [
+              '#00b894',
+              '#00b894',
+              '#00b894',
+              '#00b894',
+            ],
+            borderColor: [
+              'rgba(126, 211, 134, 1)',
+              'rgba(126, 211, 134, 1)',
+              'rgba(126, 211, 134, 1)',
+              'rgba(126, 211, 134, 1)',
+            ],
+            borderWidth: 1,
+            data: this.greenValues,
+          },
+        ],
+      };
+    },
+  },
+};
