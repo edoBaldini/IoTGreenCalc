@@ -17,32 +17,32 @@ export default {
   },
   data() {
     return {
-      model: {
-        technology: 'mono-Si',
-        surface: '',
-        irradiance: '',
-        s_hours: '',
-        lifetime: 0,
-        efficiency: 0,
-        kwp: 0,
-        efficiency_w: 0,
-        weight: '',
-        e_manufacturing: '',
-        disposal: '',
-        e_produced: '',
-      },
-      // model: { technology: 'mono-Si',
-      //   surface: 0.03744,
-      //   irradiance: 1.127419355,
-      //   s_hours: 9.0,
-      //   lifetime: 20.0,
-      //   efficiency: 17.0,
+      // model: {
+      //   technology: 'mono-Si',
+      //   surface: '',
+      //   irradiance: '',
+      //   s_hours: '',
+      //   lifetime: 0,
+      //   efficiency: 0,
       //   kwp: 0,
-      //   efficiency_w: 80.0,
-      //   weight: 0.54,
-      //   e_manufacturing: 205.02518400000002,
-      //   disposal: 0.08650800000000002,
-      //   e_produced: 0.025832875358534402 },
+      //   efficiency_w: 0,
+      //   weight: '',
+      //   e_manufacturing: '',
+      //   disposal: '',
+      //   e_produced: '',
+      // },
+      model: { technology: 'mono-Si',
+        surface: 0.03744,
+        irradiance: 1.127419355,
+        s_hours: 9.0,
+        lifetime: 20.0,
+        efficiency: 17.0,
+        kwp: 0,
+        efficiency_w: 80.0,
+        weight: 0.54,
+        e_manufacturing: 205.02518400000002,
+        disposal: 0.08650800000000002,
+        e_produced: 0.025832875358534402 },
       formOptions: {
         validationErrorClass: 'has-error',
         validationSuccessClass: 'has-success',
@@ -195,6 +195,20 @@ export default {
     },
     validate() {
       return this.$refs.solarPanelTabSchema.validate();
+    },
+    reset() {
+      this.model.technology = 'mono-Si';
+      this.model.surface = 0;
+      this.model.irradiance = 0;
+      this.model.s_hours = 0;
+      this.model.lifetime = 0;
+      this.model.efficiency = 0;
+      this.model.kwp = 0;
+      this.model.efficiency_w = 0;
+      this.model.weight = 0;
+      this.model.e_manufacturing = 0;
+      this.model.disposal = 0;
+      this.model.e_produced = 0;
     },
   },
   computed: {

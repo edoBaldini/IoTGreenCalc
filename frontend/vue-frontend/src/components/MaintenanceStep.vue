@@ -18,30 +18,30 @@ export default {
   },
   data() {
     return {
-      model: {
-        avg_distance: 0,
-        avg_fuel_cons: 0,
-        conv_factor: 0,
-        n_devices: 0,
-        lifetime: 0,
-        device: null,
-        battery: null,
-        solar_panel: null,
-        tot_e_intervention: null,
-        n_interventions: null,
-      },
       // model: {
-      //   avg_distance: 3.505,
-      //   avg_fuel_cons: 6.0,
-      //   conv_factor: 8.9,
-      //   n_devices: 10.0,
-      //   lifetime: 30.0,
+      //   avg_distance: 0,
+      //   avg_fuel_cons: 0,
+      //   conv_factor: 0,
+      //   n_devices: 0,
+      //   lifetime: 0,
       //   device: null,
       //   battery: null,
       //   solar_panel: null,
       //   tot_e_intervention: null,
       //   n_interventions: null,
       // },
+      model: {
+        avg_distance: 3.505,
+        avg_fuel_cons: 6.0,
+        conv_factor: 8.9,
+        n_devices: 10.0,
+        lifetime: 30.0,
+        device: null,
+        battery: null,
+        solar_panel: null,
+        tot_e_intervention: null,
+        n_interventions: null,
+      },
       formOptions: {
         validationErrorClass: 'has-error',
         validationSuccessClass: 'has-success',
@@ -143,6 +143,18 @@ export default {
     },
     validate() {
       return this.$refs.maintenanceTabForm.validate();
+    },
+    reset() {
+      this.model.avg_distance = 0;
+      this.model.avg_fuel_cons = 0;
+      this.model.conv_factor = 0;
+      this.model.n_devices = 0;
+      this.model.lifetime = 0;
+      this.model.device = null;
+      this.model.battery = null;
+      this.model.solar_panel = null;
+      this.model.tot_e_intervention = null;
+      this.model.n_interventions = null;
     },
   },
   computed: {

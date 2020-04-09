@@ -18,26 +18,26 @@ export default {
   },
   data() {
     return {
-      model: {
-        technology: 'Li-Ion',
-        lifetime: 0,
-        efficiency: 0,
-        density: 0,
-        capacity: 0,
-        weight: '',
-        e_manufacturing: '',
-        disposal: '',
-      },
       // model: {
       //   technology: 'Li-Ion',
-      //   lifetime: 9.0,
-      //   efficiency: 90.0,
-      //   density: 140.516129,
-      //   capacity: 6600.0,
-      //   weight: 0.155,
-      //   e_manufacturing: 25.544,
-      //   disposal: 0.08556000000000001,
+      //   lifetime: 0,
+      //   efficiency: 0,
+      //   density: 0,
+      //   capacity: 0,
+      //   weight: '',
+      //   e_manufacturing: '',
+      //   disposal: '',
       // },
+      model: {
+        technology: 'Li-Ion',
+        lifetime: 9.0,
+        efficiency: 90.0,
+        density: 140.516129,
+        capacity: 6600.0,
+        weight: 0.155,
+        e_manufacturing: 25.544,
+        disposal: 0.08556000000000001,
+      },
       formOptions: {
         validationErrorClass: 'has-error',
         validationSuccessClass: 'has-success',
@@ -141,6 +141,16 @@ export default {
     onComplete() {
       // eslint-disable-next-line no-alert
       alert('Yay. Done!');
+    },
+    reset() {
+      this.model.technology = 'Li-Ion';
+      this.model.lifetime = 0;
+      this.model.efficiency = 0;
+      this.model.density = 0;
+      this.model.capacity = 0;
+      this.model.weight = 0;
+      this.model.e_manufacturing = 0;
+      this.model.disposal = 0;
     },
     validate() {
       return this.$refs.batteryTabForm.validate();

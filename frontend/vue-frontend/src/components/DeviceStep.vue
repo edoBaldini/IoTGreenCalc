@@ -24,34 +24,34 @@ export default {
   },
   data() {
     return {
-      model: {
-        boards: null,
-        sensors: null,
-        processor: null,
-        radio: null,
-        active_mode: null,
-        sleep_mode: null,
-        duty_cycle: '',
-        voltage: '',
-        output_regulator: '',
-        e_manufacturing: null,
-        disposal: null,
-        daily_e_required: null,
-      },
       // model: {
       //   boards: null,
       //   sensors: null,
       //   processor: null,
       //   radio: null,
-      //   active_mode: 84.189030303,
-      //   sleep_mode: 0.062,
-      //   duty_cycle: 5,
-      //   voltage: 3.3,
-      //   output_regulator: 90,
-      //   e_manufacturing: 144.14399999999998,
-      //   disposal: 3.42,
-      //   daily_e_required: 0.031477248,
+      //   active_mode: null,
+      //   sleep_mode: null,
+      //   duty_cycle: '',
+      //   voltage: '',
+      //   output_regulator: '',
+      //   e_manufacturing: null,
+      //   disposal: null,
+      //   daily_e_required: null,
       // },
+      model: {
+        boards: null,
+        sensors: null,
+        processor: null,
+        radio: null,
+        active_mode: 84.189030303,
+        sleep_mode: 0.062,
+        duty_cycle: 5,
+        voltage: 3.3,
+        output_regulator: 90,
+        e_manufacturing: 144.14399999999998,
+        disposal: 3.42,
+        daily_e_required: 0.031477248,
+      },
       formOptions: {
         validationErrorClass: 'has-error',
         validationSuccessClass: 'has-success',
@@ -141,6 +141,20 @@ export default {
       const sensorsValidate = this.model.sensors.length > 0;
       return (this.$refs.deviceTabForm.validate() && processorValidate &&
       radioValidate && boardsValidate && sensorsValidate);
+    },
+    reset() {
+      this.model.boards = null;
+      this.model.sensors = null;
+      this.model.processor = null;
+      this.model.radio = null;
+      this.model.active_mode = 0;
+      this.model.sleep_mode = 0;
+      this.model.duty_cycle = 0;
+      this.model.voltage = 0;
+      this.model.output_regulator = 0;
+      this.model.e_manufacturing = 0;
+      this.model.disposal = 0;
+      this.model.daily_e_required = 0;
     },
   },
   computed: {

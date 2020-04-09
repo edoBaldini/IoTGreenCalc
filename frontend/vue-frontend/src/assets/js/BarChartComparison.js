@@ -94,6 +94,10 @@ export default {
 
     setInterval(() => {
       if (this.values) {
+        for (let i = 0; i < this.values.length; i += 1) {
+          this.values[i] = Math.round(this.values[i] * 100) / 100;
+          this.greenValues[i] = Math.round(this.greenValues[i] * 100) / 100;
+        }
         if (!this.oldValues) {
           this.oldValues = this.values;
         }

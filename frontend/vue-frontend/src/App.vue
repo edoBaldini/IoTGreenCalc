@@ -15,6 +15,7 @@
                      error-color="#a94442"
                      back-button-text="back"
                      next-button-text="next"
+                     finish-button-text="Reset"
                      ref="wizard"
                      >
             <tab-content title="Start" color="red">
@@ -173,7 +174,22 @@ export default {
   },
   methods: {
     onComplete() {
-      // eslint-disable-next-line no-alert
+      this.reset();
+    },
+    reset() {
+      this.$refs['device-form'].reset();
+      this.$refs['solar-panel-form'].reset();
+      this.$refs['battery-form'].reset();
+      this.$refs['maintenance-form'].reset();
+      this.energyRatio = 0;
+      this.wasteRatio = 0;
+      this.ready = false;
+      this.energyV = null;
+      this.greenEnergyV = null;
+      this.disposalV = null;
+      this.greenDisposalV = null;
+      this.errorMsg = null;
+      this.$refs.wizard.changeTab(6, 0);
     },
     showModalComparison() {
       this.$refs['green-comparison'].show();
