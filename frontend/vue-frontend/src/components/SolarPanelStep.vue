@@ -2,10 +2,8 @@
     <vue-form-generator :model="model"
                         :schema="solarPanelTabSchema"
                         :options="formOptions"
-                        ref="solarPanelTabSchema"
-                        >
+                        ref="solarPanelTabSchema" cols="12" md="8" >
     </vue-form-generator>
-
 </template>
 
 <script>
@@ -58,7 +56,7 @@ export default {
           values: ['mono-Si', 'multi-Si'],
           required: true,
           // eslint-disable-next-line no-undef
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -70,7 +68,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -82,7 +80,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -94,7 +92,7 @@ export default {
           step: 1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -106,7 +104,7 @@ export default {
           step: 1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -118,7 +116,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -130,7 +128,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -142,7 +140,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -154,38 +152,38 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-general',
         },
-        {
-          type: 'input',
-          inputType: 'number',
-          label: 'Manufacturing energy (Mj)',
-          model: 'e_manufacturing',
-          readonly: true,
-          disabled: true,
-          // eslint-disable-next-line no-undef
-          styleClasses: 'col-xs-12',
-        },
-        {
-          type: 'input',
-          inputType: 'number',
-          label: 'Disposal (kg)',
-          model: 'disposal',
-          readonly: true,
-          disabled: true,
-          // eslint-disable-next-line no-undef
-          styleClasses: 'col-xs-12',
-        },
-        {
-          type: 'input',
-          inputType: 'number',
-          label: 'Daily energy produced (Mj)',
-          model: 'e_produced',
-          readonly: true,
-          disabled: true,
-          // eslint-disable-next-line no-undef
-          styleClasses: 'col-xs-12',
-        },
+        // {
+        //   type: 'input',
+        //   inputType: 'number',
+        //   label: 'Manufacturing energy (Mj)',
+        //   model: 'e_manufacturing',
+        //   readonly: true,
+        //   disabled: true,
+        //   // eslint-disable-next-line no-undef
+        //   styleClasses: 'col-xs-12',
+        // },
+        // {
+        //   type: 'input',
+        //   inputType: 'number',
+        //   label: 'Disposal (kg)',
+        //   model: 'disposal',
+        //   readonly: true,
+        //   disabled: true,
+        //   // eslint-disable-next-line no-undef
+        //   styleClasses: 'col-xs-12',
+        // },
+        // {
+        //   type: 'input',
+        //   inputType: 'number',
+        //   label: 'Daily energy produced (Mj)',
+        //   model: 'e_produced',
+        //   readonly: true,
+        //   disabled: true,
+        //   // eslint-disable-next-line no-undef
+        //   styleClasses: 'col-xs-12',
+        // },
         ],
       },
     };
@@ -206,3 +204,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@import '../assets/css/style.css';
+ @import '../assets/css/form-wizard-style.css';
+
+</style>

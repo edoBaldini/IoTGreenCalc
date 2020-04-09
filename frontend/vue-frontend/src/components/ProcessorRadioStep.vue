@@ -1,15 +1,14 @@
 
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col">
+  <b-container style="margin:0; padding:0; max-width:inherit">
+    <b-row align-self="start">
+      <b-col class="table-width">
         <b-button type="button" class="btn btn-success btn-sm" v-b-modal.processor-modal>
             Add Processor </b-button>
         <br><br>
         <table class="table table-hover">
           <thead>
             <tr>
-              <th scope="col">ID</th>
               <th scope="col">Manufacturing energy (Mj)</th>
               <th></th>
             </tr>
@@ -31,15 +30,15 @@
             </tr>
           </tbody>
         </table>
-      </div>
-      <div class="col">
-        <b-button type="button" class="btn btn-success btn-sm" v-b-modal.radio-modal>
+      </b-col>
+      <b-col cols="12" md="4" ></b-col>
+      <b-col class="table-width">
+         <b-button type="button" class="btn btn-success btn-sm" v-b-modal.radio-modal>
             Add Radio</b-button>
         <br><br>
         <table class="table table-hover">
           <thead>
             <tr>
-              <th scope="col">ID</th>
               <th scope="col">Manufacturing energy (Mj)</th>
               <th></th>
             </tr>
@@ -61,8 +60,8 @@
             </tr>
           </tbody>
         </table>
-      </div>
-    </div>
+      </b-col>
+    </b-row>
     <b-modal ref="addProcessorModal"
             id="processor-modal"
             title="Add a processor"
@@ -72,6 +71,7 @@
                                 :schema="elementTabSchema"
                                 :options="formOptions"
                                 ref="elementTabSchema"
+                                style="color: #343a40; flex: 0 0 0;"
                                 >
             </vue-form-generator>
         <b-button-group>
@@ -88,6 +88,7 @@
                                 :schema="elementTabSchema"
                                 :options="formOptions"
                                 ref="elementEditTabSchema"
+                                style="color: #343a40; flex: 0 0 0;"
                                 >
             </vue-form-generator>
         <b-button-group>
@@ -104,6 +105,7 @@
                                 :schema="elementTabSchema"
                                 :options="formOptions"
                                 ref="elementTabSchema"
+                                style="color: #343a40; flex: 0 0 0;"
                                 >
             </vue-form-generator>
         <b-button-group>
@@ -120,6 +122,7 @@
                                 :schema="elementTabSchema"
                                 :options="formOptions"
                                 ref="elementEditTabSchema"
+                                style="color: #343a40; flex: 0 0 0;"
                                 >
             </vue-form-generator>
         <b-button-group>
@@ -127,7 +130,7 @@
         </b-button-group>
       </b-form>
     </b-modal>
-  </div>
+  </b-container>
 </template>
 <script>
 import 'vue-form-generator/dist/vfg.css';
@@ -186,7 +189,7 @@ export default {
           step: 1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-modal',
         },
         {
           type: 'input',
@@ -198,7 +201,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-modal',
         },
         {
           type: 'input',
@@ -210,7 +213,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-modal',
         },
         {
           type: 'input',
@@ -222,7 +225,7 @@ export default {
           step: 1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-modal',
         },
         ],
       },

@@ -21,7 +21,7 @@ export default {
       chartData: null,
       gradient: null,
       options: {
-        responsive: true,
+        responsive: false,
         title: {
           display: true,
           text: [this.title, ''],

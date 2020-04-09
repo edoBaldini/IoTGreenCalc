@@ -22,7 +22,6 @@
                          icon="" :before-change="() => postData('solar-panel-form')"
                          >
               <solar-panel-form ref="solar-panel-form"></solar-panel-form>
-  <!-- IN ROUTE CASE route="/solar_panel"> is it possible to validate the form of another page? -->
 
             </tab-content>
             <tab-content title="Battery"
@@ -41,16 +40,25 @@
             </tab-content>
             <tab-content title="comparison"
                          icon="">
-                <b-row>
-                  <b-col>
+                <b-row style="text-align: center">
+                  <b-col class="chart-color" style="text-align:-webkit-center">
                     <chart-comparison v-bind:title="'Energy impact (Mj)'"
                       v-bind:values="this.energyV"
                       v-bind:greenValues="this.greenEnergyV"></chart-comparison>
+                    <h1 style="color:rgba(255, 255, 255, 0.85); text-align:center"> 
+                      <span style="font-size:60px;">{{energyRatio}}</span>x
+                    </h1>
+                    <h2> than green solution </h2>
                   </b-col>
-                  <b-col>
+                  <b-col cols="12" md="2" ></b-col>
+                  <b-col class="chart-color" style="text-align:-webkit-center">
                     <chart-comparison v-bind:title="'Waste impact (g)'"
                       v-bind:values="this.disposalV"
                       v-bind:greenValues="this.greenDisposalV"></chart-comparison>
+                    <h1 style="color:rgba(255, 255, 255, 0.85); text-align:center"> 
+                      <span style="font-size:60px;">{{wasteRatio}}</span>x
+                    </h1>
+                    <h2> than green solution </h2>
                   </b-col>
                 </b-row>
             </tab-content>
@@ -103,6 +111,8 @@ export default {
   },
   data() {
     return {
+      energyRatio: 0,
+      wasteRatio: 0,
       ready: false,
       energyV: null,
       greenEnergyV: null,
@@ -151,6 +161,15 @@ export default {
       }
       return d;
     },
+    computeRatio(solutionRsult, greenResult) {
+      let sumSolution = 0;
+      let sumGreen = 0;
+      for (let i = 0; i < solutionRsult.length; i += 1) {
+        sumSolution += solutionRsult[i];
+        sumGreen += greenResult[i];
+      }
+      return sumSolution / sumGreen;
+    },
     completeDevice() {
       this.$refs['device-form'].model.sensors = this.$refs['elements-form'].sensors;
       this.$refs['device-form'].model.boards = this.$refs['elements-form'].boards;
@@ -195,6 +214,8 @@ export default {
                 this.model.green.battery.disposal * 1000,
                 this.model.green.maintenance.disposal * 1000];
               this.ready = true;
+              this.energyRatio = Math.round(this.computeRatio(this.energyV, this.greenEnergyV));
+              this.wasteRatio = Math.round(this.computeRatio(this.disposalV, this.greenDisposalV));
             }
 
             resolve(true);
@@ -225,6 +246,7 @@ export default {
 
 <style>
  @import './assets/css/style.css';
+ @import './assets/css/form-wizard-style.css';
 
 body {
   background-color: #163766;
@@ -243,5 +265,4 @@ body {
   color: #a94442;
   font-weight: bold;
 }
-
 </style>

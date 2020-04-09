@@ -51,7 +51,7 @@ export default {
           values: ['Li-Ion', 'PbA', 'NiMh'],
           required: true,
           // eslint-disable-next-line no-undef
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -63,7 +63,7 @@ export default {
           step: 1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -75,7 +75,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -87,7 +87,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -99,7 +99,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -111,28 +111,28 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-general',
         },
-        {
-          type: 'input',
-          inputType: 'number',
-          label: 'Manufacturing energy (Mj)',
-          model: 'e_manufacturing',
-          readonly: true,
-          disabled: true,
-          // eslint-disable-next-line no-undef
-          styleClasses: 'col-xs-12',
-        },
-        {
-          type: 'input',
-          inputType: 'number',
-          label: 'Disposal (kg)',
-          model: 'disposal',
-          readonly: true,
-          disabled: true,
-          // eslint-disable-next-line no-undef
-          styleClasses: 'col-xs-12',
-        },
+        // {
+        //   type: 'input',
+        //   inputType: 'number',
+        //   label: 'Manufacturing energy (Mj)',
+        //   model: 'e_manufacturing',
+        //   readonly: true,
+        //   disabled: true,
+        //   // eslint-disable-next-line no-undef
+        //   styleClasses: 'display-general',
+        // },
+        // {
+        //   type: 'input',
+        //   inputType: 'number',
+        //   label: 'Disposal (kg)',
+        //   model: 'disposal',
+        //   readonly: true,
+        //   disabled: true,
+        //   // eslint-disable-next-line no-undef
+        //   styleClasses: 'display-general',
+        // },
         ],
       },
     };

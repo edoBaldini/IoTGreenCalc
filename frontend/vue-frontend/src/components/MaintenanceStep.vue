@@ -58,7 +58,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -70,7 +70,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -82,7 +82,7 @@ export default {
           step: 0.1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-12',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -94,7 +94,7 @@ export default {
           step: 1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-general',
         },
         {
           type: 'input',
@@ -106,32 +106,32 @@ export default {
           step: 1,
           // eslint-disable-next-line no-undef
           validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
+          styleClasses: 'display-general',
         },
-        {
-          type: 'input',
-          inputType: 'number',
-          label: 'Total energy intervention',
-          model: 'tot_e_intervention',
-          required: false,
-          readonly: true,
-          disabled: true,
-          // eslint-disable-next-line no-undef
-          validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
-        },
-        {
-          type: 'input',
-          inputType: 'number',
-          label: 'Number of interventions',
-          model: 'n_interventions',
-          required: false,
-          readonly: true,
-          disabled: true,
-          // eslint-disable-next-line no-undef
-          validator: VueFormGenerator.validators.number,
-          styleClasses: 'col-xs-6',
-        },
+        // {
+        //   type: 'input',
+        //   inputType: 'number',
+        //   label: 'Total energy intervention',
+        //   model: 'tot_e_intervention',
+        //   required: false,
+        //   readonly: true,
+        //   disabled: true,
+        //   // eslint-disable-next-line no-undef
+        //   validator: VueFormGenerator.validators.number,
+        //   styleClasses: 'display-general',
+        // },
+        // {
+        //   type: 'input',
+        //   inputType: 'number',
+        //   label: 'Number of interventions',
+        //   model: 'n_interventions',
+        //   required: false,
+        //   readonly: true,
+        //   disabled: true,
+        //   // eslint-disable-next-line no-undef
+        //   validator: VueFormGenerator.validators.number,
+        //   styleClasses: 'display-general',
+        // },
         ],
       },
     };
