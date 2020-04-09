@@ -25,6 +25,24 @@ url("../fonts/Merriweather-Regular.otf") format("opentype"),
 url("../fonts/Merriweather-Regular.svg") format("svg");
 }
 
+@font-face {
+font-family: "Lato";
+src: url("../fonts/Lato-light.eot");
+src:
+url("../fonts/Lato-light.woff") format("woff"),
+url("../fonts/Lato-light.otf") format("opentype"),
+url("../fonts/Lato-light.svg") format("svg");
+}
+
+@font-face {
+font-family: "Lato-Thin";
+src: url("../fonts/Lato-Thin.eot");
+src:
+url("../fonts/Lato-Thin.woff") format("woff"),
+url("../fonts/Lato-Thin.otf") format("opentype"),
+url("../fonts/Lato-Thin.svg") format("svg");
+}
+
 #table-width{
     max-width: fit-content;
 }

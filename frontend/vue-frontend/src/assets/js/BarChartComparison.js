@@ -16,8 +16,10 @@ export default {
       type: String,
     },
   },
+  oldValues: null,
   data() {
     return {
+      update: false,
       chartData: null,
       gradient: null,
       options: {
@@ -56,7 +58,7 @@ export default {
           }],
         },
         animation: {
-          duration: 10,
+          duration: 1000,
           onComplete() {
             // eslint-disable-next-line one-var
             const chartInstance = this.chart,
@@ -91,7 +93,20 @@ export default {
     this.renderChart(this.chartData, { responsive: true, maintainAspectRatio: false });
 
     setInterval(() => {
-      this.fillData();
+      if (this.values) {
+        if (!this.oldValues) {
+          this.oldValues = this.values;
+        }
+        for (let i = 0; i < this.values.length; i += 1) {
+          // eslint-disable-next-line eqeqeq
+          this.update = this.update && (this.values[i] == this.oldValues[i]);
+        }
+        if (!this.update) {
+          this.fillData();
+          this.oldValues = this.values;
+          this.update = true;
+        }
+      }
     }, 1000);
   },
 

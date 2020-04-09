@@ -17,7 +17,36 @@
                      next-button-text="next"
                      ref="wizard"
                      >
-            <tab-content title="Start" color="red"></tab-content>
+            <tab-content title="Start" color="red">
+                <b-row style="text-align: center;">
+                  <b-col class="chart-color" style="margin-bottom:0px">
+                    <h2 style="text-align:justify; font-family:Lato; font-size:20px; padding:15px;">
+                      The Internet of things (IoT) has the potential to change
+                      the world just as Internet did. It will allow us to optimize
+                      the use of resources and avoid waste, but we must intelligently
+                      develop this technology in order to limit its impact on the
+                      environment and maximize the reduction of greenhouse
+                      gas emissions (GHGE).</h2>
+                  </b-col>
+                  <b-col cols="12" md="2" ></b-col>
+                  <b-col>
+                  </b-col>
+                </b-row>
+                <b-row style="text-align: center;margin-top:30px">
+                  <b-col class="chart-color">
+                    <h2 style="text-align:justify; font-family:Lato; font-size:20px; padding:15px;">
+                      The following webservice allows you to evaluate the energy and waste impact of
+                      your IoT solution. The webservice returns the impacts in Mj and Kg and the
+                      ratio with a green solution. This green solution is calculated by
+                      resizing the components of the energy harvesting system ensuring the energy
+                      independence of the IoT solution.</h2>
+                  </b-col>
+                  <b-col cols="12" md="2" ></b-col>
+                  <b-col>
+                  </b-col>
+                </b-row>
+
+            </tab-content>
             <tab-content title="Solar Panel"
                          icon="" :before-change="() => postData('solar-panel-form')"
                          >
@@ -45,7 +74,7 @@
                     <chart-comparison v-bind:title="'Energy impact (Mj)'"
                       v-bind:values="this.energyV"
                       v-bind:greenValues="this.greenEnergyV"></chart-comparison>
-                    <h1 style="color:rgba(255, 255, 255, 0.85); text-align:center"> 
+                    <h1 style="color:rgba(255, 255, 255, 0.85); text-align:center">
                       <span style="font-size:60px;">{{energyRatio}}</span>x
                     </h1>
                     <h2> than green solution </h2>
@@ -55,7 +84,7 @@
                     <chart-comparison v-bind:title="'Waste impact (g)'"
                       v-bind:values="this.disposalV"
                       v-bind:greenValues="this.greenDisposalV"></chart-comparison>
-                    <h1 style="color:rgba(255, 255, 255, 0.85); text-align:center"> 
+                    <h1 style="color:rgba(255, 255, 255, 0.85); text-align:center">
                       <span style="font-size:60px;">{{wasteRatio}}</span>x
                     </h1>
                     <h2> than green solution </h2>
