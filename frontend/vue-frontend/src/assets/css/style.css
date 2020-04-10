@@ -1,0 +1,77 @@
+@font-face {
+font-family: "Aileron";
+src: url("../fonts/aileron-ultralight-webfont.eot");
+src:
+url("../fonts/aileron-ultralight-webfont.woff") format("woff"),
+url("../fonts/Aileron-Ultralight.otf") format("opentype"),
+url("../fonts/aileron-ultralight-webfont.svg") format("svg");
+}
+
+@font-face {
+font-family: "Elianto";
+src: url("../fonts/elianto-regular-webfont.eot");
+src:
+url("../fonts/elianto-regular-webfont.woff") format("woff"),
+url("../fonts/Elianto-Regular.otf") format("opentype"),
+url("../fonts/elianto-regular-webfont.svg") format("svg");
+}
+
+@font-face {
+font-family: "Merriweather";
+src: url("../fonts/Merriweather-Regular.eot");
+src:
+url("../fonts/Merriweather-Regular.woff") format("woff"),
+url("../fonts/Merriweather-Regular.otf") format("opentype"),
+url("../fonts/Merriweather-Regular.svg") format("svg");
+}
+
+@font-face {
+font-family: "Lato";
+src: url("../fonts/Lato-light.eot");
+src:
+url("../fonts/Lato-light.woff") format("woff"),
+url("../fonts/Lato-light.otf") format("opentype"),
+url("../fonts/Lato-light.svg") format("svg");
+}
+
+@font-face {
+font-family: "Lato-Thin";
+src: url("../fonts/Lato-Thin.eot");
+src:
+url("../fonts/Lato-Thin.woff") format("woff"),
+url("../fonts/Lato-Thin.otf") format("opentype"),
+url("../fonts/Lato-Thin.svg") format("svg");
+}
+
+#table-width{
+    max-width: fit-content;
+}
+.table{
+    color:#eaffef;
+}
+
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    color: #eaffef;
+  }
+.b-modal-text {
+    color: #343a40
+}
+
+.chart-color{
+    background-color: rgba(28, 55, 101, 0.96);
+    border-color: rgba(54, 162, 235, 1);
+    color: rgba(255, 255, 255, 0.85);
+    border: 4px solid rgba(0,0,0,.125);
+    border-radius: 20px;
+    margin-bottom: 5%;
+  
+  }
+h1{
+    font-family: Merriweather;
+}
+
+h2{
+    font-size: 20px;
+    text-align: center;
+    font-family: Aileron;
+}
